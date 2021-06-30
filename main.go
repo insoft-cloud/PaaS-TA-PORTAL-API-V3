@@ -2,7 +2,9 @@ package main
 
 import (
 	"PAAS-TA-PORTAL-V3/admin"
-	"PAAS-TA-PORTAL-V3/app"
+	"PAAS-TA-PORTAL-V3/appFeatures"
+	"PAAS-TA-PORTAL-V3/appUsageEvents"
+	"PAAS-TA-PORTAL-V3/apps"
 	"PAAS-TA-PORTAL-V3/config"
 	_ "fmt"
 	"github.com/gorilla/mux"
@@ -15,7 +17,9 @@ import (
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	admin.AdminHandleRequests(myRouter)
-	app.AppHandleRequests(myRouter)
+	apps.AppHandleRequests(myRouter)
+	appFeatures.AppFeatureHandleRequests(myRouter)
+	appUsageEvents.AppFeatureHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
