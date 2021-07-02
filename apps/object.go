@@ -6,22 +6,17 @@ import (
 
 type CreateApp struct {
 	Name      string `json:"name" validate:"required"`
-	Lifecycle struct {
-		Data struct {
-			Buildpacks []string `json:"buildpacks"`
-			Stack      string   `json:"stack"`
-		} `json:"data"`
-		Type string `json:"type"`
-	} `json:"lifecycle"`
-	EnvironmentVariables struct {
-	} `json:"environment_variables"`
-	Metadata struct {
+	Lifecycle *struct {
+	} `json:"lifecycle,omitempty"`
+	EnvironmentVariables *struct {
+	} `json:"environment_variables,omitempty"`
+	Metadata *struct {
 		Annotations struct {
-		} `json:"annotations"`
+		} `json:"annotations,omitempty"`
 		Labels struct {
 		} `json:"labels"`
-	} `json:"metadata"`
-	Relationships struct {
+	} `json:"metadata,omitempty"`
+	Relationships *struct {
 		Space struct {
 			Data struct {
 				GUID string `json:"guid" validate:"required"`

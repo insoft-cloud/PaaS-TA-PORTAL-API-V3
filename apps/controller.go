@@ -39,6 +39,8 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/apps", reqBody, "POST", w, r)
 	if rBodyResult {
 		var final App
