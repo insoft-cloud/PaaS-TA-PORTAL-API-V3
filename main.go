@@ -10,6 +10,7 @@ import (
 	"PAAS-TA-PORTAL-V3/builds"
 	"PAAS-TA-PORTAL-V3/config"
 	"PAAS-TA-PORTAL-V3/deployments"
+	"PAAS-TA-PORTAL-V3/servicebrokers"
 	_ "fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -28,6 +29,7 @@ func handleRequests() {
 	builds.BuildPackHandleRequests(myRouter)
 	buildpacks.BuildPackHandleRequests(myRouter)
 	deployments.DeploymentHandleRequests(myRouter)
+	servicebrokers.ServiceBrokerHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 

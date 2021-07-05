@@ -1,4 +1,4 @@
-package deployments
+package servicebrokers
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -9,17 +9,17 @@ import (
 	"net/url"
 )
 
-func DeploymentHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/deployments", createDeployment).Methods("POST")
-	myRouter.HandleFunc("/v3/deployments/{guid}", getDeployment).Methods("GET")
-	myRouter.HandleFunc("/v3/deployments", getDeployments).Methods("GET")
-	myRouter.HandleFunc("/v3/deployments/{guid}", updateDeployment).Methods("PATCH")
-	myRouter.HandleFunc("/v3/deployments/{guid}", cancelDeployment).Methods("DELETE")
+func ServiceBrokerHandleRequests(myRouter *mux.Router) {
+	myRouter.HandleFunc("/v3/service_brokers", createServiceBroker).Methods("POST")
+	myRouter.HandleFunc("/v3/service_brokers/{guid}", getServiceBroker).Methods("GET")
+	myRouter.HandleFunc("/v3/service_brokers/", getServiceBrokers).Methods("GET")
+	myRouter.HandleFunc("/v3/service_brokers/{guid}", updateServiceBrokers).Methods("PATCH")
+	myRouter.HandleFunc("/v3/service_brokers/{guid}", deleteServiceBrokers).Methods("DELETE")
 }
 
 //Permitted roles 'Admin Space Developer'
-func createDeployment(w http.ResponseWriter, r *http.Request) {
-	var pBody CreateDeployment
+func createServiceBroker(w http.ResponseWriter, r *http.Request) {
+	var pBody CreateServiceBroker
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -31,9 +31,9 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/deployments", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/service_brokers", reqBody, "POST", w, r)
 	if rBodyResult {
-		var final Deployment
+		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -43,13 +43,13 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getDeployment(w http.ResponseWriter, r *http.Request) {
+//Permitted roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
+func getServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/service_brokers/"+guid, nil, "GET", w, r)
 	if rBodyResult {
-		var final Deployment
+		var final ServiceBroker
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -59,12 +59,12 @@ func getDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getDeployments(w http.ResponseWriter, r *http.Request) {
+//Permitted roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
+func getServiceBrokers(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/deployments?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/service_brokers?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final DeploymentList
+		var final ServiceBrokerList
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -74,12 +74,12 @@ func getDeployments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
-func updateDeployment(w http.ResponseWriter, r *http.Request) {
+//Permitted roles 'Admin Space Developer (only space-scoped brokers)'
+func updateServiceBrokers(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
-	var pBody UpdateDeployment
+	var pBody UpdateServiceBroker
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -91,9 +91,9 @@ func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/service_brokers/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
-		var final Deployment
+		var final ServiceBroker
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -103,14 +103,14 @@ func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
-func cancelDeployment(w http.ResponseWriter, r *http.Request) {
+//Permitted roles 'Admin Space Developer (only space-scoped brokers)'
+func deleteServiceBrokers(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/service_brokers/"+guid, nil, "DELETE", w, r)
 	if rBodyResult {
-		var final Deployment
+		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
