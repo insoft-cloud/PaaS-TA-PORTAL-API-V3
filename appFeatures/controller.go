@@ -58,7 +58,10 @@ func updateAppFeature(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(vResultI)
 		return
 	}
+	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/features/"+name, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppFeature
