@@ -3,8 +3,13 @@ package config
 import (
 	"bytes"
 	"crypto/tls"
+	"fmt"
+	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 var Client http.Client
@@ -34,4 +39,64 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	}
 	return body, true
 
+}
+
+func FileCurl(key string, url string, method string, w http.ResponseWriter, r *http.Request) (interface{}, bool) {
+	uploaded, handler, err := r.FormFile(key)
+	if err != nil {
+		fmt.Println(1)
+		fmt.Println(err)
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		return final, false
+	}
+	defer uploaded.Close()
+	file, _ := os.Create(handler.Filename)
+	_, err = io.Copy(file, uploaded)
+	if err != nil {
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		file.Close()
+		os.Remove(handler.Filename)
+		return final, false
+	}
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	part, _ := writer.CreateFormFile(key, filepath.Base(handler.Filename))
+	Refile, _ := os.Open(handler.Filename)
+	_, err = io.Copy(part, Refile)
+	if err != nil {
+		Refile.Close()
+		writer.Close()
+		os.Remove(handler.Filename)
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		return final, false
+	}
+	Refile.Close()
+	writer.Close()
+	req, err := http.NewRequest(method, GetDomainConfig()+url, body)
+	if err != nil {
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		os.Remove(handler.Filename)
+		return final, false
+	}
+	req.Header.Set("Authorization", r.Header.Get("cf-Authorization"))
+	req.Header.Add("Content-type", writer.FormDataContentType())
+	res, err := Client.Do(req)
+	if err != nil {
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		os.Remove(handler.Filename)
+		return final, false
+	}
+	tbody, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		os.Remove(handler.Filename)
+		return final, false
+	} else if res.StatusCode > 400 {
+		w.WriteHeader(res.StatusCode)
+		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		os.Remove(handler.Filename)
+		return final, false
+	}
+	os.Remove(handler.Filename)
+	return tbody, true
 }

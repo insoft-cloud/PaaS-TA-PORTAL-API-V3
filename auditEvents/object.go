@@ -1,4 +1,4 @@
-package appUsageEvents
+package auditEvents
 
 import "time"
 

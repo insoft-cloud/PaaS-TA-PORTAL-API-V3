@@ -8,10 +8,12 @@ import (
 	"net/http"
 )
 
+var uris = "apps"
+
 func AppFeatureHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/apps/{guid}/features/{name}", getAppFeature).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}/features", getAppFeatures).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}/features/{name}", updateAppFeature).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", getAppFeature).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features", getAppFeatures).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateAppFeature).Methods("PATCH")
 }
 
 //Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
@@ -19,7 +21,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	name := vars["name"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/features/"+name, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features/"+name, nil, "GET", w, r)
 	if rBodyResult {
 		var final AppFeature
 		json.Unmarshal(rBody.([]byte), &final)
@@ -35,7 +37,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/features", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppFeatureList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -58,8 +60,11 @@ func updateAppFeature(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(vResultI)
 		return
 	}
+	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/features/"+name, reqBody, "PATCH", w, r)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features/"+name, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppFeature
 		json.Unmarshal(rBody.([]byte), &final)

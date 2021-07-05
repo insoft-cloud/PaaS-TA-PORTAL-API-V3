@@ -9,23 +9,25 @@ import (
 	"net/url"
 )
 
+var uris = "apps"
+
 func AppHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/apps", createApp).Methods("POST")
-	myRouter.HandleFunc("/v3/apps", getApps).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}", getApp).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}", updateApp).Methods("PATCH")
-	myRouter.HandleFunc("/v3/apps/{guid}", deleteApp).Methods("DELETE")
-	myRouter.HandleFunc("/v3/apps/{guid}/droplets/current", getAppDroplet).Methods("get")
-	myRouter.HandleFunc("/v3/apps/{guid}/relationships/current_droplet", getAppDropletAssociation).Methods("get")
-	myRouter.HandleFunc("/v3/apps/{guid}/env", getAppEnv).Methods("get")
-	myRouter.HandleFunc("/v3/apps/{guid}/environment_variables", getAppEnvVariables).Methods("get")
-	myRouter.HandleFunc("/v3/apps/{guid}/permissions", getAppPermissions).Methods("get")
-	myRouter.HandleFunc("/v3/apps/{guid}/relationships/current_droplet", setAppDroplet).Methods("PATCH")
-	myRouter.HandleFunc("/v3/apps/{guid}/ssh_enabled", getAppSSH).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}/actions/start", startApp).Methods("POST")
-	myRouter.HandleFunc("/v3/apps/{guid}/actions/stop", stopApp).Methods("POST")
-	myRouter.HandleFunc("/v3/apps/{guid}/actions/restart", restartApp).Methods("POST")
-	myRouter.HandleFunc("/v3/apps/{guid}/environment_variables", setAppEnv).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris, createApp).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris, getApps).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getApp).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateApp).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteApp).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/droplets/current", getAppDroplet).Methods("get")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/current_droplet", getAppDropletAssociation).Methods("get")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/env", getAppEnv).Methods("get")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/environment_variables", getAppEnvVariables).Methods("get")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/permissions", getAppPermissions).Methods("get")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/current_droplet", setAppDroplet).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/ssh_enabled", getAppSSH).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/actions/start", startApp).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/actions/stop", stopApp).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/actions/restart", restartApp).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/environment_variables", setAppEnv).Methods("PATCH")
 }
 
 //Permitted roles 'Admin, SpaceDeveloper'
@@ -41,7 +43,7 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/apps", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -57,9 +59,9 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 func getApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	//req, _ := http.NewRequest("GET", config.GetDomainConfig() +"/v3/apps/" + guid, nil)
+	//req, _ := http.NewRequest("GET", config.GetDomainConfig() +"/v3/"+uris+"/" + guid, nil)
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -74,7 +76,7 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 //Permitted All Roles
 func getApps(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/apps?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final AppList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -98,7 +100,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -114,7 +116,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 func deleteApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
@@ -130,7 +132,7 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/droplets/current", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/droplets/current", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppDroplet
 		json.Unmarshal(rBody.([]byte), &final)
@@ -146,7 +148,7 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/relationships/current_droplet", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/current_droplet", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppDropletAssociation
 		json.Unmarshal(rBody.([]byte), &final)
@@ -162,7 +164,7 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/env", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/env", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppEnv
 		json.Unmarshal(rBody.([]byte), &final)
@@ -178,7 +180,7 @@ func getAppEnv(w http.ResponseWriter, r *http.Request) {
 func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/environment_variables", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/environment_variables", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppEnvVariable
 		json.Unmarshal(rBody.([]byte), &final)
@@ -194,7 +196,7 @@ func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/permissions", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/permissions", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppPermission
 		json.Unmarshal(rBody.([]byte), &final)
@@ -217,7 +219,7 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/relationships/current_droplet", reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/current_droplet", reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppDropletAssociation
 		json.Unmarshal(rBody.([]byte), &final)
@@ -233,7 +235,7 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/ssh_enabled", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/ssh_enabled", nil, "GET", w, r)
 	if rBodyResult {
 		var final AppSSH
 		json.Unmarshal(rBody.([]byte), &final)
@@ -249,7 +251,7 @@ func getAppSSH(w http.ResponseWriter, r *http.Request) {
 func startApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/actions/start", nil, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/actions/start", nil, "POST", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -265,7 +267,7 @@ func startApp(w http.ResponseWriter, r *http.Request) {
 func stopApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/actions/stop", nil, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/actions/stop", nil, "POST", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -281,7 +283,7 @@ func stopApp(w http.ResponseWriter, r *http.Request) {
 func restartApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/actions/restart", nil, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/actions/restart", nil, "POST", w, r)
 	if rBodyResult {
 		var final App
 		json.Unmarshal(rBody.([]byte), &final)
@@ -304,7 +306,7 @@ func setAppEnv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/environment_variables", reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/environment_variables", reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppEnvVariable
 		json.Unmarshal(rBody.([]byte), &final)

@@ -3,6 +3,7 @@ package config
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"github.com/go-playground/validator"
 	"io"
 	"io/ioutil"
@@ -86,7 +87,14 @@ func Validation(r *http.Request, value interface{}) (interface{}, bool) {
 	} else if err != nil {
 		return err, false
 	}
-	return nil, true
+	fmt.Println(value)
+	return value, true
 }
 
 // }
+
+func ErrorMessage(msg string, code int, w http.ResponseWriter) interface{} {
+	w.WriteHeader(code)
+	rErrs := &Errors{Code: code, Detail: msg, Title: "Portal API Error"}
+	return rErrs
+}
