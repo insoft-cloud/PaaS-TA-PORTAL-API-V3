@@ -1,4 +1,4 @@
-package serviceofferings
+package serviceplans
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -9,23 +9,23 @@ import (
 	"net/url"
 )
 
-var uris = "service_offerings"
+var uris = "service_plans"
 
-func ServiceOfferingHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServiceOffering).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris, getServiceOfferings).Methods("GET")
+func ServicePlanHandleRequests(myRouter *mux.Router) {
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServicePlan).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServicePlans).Methods("GET")
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateServiceBroker).Methods("PATCH")
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteServiceBroker).Methods("DELETE")
 }
 
 //Permitted All Roles
-func getServiceOffering(w http.ResponseWriter, r *http.Request) {
+func getServicePlan(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final ServiceOffering
+		var final ServicePlan
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -36,11 +36,11 @@ func getServiceOffering(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted All Roles
-func getServiceOfferings(w http.ResponseWriter, r *http.Request) {
+func getServicePlans(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final ServiceOfferingList
+		var final ServicePlan
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -55,7 +55,7 @@ func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
-	var pBody UpdateServiceOffering
+	var pBody UpdatePlan
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -69,7 +69,7 @@ func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
-		var final ServiceOffering
+		var final ServicePlan
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -83,9 +83,22 @@ func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
+
+	var pBody UpdatePlan
+	vResultI, vResultB := config.Validation(r, &pBody)
+	if !vResultB {
+		json.NewEncoder(w).Encode(vResultI)
+		return
+	}
+
+	//호출
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
+
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
-		var final interface{}
+		var final ServicePlan
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
