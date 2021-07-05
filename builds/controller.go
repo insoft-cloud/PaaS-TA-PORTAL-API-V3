@@ -1,4 +1,4 @@
-package appUsageEvents
+package builds
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -9,7 +9,7 @@ import (
 	"net/url"
 )
 
-func AppFeatureHandleRequests(myRouter *mux.Router) {
+func BuildPackHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/builds", createBuild).Methods("POST")
 	myRouter.HandleFunc("/v3/builds/{guid}", getBuild).Methods("GET")
 	myRouter.HandleFunc("/v3/builds", getBuilds).Methods("GET")
@@ -76,6 +76,7 @@ func getBuildApps(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	vars := mux.Vars(r)
 	guid := vars["guid"]
+
 	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/builds?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final BuildList

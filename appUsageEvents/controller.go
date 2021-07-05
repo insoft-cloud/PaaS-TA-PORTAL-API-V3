@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-func AppFeatureHandleRequests(myRouter *mux.Router) {
+func AppUsageEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/app_usage_events/{guid}", getAppUsageEvent).Methods("GET")
 	myRouter.HandleFunc("/v3/app_usage_events", getAppUsageEvents).Methods("GET")
 	myRouter.HandleFunc("/v3/app_usage_events/actions/destructively_purge_all_and_reseed", purgeSeedAppUsageEvents).Methods("POST")

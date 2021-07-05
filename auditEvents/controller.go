@@ -1,4 +1,4 @@
-package appUsageEvents
+package auditEvents
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-func AppFeatureHandleRequests(myRouter *mux.Router) {
+func AuditEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/audit_events/{guid}", getAuditEvent).Methods("GET")
 	myRouter.HandleFunc("/v3/audit_events", getAuditEvents).Methods("GET")
 }

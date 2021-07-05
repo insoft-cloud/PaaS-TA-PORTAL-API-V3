@@ -7,6 +7,4 @@ require (
 	github.com/go-playground/validator v9.31.0+incompatible // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/leodido/go-urn v1.2.1 // indirect
-	gopkg.in/bluesuncorp/assert.v1 v1.2.1 // indirect
-	gopkg.in/bluesuncorp/validator.v6 v6.5.1
 )
