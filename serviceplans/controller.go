@@ -13,7 +13,7 @@ var uris = "service_plans"
 
 func ServicePlanHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServicePlan).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServicePlans).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getServicePlans).Methods("GET")
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateServiceBroker).Methods("PATCH")
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteServiceBroker).Methods("DELETE")
 }
