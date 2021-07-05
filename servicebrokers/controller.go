@@ -13,8 +13,8 @@ func ServiceBrokerHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/service_brokers", createServiceBroker).Methods("POST")
 	myRouter.HandleFunc("/v3/service_brokers/{guid}", getServiceBroker).Methods("GET")
 	myRouter.HandleFunc("/v3/service_brokers/", getServiceBrokers).Methods("GET")
-	myRouter.HandleFunc("/v3/service_brokers/{guid}", updateServiceBrokers).Methods("PATCH")
-	myRouter.HandleFunc("/v3/service_brokers/{guid}", deleteServiceBrokers).Methods("DELETE")
+	myRouter.HandleFunc("/v3/service_brokers/{guid}", updateServiceBroker).Methods("PATCH")
+	myRouter.HandleFunc("/v3/service_brokers/{guid}", deleteServiceBroker).Methods("DELETE")
 }
 
 //Permitted roles 'Admin Space Developer'
@@ -75,7 +75,7 @@ func getServiceBrokers(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted roles 'Admin Space Developer (only space-scoped brokers)'
-func updateServiceBrokers(w http.ResponseWriter, r *http.Request) {
+func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
@@ -104,7 +104,7 @@ func updateServiceBrokers(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted roles 'Admin Space Developer (only space-scoped brokers)'
-func deleteServiceBrokers(w http.ResponseWriter, r *http.Request) {
+func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
