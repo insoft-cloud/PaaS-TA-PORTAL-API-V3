@@ -9,13 +9,15 @@ import (
 	"net/url"
 )
 
+var uris = "buildpacks"
+
 func BuildPackHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/buildpacks", createBuildPack).Methods("POST")
-	myRouter.HandleFunc("/v3/buildpacks/{guid}", getBuildPack).Methods("GET")
-	myRouter.HandleFunc("/v3/buildpacks", getBuildPacks).Methods("GET")
-	myRouter.HandleFunc("/v3/buildpacks/{guid}", updateBuildPack).Methods("PATCH")
-	myRouter.HandleFunc("/v3/buildpacks/{guid}", deleteBuildPack).Methods("DELETE")
-	myRouter.HandleFunc("/v3/buildpacks/{guid}/upload", uploadBuildPack).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris, createBuildPack).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getBuildPack).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getBuildPacks).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateBuildPack).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteBuildPack).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/upload", uploadBuildPack).Methods("POST")
 }
 
 //Permitted roles 'Admin'
@@ -31,7 +33,7 @@ func createBuildPack(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/buildpacks", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final BuildPack
 		json.Unmarshal(rBody.([]byte), &final)
@@ -47,7 +49,7 @@ func createBuildPack(w http.ResponseWriter, r *http.Request) {
 func getBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/buildpacks/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
 		var final BuildPack
 		json.Unmarshal(rBody.([]byte), &final)
@@ -62,7 +64,7 @@ func getBuildPack(w http.ResponseWriter, r *http.Request) {
 //Permitted All Roles
 func getBuildPacks(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/buildpacks?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final BuildPackList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -85,7 +87,7 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/buildpacks/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final BuildPack
 		json.Unmarshal(rBody.([]byte), &final)
@@ -101,7 +103,7 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/buildpacks/"+guid, nil, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "PATCH", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
@@ -117,7 +119,7 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 func uploadBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.FileCurl("bits", "/v3/buildpacks/"+guid+"/upload", "POST", w, r)
+	rBody, rBodyResult := config.FileCurl("bits", "/v3/"+uris+"/"+guid+"/upload", "POST", w, r)
 	if rBodyResult {
 		var final BuildPack
 		json.Unmarshal(rBody.([]byte), &final)

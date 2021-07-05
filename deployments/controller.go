@@ -9,12 +9,14 @@ import (
 	"net/url"
 )
 
+var uris = "deployments"
+
 func DeploymentHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/deployments", createDeployment).Methods("POST")
-	myRouter.HandleFunc("/v3/deployments/{guid}", getDeployment).Methods("GET")
-	myRouter.HandleFunc("/v3/deployments", getDeployments).Methods("GET")
-	myRouter.HandleFunc("/v3/deployments/{guid}", updateDeployment).Methods("PATCH")
-	myRouter.HandleFunc("/v3/deployments/{guid}", cancelDeployment).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris, createDeployment).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getDeployment).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getDeployments).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateDeployment).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", cancelDeployment).Methods("DELETE")
 }
 
 //Permitted roles 'Admin Space Developer'
@@ -31,7 +33,7 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/deployments", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Deployment
 		json.Unmarshal(rBody.([]byte), &final)
@@ -47,7 +49,7 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 func getDeployment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
 		var final Deployment
 		json.Unmarshal(rBody.([]byte), &final)
@@ -62,7 +64,7 @@ func getDeployment(w http.ResponseWriter, r *http.Request) {
 //Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getDeployments(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/deployments?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final DeploymentList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -91,7 +93,7 @@ func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final Deployment
 		json.Unmarshal(rBody.([]byte), &final)
@@ -108,7 +110,7 @@ func cancelDeployment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
-	rBody, rBodyResult := config.Curl("/v3/deployments/"+guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final Deployment
 		json.Unmarshal(rBody.([]byte), &final)

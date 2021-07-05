@@ -9,12 +9,14 @@ import (
 	"net/url"
 )
 
+var uris = "builds"
+
 func BuildPackHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/builds", createBuild).Methods("POST")
-	myRouter.HandleFunc("/v3/builds/{guid}", getBuild).Methods("GET")
-	myRouter.HandleFunc("/v3/builds", getBuilds).Methods("GET")
-	myRouter.HandleFunc("/v3/apps/{guid}/builds", getBuildApps).Methods("GET")
-	myRouter.HandleFunc("/v3/builds/{guid}", updateBuild).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris, createBuild).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getBuild).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getBuilds).Methods("GET")
+	myRouter.HandleFunc("/v3/apps/{guid}/"+uris, getBuildApps).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateBuild).Methods("PATCH")
 }
 
 //Permitted roles 'Admin Space Developer'
@@ -31,7 +33,7 @@ func createBuild(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
 
-	rBody, rBodyResult := config.Curl("/v3/builds", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Build
 		json.Unmarshal(rBody.([]byte), &final)
@@ -47,7 +49,7 @@ func createBuild(w http.ResponseWriter, r *http.Request) {
 func getBuild(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/builds/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
 		var final Build
 		json.Unmarshal(rBody.([]byte), &final)
@@ -62,7 +64,7 @@ func getBuild(w http.ResponseWriter, r *http.Request) {
 //Permitted All Roles
 func getBuilds(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/builds?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final BuildList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -80,7 +82,7 @@ func getBuildApps(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 
-	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/builds?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/apps/"+guid+"/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final BuildList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -105,7 +107,7 @@ func updateBuild(w http.ResponseWriter, r *http.Request) {
 
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/builds/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final Build
 		json.Unmarshal(rBody.([]byte), &final)
