@@ -10,6 +10,7 @@ import (
 	"PAAS-TA-PORTAL-V3/builds"
 	"PAAS-TA-PORTAL-V3/config"
 	"PAAS-TA-PORTAL-V3/deployments"
+	"PAAS-TA-PORTAL-V3/organizationQuotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/servicebrokers"
 	_ "fmt"
@@ -32,6 +33,7 @@ func handleRequests() {
 	deployments.DeploymentHandleRequests(myRouter)
 	servicebrokers.ServiceBrokerHandleRequests(myRouter)
 	organizations.OrganizationsRequests(myRouter)
+	organizationQuotas.OrganizationQuotasHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
