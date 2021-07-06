@@ -20,7 +20,7 @@ func ServiceRouteBindingHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/parameters", getServiceRouteBindingParameter).Methods("GET")
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -37,7 +37,7 @@ func getServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getServiceRouteBindings(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -52,7 +52,7 @@ func getServiceRouteBindings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateServiceRouteBinding
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -76,7 +76,7 @@ func createServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func updateServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -101,7 +101,7 @@ func updateServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func deleteServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -117,7 +117,7 @@ func deleteServiceRouteBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Space Developer'
+//Permitted Roles 'Admin, Admin Read-Only Space Developer'
 func getServiceRouteBindingParameter(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

@@ -21,7 +21,7 @@ func ServiceCredentialBindingHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/parameters", getServiceCredentialBindingParameter).Methods("GET")
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateServiceCredentialBinding
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,7 +45,7 @@ func createServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -62,7 +62,7 @@ func getServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getServiceCredentialBindings(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -77,7 +77,7 @@ func getServiceCredentialBindings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func updateServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -102,7 +102,7 @@ func updateServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func deleteServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -118,7 +118,7 @@ func deleteServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Space Developer'
+//Permitted Roles 'Admin, Admin Read-Only Space Developer'
 func getServiceCredentialBindingDetail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -134,7 +134,7 @@ func getServiceCredentialBindingDetail(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Space Developer'
+//Permitted Roles 'Admin, Admin Read-Only Space Developer'
 func getServiceCredentialBindingParameter(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
