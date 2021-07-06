@@ -109,7 +109,7 @@ type AppList struct {
 		TotalPages   int         `json:"total_pages"`
 		TotalResults int         `json:"total_results"`
 	} `json:"pagination"`
-	Resources []App
+	Resources []App `json:"resources"`
 }
 
 type UpdateApp struct {
