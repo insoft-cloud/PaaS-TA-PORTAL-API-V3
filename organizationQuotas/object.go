@@ -2,7 +2,7 @@ package organizationQuotas
 
 import "time"
 
-type OrganizationQuotas struct {
+type OrganizationQuota struct {
 	GUID      string    `json:"guid"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -81,5 +81,33 @@ type OrganizationQuotasList struct {
 		Next     interface{} `json:"next"`
 		Previous interface{} `json:"previous"`
 	} `json:"pagination"`
-	Resources []OrganizationQuotas `json:"resources"`
+	Resources []OrganizationQuota `json:"resources"`
+}
+
+type ApplyOrganizationQuotas struct {
+	Data []struct {
+		GUID string `json:"guid" validate:"required"`
+	} `json:"data"`
+}
+
+type UpdateOrganizationQuota struct {
+	Name string `json:"name"`
+	Apps struct {
+		TotalMemoryInMb      int `json:"total_memory_in_mb"`
+		PerProcessMemoryInMb int `json:"per_process_memory_in_mb"`
+		TotalInstances       int `json:"total_instances"`
+		PerAppTasks          int `json:"per_app_tasks"`
+	} `json:"apps"`
+	Services struct {
+		PaidServicesAllowed   bool `json:"paid_services_allowed"`
+		TotalServiceInstances int  `json:"total_service_instances"`
+		TotalServiceKeys      int  `json:"total_service_keys"`
+	} `json:"services"`
+	Routes struct {
+		TotalRoutes        int `json:"total_routes"`
+		TotalReservedPorts int `json:"total_reserved_ports"`
+	} `json:"routes"`
+	Domains struct {
+		TotalPrivateDomains int `json:"total_private_domains"`
+	} `json:"domains"`
 }
