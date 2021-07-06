@@ -3,26 +3,27 @@ package domains
 import (
 	"PAAS-TA-PORTAL-V3/config"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
+var uris = "domains"
+
 func DomainHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/domains", createDomain).Methods("POST")                               //Create a domain
-	myRouter.HandleFunc("/v3/domains/{guid}", getDomain).Methods("GET")                            //Get a domain
-	myRouter.HandleFunc("/v3/domains", getDomains).Methods("GET")                                  //List domains
-	myRouter.HandleFunc("/v3/organizations/{guid}/domains", getDomainsOrganization).Methods("GET") //List domains for an organization
-	myRouter.HandleFunc("/v3/domains/{guid}", updateDomains).Methods("PATCH")
-	myRouter.HandleFunc("/v3/domains/{guid}", deleteDomains).Methods("DELETE")
-	myRouter.HandleFunc("/v3/domains/{guid}/relationships/shared_organizations", shareDomains).Methods("POST")
-	myRouter.HandleFunc("/v3/domains/{guid}/relationships/shared_organizations/{org_guid}", unShareDomains).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris, createDomain).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getDomain).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getDomains).Methods("GET")
+	myRouter.HandleFunc("/v3/organizations/{guid}/"+uris, getDomainsOrganization).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateDomains).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteDomains).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/shared_organizations", shareDomains).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/shared_organizations/{org_guid}", unShareDomains).Methods("DELETE")
 
 }
 
-//Permitted Roles 'Admin, SpaceDeveloper'
+//Permitted roles 'Org Manager'
 func createDomain(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateDomain
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -33,7 +34,9 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/domains", reqBody, "POST", w, r)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -45,11 +48,11 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
+//Permitted roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager
 func getDomain(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -61,9 +64,10 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
+//Permitted All Roles
 func getDomains(w http.ResponseWriter, r *http.Request) {
-	rBody, rBodyResult := config.Curl("/v3/domains", nil, "GET", w, r)
+	query, _ := url.QueryUnescape(r.URL.Query().Encode())
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final DomainList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -80,7 +84,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/organizations/"+guid+"/domains?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/organizations/"+guid+"/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult { // /v3/organizations/{guid}/domains
 		var final OrganizationDomainsList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -93,7 +97,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted Roles 'Admin, Org Manager'
+//Permitted roles 'Admin, Org Manager'
 func updateDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -105,7 +109,9 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, reqBody, "PATCH", w, r)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -117,11 +123,11 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Org Manager
+//Permitted roles Admin Org Manager
 func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
@@ -133,7 +139,7 @@ func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+//Permitted roles Admin Org Manager
 func shareDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -146,9 +152,8 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
-	fmt.Println(pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid+"/relationships/shared_organizations", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/shared_organizations", reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -160,13 +165,13 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//TEST
+//Permitted roles 'Org Manager'
 func unShareDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	org_guid := vars["org_guid"]
 
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid+"/relationships/shared_organizations/"+org_guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/shared_organizations/"+org_guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
