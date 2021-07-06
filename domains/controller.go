@@ -22,7 +22,7 @@ func DomainHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createDomain(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateDomain
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,7 +45,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
 func getDomain(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -61,7 +61,7 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager	Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager'
 func getDomains(w http.ResponseWriter, r *http.Request) {
 	rBody, rBodyResult := config.Curl("/v3/domains", nil, "GET", w, r)
 	if rBodyResult {
@@ -93,7 +93,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted roles 'Admin, Org Manager'
+//Permitted Roles 'Admin, Org Manager'
 func updateDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -117,7 +117,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Org Manager
+//Permitted Roles Org Manager
 func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -133,7 +133,7 @@ func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Org Manager
+//Permitted Roles Admin Org Manager
 func shareDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

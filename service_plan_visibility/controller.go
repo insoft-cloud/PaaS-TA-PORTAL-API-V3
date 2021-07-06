@@ -89,7 +89,7 @@ func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer (only space-scoped brokers)'
+//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

@@ -15,7 +15,7 @@ func AuditEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris, getAuditEvents).Methods("GET")
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -31,7 +31,7 @@ func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getAuditEvents(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)

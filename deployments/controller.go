@@ -19,7 +19,7 @@ func DeploymentHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", cancelDeployment).Methods("DELETE")
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func createDeployment(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateDeployment
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,7 +45,7 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getDeployment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -61,7 +61,7 @@ func getDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getDeployments(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -76,7 +76,7 @@ func getDeployments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -105,7 +105,7 @@ func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func cancelDeployment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

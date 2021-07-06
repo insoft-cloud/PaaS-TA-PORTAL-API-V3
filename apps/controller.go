@@ -30,7 +30,7 @@ func AppHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/environment_variables", setAppEnv).Methods("PATCH")
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createApp(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateApp
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -55,7 +55,7 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -87,7 +87,7 @@ func getApps(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func updateApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -113,7 +113,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func deleteApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -129,7 +129,7 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -145,7 +145,7 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -161,7 +161,7 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Space Developer
+//Permitted Roles Admin Admin Read-Only Space Developer
 func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -177,7 +177,7 @@ func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Space Developer
+//Permitted Roles Admin Admin Read-Only Space Developer
 func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -193,7 +193,7 @@ func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
+//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
 func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -209,7 +209,7 @@ func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -234,7 +234,7 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
+//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
 func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -250,7 +250,7 @@ func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func startApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -266,7 +266,7 @@ func startApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func stopApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -282,7 +282,7 @@ func stopApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func restartApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -298,7 +298,7 @@ func restartApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin Space Developer
+//Permitted Roles Admin Space Developer
 func setAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

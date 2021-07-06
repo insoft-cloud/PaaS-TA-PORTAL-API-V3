@@ -20,7 +20,7 @@ func BuildPackHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/upload", uploadBuildPack).Methods("POST")
 }
 
-//Permitted roles 'Admin'
+//Permitted Roles 'Admin'
 func createBuildPack(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateBuildPack
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -76,7 +76,7 @@ func getBuildPacks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin'
+//Permitted Roles 'Admin'
 func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -99,7 +99,7 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin'
+//Permitted Roles 'Admin'
 func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -115,7 +115,7 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin'
+//Permitted Roles 'Admin'
 func uploadBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

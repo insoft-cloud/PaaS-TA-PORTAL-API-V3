@@ -16,7 +16,7 @@ func AppFeatureHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateAppFeature).Methods("PATCH")
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getAppFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -33,7 +33,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -49,7 +49,7 @@ func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Space Developer'
+//Permitted Roles 'Admin, Space Developer'
 func updateAppFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
