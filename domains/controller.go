@@ -36,7 +36,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/domains", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -52,7 +52,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 func getDomain(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -67,7 +67,7 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 //Permitted All Roles
 func getDomains(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/domains?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
 		var final DomainList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -84,7 +84,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
-	rBody, rBodyResult := config.Curl("/v3/organizations/"+guid+"/domains?"+query, nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/organizations/"+guid+"/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult { // /v3/organizations/{guid}/domains
 		var final OrganizationDomainsList
 		json.Unmarshal(rBody.([]byte), &final)
@@ -111,7 +111,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -127,7 +127,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
@@ -153,7 +153,7 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid+"/relationships/shared_organizations", reqBody, "POST", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/shared_organizations", reqBody, "POST", w, r)
 	if rBodyResult {
 		var final Domain
 		json.Unmarshal(rBody.([]byte), &final)
@@ -171,7 +171,7 @@ func unShareDomains(w http.ResponseWriter, r *http.Request) {
 	guid := vars["guid"]
 	org_guid := vars["org_guid"]
 
-	rBody, rBodyResult := config.Curl("/v3/domains/"+guid+"/relationships/shared_organizations/"+org_guid, nil, "DELETE", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/shared_organizations/"+org_guid, nil, "DELETE", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
