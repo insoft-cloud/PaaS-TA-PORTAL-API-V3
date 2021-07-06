@@ -1,4 +1,4 @@
-package serviceplanvisibility
+package service_plan_visibility
 
 type ServicePlanVisibility struct {
 	Type          string `json:"type"`

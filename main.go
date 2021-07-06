@@ -2,16 +2,17 @@ package main
 
 import (
 	"PAAS-TA-PORTAL-V3/admin"
-	"PAAS-TA-PORTAL-V3/appFeatures"
-	"PAAS-TA-PORTAL-V3/appUsageEvents"
+	"PAAS-TA-PORTAL-V3/app_features"
+	"PAAS-TA-PORTAL-V3/app_usage_events"
 	"PAAS-TA-PORTAL-V3/apps"
-	"PAAS-TA-PORTAL-V3/auditEvents"
+	"PAAS-TA-PORTAL-V3/audit_events"
 	"PAAS-TA-PORTAL-V3/buildpacks"
 	"PAAS-TA-PORTAL-V3/builds"
 	"PAAS-TA-PORTAL-V3/config"
 	"PAAS-TA-PORTAL-V3/deployments"
+	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
-	"PAAS-TA-PORTAL-V3/servicebrokers"
+	"PAAS-TA-PORTAL-V3/service_brokers"
 	_ "fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -24,14 +25,15 @@ func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	admin.AdminHandleRequests(myRouter)
 	apps.AppHandleRequests(myRouter)
-	appFeatures.AppFeatureHandleRequests(myRouter)
-	appUsageEvents.AppUsageEventHandleRequests(myRouter)
-	auditEvents.AuditEventHandleRequests(myRouter)
+	app_features.AppFeatureHandleRequests(myRouter)
+	app_usage_events.AppUsageEventHandleRequests(myRouter)
+	audit_events.AuditEventHandleRequests(myRouter)
 	builds.BuildPackHandleRequests(myRouter)
 	buildpacks.BuildPackHandleRequests(myRouter)
 	deployments.DeploymentHandleRequests(myRouter)
-	servicebrokers.ServiceBrokerHandleRequests(myRouter)
+	service_brokers.ServiceBrokerHandleRequests(myRouter)
 	organizations.OrganizationsRequests(myRouter)
+	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 

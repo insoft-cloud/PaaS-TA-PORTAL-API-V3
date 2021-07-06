@@ -1,4 +1,4 @@
-package serviceplans
+package service_plans
 
 import "time"
 

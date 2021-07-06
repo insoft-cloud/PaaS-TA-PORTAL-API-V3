@@ -1,4 +1,4 @@
-package appFeatures
+package app_features
 
 type AppFeature struct {
 	Name        string `json:"name"`

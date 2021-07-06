@@ -1,4 +1,4 @@
-package servicebrokers
+package service_brokers
 
 import "time"
 

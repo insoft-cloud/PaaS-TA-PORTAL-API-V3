@@ -59,7 +59,6 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 func getApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	//req, _ := http.NewRequest("GET", config.GetDomainConfig() +"/v3/"+uris+"/" + guid, nil)
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
@@ -100,6 +99,8 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final App
@@ -219,6 +220,8 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/current_droplet", reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppDropletAssociation
@@ -306,6 +309,8 @@ func setAppEnv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/environment_variables", reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final AppEnvVariable

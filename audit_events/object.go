@@ -1,4 +1,4 @@
-package auditEvents
+package audit_events
 
 import "time"
 

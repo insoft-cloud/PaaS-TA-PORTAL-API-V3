@@ -1,4 +1,4 @@
-package appFeatures
+package app_features
 
 import (
 	"PAAS-TA-PORTAL-V3/config"

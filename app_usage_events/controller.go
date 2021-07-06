@@ -1,4 +1,4 @@
-package appUsageEvents
+package app_usage_events
 
 import (
 	"PAAS-TA-PORTAL-V3/config"

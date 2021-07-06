@@ -1,4 +1,4 @@
-package serviceofferings
+package service_offerings
 
 import "time"
 

@@ -1,4 +1,4 @@
-package appUsageEvents
+package app_usage_events
 
 import "time"
 

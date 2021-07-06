@@ -1,4 +1,4 @@
-package serviceplanvisibility
+package service_plan_visibility
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
