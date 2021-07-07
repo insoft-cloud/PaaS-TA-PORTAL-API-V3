@@ -18,6 +18,7 @@ import (
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	_ "fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	_ "log"
@@ -27,6 +28,7 @@ import (
 
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
+
 	admin.AdminHandleRequests(myRouter)
 	apps.AppHandleRequests(myRouter)
 	app_features.AppFeatureHandleRequests(myRouter)
@@ -42,7 +44,12 @@ func handleRequests() {
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
 	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	feature_flags.FeatureFlagHandleRequests(myRouter)
-	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
+
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions})
+
+	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
 }
 
 func main() {

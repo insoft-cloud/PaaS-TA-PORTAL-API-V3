@@ -1,0 +1,75 @@
+definitions:
+  app_features.AppFeature:
+    properties:
+      description:
+        type: string
+      enabled:
+        type: boolean
+      name:
+        type: string
+    type: object
+  config.Error:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/config.Errors'
+        type: array
+    type: object
+  config.Errors:
+    properties:
+      code:
+        type: integer
+      detail:
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /apps/{guid}/features/{name}:
+    get:
+      description: App features
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      - description: App Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      - description: App Feature Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app_features.AppFeature'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: Get an app feature
+      tags:
+      - App Features
+swagger: "2.0"
