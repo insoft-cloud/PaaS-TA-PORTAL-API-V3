@@ -19,7 +19,7 @@ func BuildPackHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateBuild).Methods("PATCH")
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func createBuild(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateBuild
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,7 +45,7 @@ func createBuild(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 func getBuild(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -76,7 +76,7 @@ func getBuilds(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 func getBuildApps(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	vars := mux.Vars(r)
@@ -94,7 +94,7 @@ func getBuildApps(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer Build State Updater'
+//Permitted Roles 'Admin Space Developer Build State Updater'
 func updateBuild(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

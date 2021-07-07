@@ -1,4 +1,4 @@
-package app_usage_events
+package service_usage_events
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -8,21 +8,21 @@ import (
 	"net/url"
 )
 
-var uris = "app_usage_events"
+var uris = "service_usage_events"
 
-func AppUsageEventHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getAppUsageEvent).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"", getAppUsageEvents).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", purgeSeedAppUsageEvents).Methods("POST")
+func ServiceUsageEventHandleRequests(myRouter *mux.Router) {
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServiceUsageEvent).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getServiceUsageEvents).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", purgeAndSeedServiceUsageEvent).Methods("POST")
 }
 
 //Permitted Roles 'Admin Admin Read-Only Global Auditor'
-func getAppUsageEvent(w http.ResponseWriter, r *http.Request) {
+func getServiceUsageEvent(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "GET", w, r)
 	if rBodyResult {
-		var final AppUsageEvent
+		var final ServiceUsageEvent
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -33,11 +33,11 @@ func getAppUsageEvent(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted All Roles
-func getAppUsageEvents(w http.ResponseWriter, r *http.Request) {
+func getServiceUsageEvents(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final AppUsageEventList
+		var final ServiceUsageEventList
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -48,7 +48,7 @@ func getAppUsageEvents(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles 'Admin'
-func purgeSeedAppUsageEvents(w http.ResponseWriter, r *http.Request) {
+func purgeAndSeedServiceUsageEvent(w http.ResponseWriter, r *http.Request) {
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", nil, "POST", w, r)
 	if rBodyResult {
 		var final interface{}

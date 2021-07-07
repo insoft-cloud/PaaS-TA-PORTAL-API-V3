@@ -24,7 +24,7 @@ func OrganizationQuotasHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateOrganizationQuota).Methods("PATCH")
 }
 
-// Permitted roles "Admin"
+// Permitted Roles "Admin"
 // 404 error : Unknown request
 func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateOrganizationQuotas
@@ -50,7 +50,7 @@ func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+// Permitted Roles
 // "Admin"
 // "Admin" Read-Only
 // "Global" Auditor
@@ -76,7 +76,7 @@ func getOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+// Permitted Roles
 // "Admin"
 // "Admin" Read-Only
 // "Global Auditor"
@@ -101,7 +101,7 @@ func getOrganizationQuotas(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin"
+// Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
 func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	var pBody ApplyOrganizationQuotas
@@ -130,7 +130,7 @@ func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin"
+// Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
 func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)

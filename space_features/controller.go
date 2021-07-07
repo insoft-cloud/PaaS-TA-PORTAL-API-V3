@@ -1,4 +1,4 @@
-package app_features
+package space_features
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -8,22 +8,22 @@ import (
 	"net/http"
 )
 
-var uris = "apps"
+var uris = "spaces"
 
-func AppFeatureHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", getAppFeature).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features", getAppFeatures).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateAppFeature).Methods("PATCH")
+func SpaceFeatureHandleRequests(myRouter *mux.Router) {
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", getSpaceFeature).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/features", getSpaceFeatures).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateSpaceFeature).Methods("PATCH")
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getAppFeature(w http.ResponseWriter, r *http.Request) {
+func getSpaceFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	name := vars["name"]
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features/"+name, nil, "GET", w, r)
 	if rBodyResult {
-		var final AppFeature
+		var final SpaceFeature
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -34,12 +34,10 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getAppFeatures(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features", nil, "GET", w, r)
+func getSpaceFeatures(w http.ResponseWriter, r *http.Request) {
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/features", nil, "GET", w, r)
 	if rBodyResult {
-		var final AppFeatureList
+		var final SpaceFeatureList
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -49,24 +47,18 @@ func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Space Developer'
-func updateAppFeature(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Space Developer'
+func updateSpaceFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	name := vars["name"]
-	var pBody UpdateAppFeature
-	vResultI, vResultB := config.Validation(r, &pBody)
-	if !vResultB {
-		json.NewEncoder(w).Encode(vResultI)
-		return
-	}
-	//호출
+	var pBody interface{}
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
 	reqBody, _ = json.Marshal(pBody)
-	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features/"+name, reqBody, "PATCH", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/features/"+name, nil, "PATCH", w, r)
 	if rBodyResult {
-		var final AppFeature
+		var final SpaceFeature
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {

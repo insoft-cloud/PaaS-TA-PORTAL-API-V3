@@ -24,7 +24,7 @@ func OrganizationsRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/usage_summary", getUsageSummary).Methods("GET")
 }
 
-// Permitted roles "Admin" If the user_org_creation feature flag is enabled, any user with the cloud_controller.write scope will be able to create organizations.
+// Permitted Roles "Admin" If the user_org_creation feature flag is enabled, any user with the cloud_controller.write scope will be able to create organizations.
 func createOrganizations(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateOrganizations
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -49,7 +49,7 @@ func createOrganizations(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "All Roles"
+// Permitted All Roles
 func getOrganization(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -65,7 +65,7 @@ func getOrganization(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "All Roles"
+// Permitted All Roles
 func getOrganizations(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -80,7 +80,7 @@ func getOrganizations(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin", "Admin Read-Only", "Global Auditor", "Org Auditor", "Org Billing Manager", "Org Manager"
+// Permitted Roles "Admin", "Admin Read-Only", "Global Auditor", "Org Auditor", "Org Billing Manager", "Org Manager"
 // 404 error: Isolation segment not found
 // 진행 오래걸릴것 같은 부분 pass
 func getOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +99,7 @@ func getOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin", "Org Manager"
+// Permitted Roles "Admin", "Org Manager"
 func updateOrganizations(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -124,7 +124,7 @@ func updateOrganizations(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin"
+// Permitted Roles "Admin"
 // Unknown request
 func deleteOrganizations(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -141,7 +141,7 @@ func deleteOrganizations(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin", "Org Manager"
+//Permitted Roles "Admin", "Org Manager"
 // 진행 오래걸릴것 같은 부분 pass
 // iso-seg guid 확인해야됨.
 func assignDefaultIsolationSegmentOrganizations(w http.ResponseWriter, r *http.Request) {
@@ -168,7 +168,7 @@ func assignDefaultIsolationSegmentOrganizations(w http.ResponseWriter, r *http.R
 	}
 }
 
-// Permitted roles "All Roles"
+// Permitted All Roles
 // 진행안되는 부분 pass
 func getDefaultIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -185,7 +185,7 @@ func getDefaultIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Space Developer", "Space Manager", "Space Auditor", "Org Auditor", "Org Manager"
+// Permitted Roles "Space Developer", "Space Manager", "Space Auditor", "Org Auditor", "Org Manager"
 // "Org Billing Manager" Can only view domains without an organization relationship
 //  "Admin", "Admin" Read-Only, "Global Auditor"
 func getDefaultDomain(w http.ResponseWriter, r *http.Request) {
@@ -203,7 +203,7 @@ func getDefaultDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "All Roles"
+// Permitted All Roles
 // Unknown request
 // 진행안되는 부분 pass
 func getUsageSummary(w http.ResponseWriter, r *http.Request) {

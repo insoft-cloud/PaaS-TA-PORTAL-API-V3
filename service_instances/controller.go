@@ -26,7 +26,7 @@ func ServiceInstanceHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/shared_spaces/usage_summary", getUsageSummary).Methods("GET")
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createServiceInstance(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateServiceInstance
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -90,7 +90,7 @@ func getServiceInstances(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getServiceInstance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -107,7 +107,7 @@ func getServiceInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Space Developer Space Manager'
 func getCredential(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -123,7 +123,7 @@ func getCredential(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getParameter(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -139,7 +139,7 @@ func getParameter(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func updateServiceInstance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -164,7 +164,7 @@ func updateServiceInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func deleteServiceInstance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -181,7 +181,7 @@ func deleteServiceInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getShareSpacesRelationship(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -198,7 +198,7 @@ func getShareSpacesRelationship(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func shareServiceInstance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -224,7 +224,7 @@ func shareServiceInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Space Developer'
+//Permitted Roles 'Admin Space Developer'
 func unShareServiceInstance(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -241,7 +241,7 @@ func unShareServiceInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getUsageSummary(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

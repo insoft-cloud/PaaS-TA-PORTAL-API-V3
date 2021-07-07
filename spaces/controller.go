@@ -1,4 +1,4 @@
-package service_credential_bindings
+package spaces
 
 import (
 	"PAAS-TA-PORTAL-V3/config"
@@ -9,21 +9,21 @@ import (
 	"net/url"
 )
 
-var uris = "service_credential_bindings"
+var uris = "spaces"
 
-func ServiceCredentialBindingHandleRequests(myRouter *mux.Router) {
-	myRouter.HandleFunc("/v3/"+uris, createServiceCredentialBinding).Methods("POST")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getServiceCredentialBinding).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris, getServiceCredentialBindings).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateServiceCredentialBinding).Methods("PATCH")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteServiceCredentialBinding).Methods("DELETE")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}/details", getServiceCredentialBindingDetail).Methods("GET")
-	myRouter.HandleFunc("/v3/"+uris+"/{guid}/parameters", getServiceCredentialBindingParameter).Methods("GET")
+func ServiceRouteBindingHandleRequests(myRouter *mux.Router) {
+	myRouter.HandleFunc("/v3/"+uris, createSpace).Methods("POST")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getSpace).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris, getSpaces).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateSpace).Methods("PATCH")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteSpace).Methods("DELETE")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/isolation_segment", assignedIsolationSegment).Methods("GET")
+	myRouter.HandleFunc("/v3/"+uris+"/{guid}/relationships/isolation_segment", manageIsolationSegment).Methods("PATCH")
 }
 
-//Permitted Roles 'Admin, SpaceDeveloper'
-func createServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
-	var pBody CreateServiceCredentialBinding
+//Permitted Roles 'Admin, Org Manager'
+func createSpace(w http.ResponseWriter, r *http.Request) {
+	var pBody CreateSpace
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -35,7 +35,7 @@ func createServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris, reqBody, "POST", w, r)
 	if rBodyResult {
-		var final ServiceCredentialBinding
+		var final Space
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -45,14 +45,14 @@ func createServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+func getSpace(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final ServiceCredentialBinding
+		var final Space
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -62,12 +62,12 @@ func getServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
-func getServiceCredentialBindings(w http.ResponseWriter, r *http.Request) {
+//Permitted All Roles
+func getSpaces(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final ServiceCredentialBindingList
+		var final SpaceList
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -77,11 +77,11 @@ func getServiceCredentialBindings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
-func updateServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Org Manager Space Manager'
+func updateSpace(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	var pBody UpdateServiceCredentialBinding
+	var pBody UpdateSpace
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -92,7 +92,7 @@ func updateServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
-		var final ServiceCredentialBinding
+		var final Space
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -102,8 +102,8 @@ func updateServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
-func deleteServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Org Manager'
+func deleteSpace(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, nil, "DELETE", w, r)
@@ -118,11 +118,11 @@ func deleteServiceCredentialBinding(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Space Developer'
-func getServiceCredentialBindingDetail(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+func assignedIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/details", nil, "GET", w, r)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/isolation_segment", nil, "GET", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
@@ -134,11 +134,20 @@ func getServiceCredentialBindingDetail(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Space Developer'
-func getServiceCredentialBindingParameter(w http.ResponseWriter, r *http.Request) {
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+func manageIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
-	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/parameters", nil, "GET", w, r)
+	var pBody IsolationSegment
+	vResultI, vResultB := config.Validation(r, &pBody)
+	if !vResultB {
+		json.NewEncoder(w).Encode(vResultI)
+		return
+	}
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
+	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/relationships/isolation_segment", reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final interface{}
 		json.Unmarshal(rBody.([]byte), &final)
