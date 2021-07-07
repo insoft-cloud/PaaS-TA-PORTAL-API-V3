@@ -98,3 +98,13 @@ type UpdatePackage struct {
 		} `json:"annotations"`
 	} `json:"metadata,omitempty"`
 }
+
+type CopyPackage struct {
+	Relationships struct {
+		App struct {
+			Data struct {
+				GUID string `json:"guid"`
+			} `json:"data"`
+		} `json:"app"`
+	} `json:"relationships" validate:"required"`
+}
