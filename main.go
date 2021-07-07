@@ -14,9 +14,14 @@ import (
 	"PAAS-TA-PORTAL-V3/droplets"
 	"PAAS-TA-PORTAL-V3/environment_variable_groups"
 	"PAAS-TA-PORTAL-V3/feature_flags"
+	"PAAS-TA-PORTAL-V3/info"
+	"PAAS-TA-PORTAL-V3/isolation_segment"
+	"PAAS-TA-PORTAL-V3/jobs"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
+	"PAAS-TA-PORTAL-V3/packages"
 	"PAAS-TA-PORTAL-V3/service_brokers"
+	"PAAS-TA-PORTAL-V3/stacks"
 	_ "fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -28,7 +33,6 @@ import (
 
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
-
 	admin.AdminHandleRequests(myRouter)
 	apps.AppHandleRequests(myRouter)
 	app_features.AppFeatureHandleRequests(myRouter)
@@ -42,14 +46,20 @@ func handleRequests() {
 	domains.DomainHandleRequests(myRouter)
 	droplets.DropletHandleRequests(myRouter)
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
+	packages.PackagesHandleRequests(myRouter)
 	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	feature_flags.FeatureFlagHandleRequests(myRouter)
-
+	info.InforHandleRequests(myRouter)
+	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
+	jobs.JobsHandleRequests(myRouter)
+	stacks.AppHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions})
 
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
+
+	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
 func main() {
