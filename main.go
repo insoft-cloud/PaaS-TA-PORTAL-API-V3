@@ -18,6 +18,7 @@ import (
 	"PAAS-TA-PORTAL-V3/isolation_segment"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
+	"PAAS-TA-PORTAL-V3/packages"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	_ "fmt"
 	"github.com/gorilla/mux"
@@ -42,6 +43,7 @@ func handleRequests() {
 	domains.DomainHandleRequests(myRouter)
 	droplets.DropletHandleRequests(myRouter)
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
+	packages.PackagesHandleRequests(myRouter)
 	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	feature_flags.FeatureFlagHandleRequests(myRouter)
 	info.InforHandleRequests(myRouter)
