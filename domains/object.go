@@ -5,17 +5,13 @@ import (
 )
 
 type CreateDomain struct {
-	GUID               string      `json:"guid"`
-	CreatedAt          time.Time   `json:"created_at"`
-	UpdatedAt          time.Time   `json:"updated_at"`
-	Name               string      `json:"name" validate:"required"`
-	Internal           bool        `json:"internal,omitempty"`
-	RouterGroup        interface{} `json:"router_group,omitempty"`
-	SupportedProtocols []string    `json:"supported_protocols"`
-	Metadata           struct {
-		Labels *struct {
+	Name        string      `json:"name" validate:"required"`
+	Internal    bool        `json:"internal,omitempty"`
+	RouterGroup interface{} `json:"router_group,omitempty"`
+	Metadata    *struct {
+		Labels struct {
 		} `json:"labels"`
-		Annotations *struct {
+		Annotations struct {
 		} `json:"annotations"`
 	} `json:"metadata,omitempty"`
 	Relationships *struct {
@@ -23,29 +19,14 @@ type CreateDomain struct {
 			Data struct {
 				GUID string `json:"guid"`
 			} `json:"data"`
-		} `json:"organization,omitempty"`
+		} `json:"organization"`
 		SharedOrganizations struct {
 			Data []struct {
 				GUID string `json:"guid"`
 			} `json:"data"`
-		} `json:"shared_organizations,omitempty"`
-	} `json:"relationships"`
-	Links *struct {
-		Self struct {
-			Href string `json:"href"`
-		} `json:"self"`
-		Organization struct {
-			Href string `json:"href"`
-		} `json:"organization"`
-		RouteReservations struct {
-			Href string `json:"href"`
-		} `json:"route_reservations"`
-		SharedOrganizations struct {
-			Href string `json:"href"`
 		} `json:"shared_organizations"`
-	} `json:"links"`
+	} `json:"relationships,omitempty"`
 }
-
 type Domain struct {
 	GUID               string      `json:"guid"`
 	CreatedAt          time.Time   `json:"created_at"`
