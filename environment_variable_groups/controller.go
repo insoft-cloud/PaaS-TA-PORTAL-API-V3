@@ -38,7 +38,7 @@ func getEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin'
+//Permitted Roles 'Admin'
 func updateEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]

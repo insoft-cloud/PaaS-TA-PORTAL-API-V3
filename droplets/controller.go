@@ -24,7 +24,7 @@ func DropletHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted roles 'Admin, SpaceDeveloper'
+//Permitted Roles 'Admin, SpaceDeveloper'
 func createDroplets(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateDroplet
 	if r.URL.Query().Get("source_guid") != "" {
@@ -54,7 +54,7 @@ func createDroplets(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -120,7 +120,7 @@ func getDropletsApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles 'Admin, Org Manager'
+//Permitted Roles 'Admin, Org Manager'
 func updateDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -146,7 +146,7 @@ func updateDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin  Space Developer
+//Permitted Roles Admin  Space Developer
 func deleteDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -162,7 +162,7 @@ func deleteDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin  Space Developer
+//Permitted Roles Admin  Space Developer
 func copyDroplet(w http.ResponseWriter, r *http.Request) {
 	var pBody CopyDroplet
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
