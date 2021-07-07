@@ -4,9 +4,68 @@
         "contact": {}
     },
     "paths": {
+        "/apps/{guid}/features": {
+            "get": {
+                "description": "This endpoint retrieves the list of features for the specified app.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "App Features"
+                ],
+                "summary": "List app features",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "App Guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "cf oauth-token",
+                        "name": "cf-Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app_features.AppFeatureList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/apps/{guid}/features/{name}": {
             "get": {
-                "description": "App features",
                 "produces": [
                     "application/json"
                 ],
@@ -84,6 +143,50 @@
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "app_features.AppFeatureList": {
+            "type": "object",
+            "properties": {
+                "pagination": {
+                    "type": "object",
+                    "properties": {
+                        "first": {
+                            "type": "object",
+                            "properties": {
+                                "href": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "last": {
+                            "type": "object",
+                            "properties": {
+                                "href": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "next": {
+                            "type": "object"
+                        },
+                        "previous": {
+                            "type": "object"
+                        },
+                        "total_pages": {
+                            "type": "integer"
+                        },
+                        "total_results": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/app_features.AppFeature"
+                    }
                 }
             }
         },
