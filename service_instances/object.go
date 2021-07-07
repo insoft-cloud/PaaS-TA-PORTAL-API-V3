@@ -84,16 +84,12 @@ type CreateServiceInstance struct {
 	Type       string `json:"type" validate:"required"`
 	Name       string `json:"name" validate:"required"`
 	Parameters *struct {
-		Foo string `json:"foo"`
-		Baz string `json:"baz"`
 	} `json:"parameters,omitempty"`
 	Tags     []string `json:"tags"`
 	Metadata *struct {
 		Annotations struct {
-			Foo string `json:"foo"`
 		} `json:"annotations"`
 		Labels struct {
-			Baz string `json:"baz"`
 		} `json:"labels"`
 	} `json:"metadata,omitempty"`
 	Relationships struct {
@@ -114,8 +110,6 @@ type CreateServiceInstanceProvide struct {
 	Type        string `json:"type" validate:"required"`
 	Name        string `json:"name" validate:"required"`
 	Credentials *struct {
-		Foo string `json:"foo"`
-		Baz string `json:"baz"`
 	} `json:"credentials,omitempty"`
 	Tags            []string `json:"tags,omitempty"`
 	SyslogDrainURL  string   `json:"syslog_drain_url,omitempty"`
@@ -140,8 +134,6 @@ type CreateServiceInstanceProvide struct {
 type UpdateServiceInstance struct {
 	Name       string `json:"name,omitempty"`
 	Parameters *struct {
-		Foo string `json:"foo"`
-		Baz string `json:"baz"`
 	} `json:"parameters,omitempty"`
 	Tags          []string `json:"tags,omitempty"`
 	Relationships *struct {
