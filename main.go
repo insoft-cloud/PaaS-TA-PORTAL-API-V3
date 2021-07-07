@@ -14,6 +14,8 @@ import (
 	"PAAS-TA-PORTAL-V3/droplets"
 	"PAAS-TA-PORTAL-V3/environment_variable_groups"
 	"PAAS-TA-PORTAL-V3/feature_flags"
+	"PAAS-TA-PORTAL-V3/info"
+	"PAAS-TA-PORTAL-V3/isolation_segment"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/service_brokers"
@@ -42,6 +44,8 @@ func handleRequests() {
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
 	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	feature_flags.FeatureFlagHandleRequests(myRouter)
+	info.InforHandleRequests(myRouter)
+	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
