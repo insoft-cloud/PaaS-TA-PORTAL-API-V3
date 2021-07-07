@@ -44,9 +44,7 @@ func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -70,9 +68,7 @@ func getOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -95,9 +91,7 @@ func getOrganizationQuotas(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -124,9 +118,7 @@ func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -141,9 +133,7 @@ func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -169,8 +159,6 @@ func updateOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
