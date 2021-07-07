@@ -10,6 +10,9 @@ import (
 	"PAAS-TA-PORTAL-V3/builds"
 	"PAAS-TA-PORTAL-V3/config"
 	"PAAS-TA-PORTAL-V3/deployments"
+	"PAAS-TA-PORTAL-V3/domains"
+	"PAAS-TA-PORTAL-V3/droplets"
+	"PAAS-TA-PORTAL-V3/environment_variable_groups"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/service_brokers"
@@ -33,7 +36,10 @@ func handleRequests() {
 	deployments.DeploymentHandleRequests(myRouter)
 	service_brokers.ServiceBrokerHandleRequests(myRouter)
 	organizations.OrganizationsRequests(myRouter)
+	domains.DomainHandleRequests(myRouter)
+	droplets.DropletHandleRequests(myRouter)
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
+	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
