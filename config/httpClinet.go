@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
+	"github.com/rs/cors"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -26,6 +27,7 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	req, _ := http.NewRequest(method, GetDomainConfig()+url, bytes.NewBuffer(tbody))
 	req.Header.Set("Authorization", r.Header.Get("cf-Authorization"))
 	req.Header.Set("Content-type", "application/json")
+	w.Header().Set("content-type", "application/json")
 	res, err := Client.Do(req)
 	if err != nil {
 		return err, false
@@ -99,4 +101,10 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 	}
 	os.Remove(handler.Filename)
 	return tbody, true
+}
+
+func setupGlobalMiddleware(handler http.Handler) http.Handler {
+	handleCORS := cors.Default().Handler
+
+	return handleCORS(handler)
 }

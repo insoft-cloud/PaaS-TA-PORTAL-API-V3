@@ -1,0 +1,143 @@
+definitions:
+  app_features.AppFeature:
+    properties:
+      description:
+        type: string
+      enabled:
+        type: boolean
+      name:
+        type: string
+    type: object
+  app_features.AppFeatureList:
+    properties:
+      pagination:
+        properties:
+          first:
+            properties:
+              href:
+                type: string
+            type: object
+          last:
+            properties:
+              href:
+                type: string
+            type: object
+          next:
+            type: object
+          previous:
+            type: object
+          total_pages:
+            type: integer
+          total_results:
+            type: integer
+        type: object
+      resources:
+        items:
+          $ref: '#/definitions/app_features.AppFeature'
+        type: array
+    type: object
+  config.Error:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/config.Errors'
+        type: array
+    type: object
+  config.Errors:
+    properties:
+      code:
+        type: integer
+      detail:
+        type: string
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /apps/{guid}/features:
+    get:
+      description: This endpoint retrieves the list of features for the specified
+        app.
+      parameters:
+      - description: App Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app_features.AppFeatureList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: List app features
+      tags:
+      - App Features
+  /apps/{guid}/features/{name}:
+    get:
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      - description: App Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      - description: App Feature Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app_features.AppFeature'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: Get an app feature
+      tags:
+      - App Features
+swagger: "2.0"

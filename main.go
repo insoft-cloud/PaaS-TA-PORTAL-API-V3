@@ -24,6 +24,7 @@ import (
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	"PAAS-TA-PORTAL-V3/stacks"
 	_ "fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	_ "log"
@@ -53,6 +54,12 @@ func handleRequests() {
 	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
 	jobs.JobsHandleRequests(myRouter)
 	stacks.AppHandleRequests(myRouter)
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions})
+
+	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
+
 	processes.ProcessHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }

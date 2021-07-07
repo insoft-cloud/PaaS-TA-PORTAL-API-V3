@@ -17,6 +17,18 @@ func AppFeatureHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary Get an app feature
+// @Description
+// @Tags App Features
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Param guid path string true "App Guid"
+// @Param name path string true "App Feature Name"
+// @Success 200 {object} AppFeature
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /apps/{guid}/features/{name} [GET]
 func getAppFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -31,9 +43,21 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	}
+
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary List app features
+// @Description This endpoint retrieves the list of features for the specified app.
+// @Tags App Features
+// @Produce  json
+// @Param cf-Authorization header  string true "cf oauth-token"
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppFeatureList
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /apps/{guid}/features [GET]
 func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
