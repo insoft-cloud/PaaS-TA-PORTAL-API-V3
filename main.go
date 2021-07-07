@@ -16,10 +16,12 @@ import (
 	"PAAS-TA-PORTAL-V3/feature_flags"
 	"PAAS-TA-PORTAL-V3/info"
 	"PAAS-TA-PORTAL-V3/isolation_segment"
+	"PAAS-TA-PORTAL-V3/jobs"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/packages"
 	"PAAS-TA-PORTAL-V3/service_brokers"
+	"PAAS-TA-PORTAL-V3/stacks"
 	_ "fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -48,6 +50,8 @@ func handleRequests() {
 	feature_flags.FeatureFlagHandleRequests(myRouter)
 	info.InforHandleRequests(myRouter)
 	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
+	jobs.JobsHandleRequests(myRouter)
+	stacks.AppHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
