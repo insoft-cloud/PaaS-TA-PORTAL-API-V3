@@ -20,6 +20,7 @@ import (
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/packages"
+	"PAAS-TA-PORTAL-V3/processes"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	"PAAS-TA-PORTAL-V3/stacks"
 	_ "fmt"
@@ -52,6 +53,7 @@ func handleRequests() {
 	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
 	jobs.JobsHandleRequests(myRouter)
 	stacks.AppHandleRequests(myRouter)
+	processes.ProcessHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
