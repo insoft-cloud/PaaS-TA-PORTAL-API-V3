@@ -12,6 +12,7 @@ import (
 	"PAAS-TA-PORTAL-V3/deployments"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
+	"PAAS-TA-PORTAL-V3/packages"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	_ "fmt"
 	"github.com/gorilla/mux"
@@ -34,6 +35,7 @@ func handleRequests() {
 	service_brokers.ServiceBrokerHandleRequests(myRouter)
 	organizations.OrganizationsRequests(myRouter)
 	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
+	packages.PackagesHandleRequests(myRouter)
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
