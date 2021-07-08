@@ -21,7 +21,7 @@ func AppFeatureHandleRequests(myRouter *mux.Router) {
 // @Description
 // @Tags App Features
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param guid path string true "App Guid"
 // @Param name path string true "App Feature Name"
 // @Success 200 {object} AppFeature
@@ -39,9 +39,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 
 }
@@ -51,7 +49,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 // @Description This endpoint retrieves the list of features for the specified app.
 // @Tags App Features
 // @Produce  json
-// @Param cf-Authorization header  string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param guid path string true "App Guid"
 // @Success 200 {object} AppFeatureList
 // @Failure 400,404 {object} config.Error
@@ -67,13 +65,24 @@ func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin, Space Developer'
+// @Summary Update an app feature
+// @Description
+// @Tags App Features
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param name path string true "App Name"
+// @Param UpdateAppFeature body UpdateAppFeature true "Update App Feature"
+// @Success 200 {object} AppFeature
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /apps/{guid}/features/{name} [PATCH]
 func updateAppFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -94,8 +103,6 @@ func updateAppFeature(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }

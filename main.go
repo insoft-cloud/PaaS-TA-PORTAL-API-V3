@@ -34,6 +34,18 @@ import (
 	_ "net/http"
 )
 
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @termsOfService http://swagger.io/terms/
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name cf-Authorization
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	admin.AdminHandleRequests(myRouter)
@@ -60,7 +72,7 @@ func handleRequests() {
 	users.UserHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
-	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions})
+	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})
 
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
 

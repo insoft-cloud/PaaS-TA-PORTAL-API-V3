@@ -29,7 +29,7 @@ func OrganizationsRequests(myRouter *mux.Router) {
 // @Description
 // @Tags Organizations
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param name body string true "org name"
 // @Success 200 {object} Organizations
 // @Failure 400,404 {object} config.Error
@@ -63,7 +63,7 @@ func createOrganizations(w http.ResponseWriter, r *http.Request) {
 // @Description Retrieve all organizations the user has access to.
 // @Tags Organizations
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param guid path string true "organization Guid"
 // @Success 200 {object} Organizations
 // @Failure 400,404 {object} config.Error
@@ -88,7 +88,7 @@ func getOrganization(w http.ResponseWriter, r *http.Request) {
 // @Description Retrieve all organizations the user has access to.
 // @Tags Organizations
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Success 200 {object} Organizations
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -113,7 +113,7 @@ func getOrganizations(w http.ResponseWriter, r *http.Request) {
 // @Description Retrieve the organizations entitled to the isolation segment. Return only the organizations the user has access to.
 // @Tags Organizations
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Success 200 {object} Organizations
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -138,7 +138,7 @@ func getOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 // @Description
 // @Tags Organizations
 // @Produce  json
-// @Param cf-Authorization header string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param guid path string true "organization Guid"
 // @Param name body string false "org name"
 // @Success 200 {object} Organizations

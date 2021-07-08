@@ -36,6 +36,13 @@ definitions:
           $ref: '#/definitions/app_features.AppFeature'
         type: array
     type: object
+  app_features.UpdateAppFeature:
+    properties:
+      enabled:
+        type: boolean
+    required:
+    - enabled
+    type: object
   config.Error:
     properties:
       errors:
@@ -51,6 +58,45 @@ definitions:
         type: string
       title:
         type: string
+    type: object
+  domains.CreateDomain:
+    properties:
+      internal:
+        type: boolean
+      metadata:
+        properties:
+          annotations:
+            type: object
+          labels:
+            type: object
+        type: object
+      name:
+        type: string
+      relationships:
+        properties:
+          organization:
+            properties:
+              data:
+                properties:
+                  guid:
+                    type: string
+                type: object
+            type: object
+          shared_organizations:
+            properties:
+              data:
+                items:
+                  properties:
+                    guid:
+                      type: string
+                  type: object
+                type: array
+            type: object
+        type: object
+      router_group:
+        type: object
+    required:
+    - name
     type: object
   organizations.Organizations:
     properties:
@@ -107,18 +153,20 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
 paths:
   /apps/{guid}/features:
     get:
       description: This endpoint retrieves the list of features for the specified
         app.
       parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       - description: App Guid
         in: path
         name: guid
@@ -147,17 +195,14 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: List app features
       tags:
       - App Features
   /apps/{guid}/features/{name}:
     get:
       parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       - description: App Guid
         in: path
         name: guid
@@ -191,19 +236,102 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get an app feature
       tags:
       - App Features
+    patch:
+      parameters:
+      - description: App Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      - description: App Name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Update App Feature
+        in: body
+        name: UpdateAppFeature
+        required: true
+        schema:
+          $ref: '#/definitions/app_features.UpdateAppFeature'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app_features.AppFeature'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an app feature
+      tags:
+      - App Features
+  /domains:
+    post:
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: "false"
+        in: path
+        name: internal
+        required: true
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domains.CreateDomain'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a domain
+      tags:
+      - Domains
   /isolation_segments/{guid}/organizations:
     get:
       description: Retrieve the organizations entitled to the isolation segment. Return
         only the organizations the user has access to.
-      parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -227,18 +355,14 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: List organizations for isolation segment
       tags:
       - Organizations
   /organizations:
     get:
       description: Retrieve all organizations the user has access to.
-      parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -262,16 +386,13 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: List organizations
       tags:
       - Organizations
     post:
       parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       - description: org name
         in: body
         name: name
@@ -301,6 +422,8 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Create an organization
       tags:
       - Organizations
@@ -308,11 +431,6 @@ paths:
     get:
       description: Retrieve all organizations the user has access to.
       parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       - description: organization Guid
         in: path
         name: guid
@@ -341,16 +459,13 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Get an organization
       tags:
       - Organizations
     patch:
       parameters:
-      - description: cf oauth-token
-        in: header
-        name: cf-Authorization
-        required: true
-        type: string
       - description: organization Guid
         in: path
         name: guid
@@ -384,7 +499,14 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/config.Error'
+      security:
+      - ApiKeyAuth: []
       summary: Update an organization
       tags:
       - Organizations
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: cf-Authorization
+    type: apiKey
 swagger: "2.0"

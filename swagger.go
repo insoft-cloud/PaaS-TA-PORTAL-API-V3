@@ -11,12 +11,12 @@ func main() {
 	//// programmatically set swagger info
 	docs.SwaggerInfo.Title = "PaaS-TA Portal CF V3 API"
 	docs.SwaggerInfo.Description = "This is a PaaS-TA Portal Server."
-	docs.SwaggerInfo.Version = "2.0"
+	docs.SwaggerInfo.Version = "3.0"
 	docs.SwaggerInfo.BasePath = "/v3"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	docs.SwaggerInfo.Host = "localhost:2222"
-	r := gin.New()
 
+	r := gin.New()
 	// use ginSwagger middleware to serve the API docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

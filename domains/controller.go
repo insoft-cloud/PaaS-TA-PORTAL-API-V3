@@ -28,7 +28,7 @@ func DomainHandleRequests(myRouter *mux.Router) {
 // @Description
 // @Tags Domains
 // @Produce  json
-// @Param cf-Authorization header  string true "cf oauth-token"
+// @Security ApiKeyAuth
 // @Param name path string true "name"
 // @Param internal path boolean true "false"
 // @Success 200 {object} CreateDomain

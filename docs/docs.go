@@ -18,7 +18,16 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -26,6 +35,11 @@ var doc = `{
     "paths": {
         "/apps/{guid}/features": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This endpoint retrieves the list of features for the specified app.",
                 "produces": [
                     "application/json"
@@ -35,13 +49,6 @@ var doc = `{
                 ],
                 "summary": "List app features",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "App Guid",
@@ -86,6 +93,11 @@ var doc = `{
         },
         "/apps/{guid}/features/{name}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -94,13 +106,6 @@ var doc = `{
                 ],
                 "summary": "Get an app feature",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "App Guid",
@@ -148,10 +153,150 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "App Features"
+                ],
+                "summary": "Update an app feature",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "App Guid",
+                        "name": "guid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "App Name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update App Feature",
+                        "name": "UpdateAppFeature",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/app_features.UpdateAppFeature"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app_features.AppFeature"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/domains": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Domains"
+                ],
+                "summary": "Create a domain",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "false",
+                        "name": "internal",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domains.CreateDomain"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/config.Error"
+                        }
+                    }
+                }
             }
         },
         "/isolation_segments/{guid}/organizations": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve the organizations entitled to the isolation segment. Return only the organizations the user has access to.",
                 "produces": [
                     "application/json"
@@ -160,15 +305,6 @@ var doc = `{
                     "Organizations"
                 ],
                 "summary": "List organizations for isolation segment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -205,6 +341,11 @@ var doc = `{
         },
         "/organizations": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all organizations the user has access to.",
                 "produces": [
                     "application/json"
@@ -213,15 +354,6 @@ var doc = `{
                     "Organizations"
                 ],
                 "summary": "List organizations",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -256,6 +388,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -264,13 +401,6 @@ var doc = `{
                 ],
                 "summary": "Create an organization",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "org name",
                         "name": "name",
@@ -317,6 +447,11 @@ var doc = `{
         },
         "/organizations/{guid}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieve all organizations the user has access to.",
                 "produces": [
                     "application/json"
@@ -326,13 +461,6 @@ var doc = `{
                 ],
                 "summary": "Get an organization",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "organization Guid",
@@ -375,6 +503,11 @@ var doc = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -383,13 +516,6 @@ var doc = `{
                 ],
                 "summary": "Update an organization",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "cf oauth-token",
-                        "name": "cf-Authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "organization Guid",
@@ -500,6 +626,17 @@ var doc = `{
                 }
             }
         },
+        "app_features.UpdateAppFeature": {
+            "type": "object",
+            "required": [
+                "enabled"
+            ],
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                }
+            }
+        },
         "config.Error": {
             "type": "object",
             "properties": {
@@ -522,6 +659,68 @@ var doc = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "domains.CreateDomain": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "internal": {
+                    "type": "boolean"
+                },
+                "metadata": {
+                    "type": "object",
+                    "properties": {
+                        "annotations": {
+                            "type": "object"
+                        },
+                        "labels": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "relationships": {
+                    "type": "object",
+                    "properties": {
+                        "organization": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "guid": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "shared_organizations": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "guid": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "router_group": {
+                    "type": "object"
                 }
             }
         },
@@ -610,6 +809,13 @@ var doc = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "cf-Authorization",
+            "in": "header"
         }
     }
 }`

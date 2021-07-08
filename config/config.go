@@ -3,7 +3,6 @@ package config
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"github.com/go-playground/validator"
 	"io"
 	"io/ioutil"
@@ -87,7 +86,6 @@ func Validation(r *http.Request, value interface{}) (interface{}, bool) {
 	} else if err != nil {
 		return err, false
 	}
-	fmt.Println(value)
 	return value, true
 }
 

@@ -3,6 +3,7 @@ package config
 import (
 	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"github.com/rs/cors"
 	"io"
@@ -30,14 +31,18 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	w.Header().Set("content-type", "application/json")
 	res, err := Client.Do(req)
 	if err != nil {
-		return err, false
+		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return err, false
+		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		return rErrs, false
 	} else if res.StatusCode > 400 {
+		var final Error
 		w.WriteHeader(res.StatusCode)
-		return body, false
+		json.Unmarshal(body, &final)
+		return final, false
 	}
 	return body, true
 
