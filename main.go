@@ -23,6 +23,8 @@ import (
 	"PAAS-TA-PORTAL-V3/processes"
 	"PAAS-TA-PORTAL-V3/resource_matches"
 	"PAAS-TA-PORTAL-V3/roles"
+	"PAAS-TA-PORTAL-V3/root"
+	"PAAS-TA-PORTAL-V3/routes"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	"PAAS-TA-PORTAL-V3/stacks"
 	"PAAS-TA-PORTAL-V3/tasks"
@@ -75,6 +77,7 @@ func handleRequests() {
 	resource_matches.ResourceMatchesHandleRequests(myRouter)
 	roles.RoleHandleRequests(myRouter)
 	processes.ProcessHandleRequests(myRouter)
+	routes.RouteHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})
