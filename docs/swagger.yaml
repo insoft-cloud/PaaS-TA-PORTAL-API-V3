@@ -52,6 +52,60 @@ definitions:
       title:
         type: string
     type: object
+  organizations.Organizations:
+    properties:
+      created_at:
+        type: string
+      guid:
+        type: string
+      links:
+        properties:
+          default_domain:
+            properties:
+              href:
+                type: string
+            type: object
+          domains:
+            properties:
+              href:
+                type: string
+            type: object
+          quota:
+            properties:
+              href:
+                type: string
+            type: object
+          self:
+            properties:
+              href:
+                type: string
+            type: object
+        type: object
+      metadata:
+        properties:
+          annotations:
+            type: object
+          labels:
+            type: object
+        type: object
+      name:
+        type: string
+      relationships:
+        properties:
+          quota:
+            properties:
+              data:
+                properties:
+                  guid:
+                    type: string
+                type: object
+            type: object
+        type: object
+      suspended:
+        type: boolean
+      updated_at:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -60,14 +114,14 @@ paths:
       description: This endpoint retrieves the list of features for the specified
         app.
       parameters:
-      - description: App Guid
-        in: path
-        name: guid
-        required: true
-        type: string
       - description: cf oauth-token
         in: header
         name: cf-Authorization
+        required: true
+        type: string
+      - description: App Guid
+        in: path
+        name: guid
         required: true
         type: string
       produces:
@@ -140,4 +194,197 @@ paths:
       summary: Get an app feature
       tags:
       - App Features
+  /isolation_segments/{guid}/organizations:
+    get:
+      description: Retrieve the organizations entitled to the isolation segment. Return
+        only the organizations the user has access to.
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organizations.Organizations'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: List organizations for isolation segment
+      tags:
+      - Organizations
+  /organizations:
+    get:
+      description: Retrieve all organizations the user has access to.
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organizations.Organizations'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: List organizations
+      tags:
+      - Organizations
+    post:
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      - description: org name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organizations.Organizations'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: Create an organization
+      tags:
+      - Organizations
+  /organizations/{guid}:
+    get:
+      description: Retrieve all organizations the user has access to.
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      - description: organization Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organizations.Organizations'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: Get an organization
+      tags:
+      - Organizations
+    patch:
+      parameters:
+      - description: cf oauth-token
+        in: header
+        name: cf-Authorization
+        required: true
+        type: string
+      - description: organization Guid
+        in: path
+        name: guid
+        required: true
+        type: string
+      - description: org name
+        in: body
+        name: name
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/organizations.Organizations'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "404":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/config.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/config.Error'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/config.Error'
+      summary: Update an organization
+      tags:
+      - Organizations
 swagger: "2.0"

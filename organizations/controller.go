@@ -25,6 +25,17 @@ func OrganizationsRequests(myRouter *mux.Router) {
 }
 
 // Permitted Roles "Admin" If the user_org_creation feature flag is enabled, any user with the cloud_controller.write scope will be able to create organizations.
+// @Summary Create an organization
+// @Description
+// @Tags Organizations
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Param name body string true "org name"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations [POST]
 func createOrganizations(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateOrganizations
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -48,6 +59,17 @@ func createOrganizations(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted All Roles
+// @Summary Get an organization
+// @Description Retrieve all organizations the user has access to.
+// @Tags Organizations
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Param guid path string true "organization Guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid} [GET]
 func getOrganization(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -62,6 +84,16 @@ func getOrganization(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted All Roles
+// @Summary List organizations
+// @Description Retrieve all organizations the user has access to.
+// @Tags Organizations
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations [GET]
 func getOrganizations(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -77,6 +109,16 @@ func getOrganizations(w http.ResponseWriter, r *http.Request) {
 // Permitted Roles "Admin", "Admin Read-Only", "Global Auditor", "Org Auditor", "Org Billing Manager", "Org Manager"
 // 404 error: Isolation segment not found
 // 진행 오래걸릴것 같은 부분 pass
+// @Summary List organizations for isolation segment
+// @Description Retrieve the organizations entitled to the isolation segment. Return only the organizations the user has access to.
+// @Tags Organizations
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid}/organizations [GET]
 func getOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -92,6 +134,18 @@ func getOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted Roles "Admin", "Org Manager"
+// @Summary Update an organization
+// @Description
+// @Tags Organizations
+// @Produce  json
+// @Param cf-Authorization header string true "cf oauth-token"
+// @Param guid path string true "organization Guid"
+// @Param name body string false "org name"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid} [PATCH]
 func updateOrganizations(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
