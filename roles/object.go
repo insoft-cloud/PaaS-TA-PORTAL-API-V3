@@ -36,7 +36,7 @@ type Role struct {
 }
 
 type CreateRole struct {
-	Type          string `json:"type"`
+	Type          string `json:"type" validation:"required"`
 	Relationships struct {
 		User struct {
 			Data struct {
@@ -48,7 +48,12 @@ type CreateRole struct {
 				GUID string `json:"guid"`
 			} `json:"data"`
 		} `json:"organization"`
-	} `json:"relationships"`
+		Space struct {
+			Data struct {
+				GUID string `json:"guid"`
+			} `json:"data"`
+		} `json:"space"`
+	} `json:"relationships"  validation:"required"`
 }
 
 type RoleList struct {
