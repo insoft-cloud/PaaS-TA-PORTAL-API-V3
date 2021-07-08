@@ -37,7 +37,7 @@ type Role struct {
 
 type CreateRole struct {
 	Type          string `json:"type" validation:"required"`
-	Relationships struct {
+	Relationships *struct {
 		User struct {
 			Data struct {
 				GUID string `json:"guid"`
