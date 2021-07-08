@@ -74,14 +74,12 @@ func handleRequests() {
 	users.UserHandleRequests(myRouter)
 	resource_matches.ResourceMatchesHandleRequests(myRouter)
 	roles.RoleHandleRequests(myRouter)
+	processes.ProcessHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})
 
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
-
-	processes.ProcessHandleRequests(myRouter)
-	log.Fatal(http.ListenAndServe(":"+config.Config["port"], myRouter))
 }
 
 func main() {
