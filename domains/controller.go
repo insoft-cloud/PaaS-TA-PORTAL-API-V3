@@ -24,6 +24,18 @@ func DomainHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Org Manager'
+// @Summary Create a domain
+// @Description
+// @Tags Domains
+// @Produce  json
+// @Param cf-Authorization header  string true "cf oauth-token"
+// @Param name path string true "name"
+// @Param internal path boolean true "false"
+// @Success 200 {object} CreateDomain
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /domains [POST]
 func createDomain(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateDomain
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -42,9 +54,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -58,9 +68,7 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -73,9 +81,7 @@ func getDomains(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -90,9 +96,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 
 }
@@ -117,9 +121,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -133,9 +135,7 @@ func deleteDomains(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -159,9 +159,7 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -177,8 +175,6 @@ func unShareDomains(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
