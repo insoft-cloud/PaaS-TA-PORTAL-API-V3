@@ -58,9 +58,9 @@ type Process struct {
 type HealthCheck struct {
 	Type string `json:"type"`
 	Data struct {
-		Timeout interface{} `json:"timeout"`
-		/*InvocationTimeout interface{} `json:"invocation_timeout"`
-		Endpoint string `json:"endpoint"`*/
+		Timeout           int    `json:"timeout"`
+		InvocationTimeout int    `json:"invocation_timeout"`
+		Endpoint          string `json:"endpoint"`
 	} `json:"data"`
 }
 
@@ -87,4 +87,39 @@ type ProcessStats struct {
 	FdsQuota         int         `json:"fds_quota"`
 	IsolationSegment string      `json:"isolation_segment"`
 	Details          interface{} `json:"details"`
+}
+
+type ProcessList struct {
+	Pagination struct {
+		TotalResults int `json:"total_results"`
+		TotalPages   int `json:"total_pages"`
+		First        struct {
+			Href string `json:"href"`
+		} `json:"first"`
+		Last struct {
+			Href string `json:"href"`
+		} `json:"last"`
+		Next     interface{} `json:"next"`
+		Previous interface{} `json:"previous"`
+	} `json:"pagination"`
+	Resources []Process `json:"resources"`
+}
+
+type UpdateProcess struct {
+	Command   string        `json:"command"`
+	Resources []HealthCheck `json:"resources"`
+	Metadata  struct {
+		Labels struct {
+			Key string `json:"key"`
+		} `json:"labels"`
+		Annotations struct {
+			Note string `json:"note"`
+		} `json:"annotations"`
+	} `json:"metadata"`
+}
+
+type ScaleProcess struct {
+	Instances  int `json:"instances"`
+	MemoryInMb int `json:"memory_in_mb"`
+	DiskInMb   int `json:"disk_in_mb"`
 }
