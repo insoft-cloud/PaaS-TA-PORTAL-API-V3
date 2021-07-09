@@ -45,7 +45,7 @@ type CreateOrganizations struct {
 		} `json:"labels"`
 		Annotations struct {
 		} `json:"annotations"`
-	} `json:"metadata"`
+	} `json:"metadata,omitempty"`
 }
 
 type OrganizationsList struct {

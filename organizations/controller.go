@@ -28,7 +28,7 @@ func OrganizationsRequests(myRouter *mux.Router) {
 // @Summary Create an organization
 // @Description
 // @Tags Organizations
-// @Produce  json
+// @Produce json
 // @Security ApiKeyAuth
 // @Param name body string true "org name"
 // @Success 200 {object} Organizations
@@ -114,6 +114,7 @@ func getOrganizations(w http.ResponseWriter, r *http.Request) {
 // @Tags Organizations
 // @Produce  json
 // @Security ApiKeyAuth
+// @Param guid path string true "isolation_segment Guid"
 // @Success 200 {object} Organizations
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -170,6 +171,17 @@ func updateOrganizations(w http.ResponseWriter, r *http.Request) {
 
 // Permitted Roles "Admin"
 // Unknown request
+// @Summary Delete an organization
+// @Description When an organization is deleted, user roles associated with the organization will also be deleted.
+// @Tags Organizations
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "organization Guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid} [DELETE]
 func deleteOrganizations(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -186,6 +198,19 @@ func deleteOrganizations(w http.ResponseWriter, r *http.Request) {
 //Permitted Roles "Admin", "Org Manager"
 // 진행 오래걸릴것 같은 부분 pass
 // iso-seg guid 확인해야됨.
+// @Summary Assign default isolation segment
+// @Description Set the default isolation segment for a given organization. Only isolation segments that are entitled to the organization are eligible to be the default isolation segment.
+// @Description Apps will not run in the new default isolation segment until they are restarted.
+// @Tags Organizations
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "organization Guid"
+// @Param guid body string true "iso-seg-guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid}/relationships/default_isolation_segment [PATCH]
 func assignDefaultIsolationSegmentOrganizations(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -210,6 +235,17 @@ func assignDefaultIsolationSegmentOrganizations(w http.ResponseWriter, r *http.R
 
 // Permitted All Roles
 // 진행안되는 부분 pass
+// @Summary Get default isolation segment
+// @Description Retrieve the default isolation segment for a given organization.
+// @Tags Organizations
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "organization Guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid}/relationships/default_isolation_segment [GET]
 func getDefaultIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -226,6 +262,17 @@ func getDefaultIsolationSegment(w http.ResponseWriter, r *http.Request) {
 // Permitted Roles "Space Developer", "Space Manager", "Space Auditor", "Org Auditor", "Org Manager"
 // "Org Billing Manager" Can only view domains without an organization relationship
 //  "Admin", "Admin" Read-Only, "Global Auditor"
+// @Summary Get default domain
+// @Description Retrieve the default domain for a given organization.
+// @Tags Organizations
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "organization Guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid}/domains/default [GET]
 func getDefaultDomain(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -242,6 +289,17 @@ func getDefaultDomain(w http.ResponseWriter, r *http.Request) {
 // Permitted All Roles
 // Unknown request
 // 진행안되는 부분 pass
+// @Summary Get usage summary
+// @Description This endpoint retrieves the specified organization object’s memory and app instance usage summary.
+// @Tags Organizations
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "organization Guid"
+// @Success 200 {object} Organizations
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organizations/{guid}/usage_summary [GET]
 func getUsageSummary(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
