@@ -25,6 +25,17 @@ func IsolationSegmentsHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Admin'
+// @Summary Create an isolation segment
+// @Description
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param CreateIsolationSegment body CreateIsolationSegment true "Create Isolation Segment"
+// @Success 200 {object} IsolationSegment
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments [POST]
 func createIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateIsolationSegment
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -42,13 +53,22 @@ func createIsolationSegment(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary Get an isolation segment
+// @Description
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 200 {object} IsolationSegment
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid} [GET]
 func getIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -59,13 +79,22 @@ func getIsolationSegment(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted All Roles
+// @Summary List isolation segments
+// @Description Retrieves all isolation segments to which the user has access. For admin, this is all the isolation segments in the system. For an org manager, this is the isolation segments in the allowed list for any organization to which the user belongs. For any other user, this is the isolation segments assigned to any spaces to which the user has access.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param query query string false "query"
+// @Success 200 {object} IsolationSegments
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments [GET]
 func getIsolationSegments(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -74,13 +103,22 @@ func getIsolationSegments(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles All Roles
+// @Summary List organizations relationship
+// @Description This endpoint lists the organizations entitled for the isolation segment. For an Admin, this will list all entitled organizations in the system. For any other user, this will list only the entitled organizations to which the user belongs.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 200 {object} OrganizationsRelationship
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid}/relationships/organizations [GET]
 func getOrganizationsRelationship(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -91,13 +129,22 @@ func getOrganizationsRelationship(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary List spaces relationship
+// @Description This endpoint lists the spaces to which the isolation segment is assigned. For an Admin, this will list all associated spaces in the system. For an org manager, this will list only those associated spaces belonging to orgs for which the user is a manager. For any other user, this will list only those associated spaces to which the user has access.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 200 {object} SpacesRelationship
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid}/relationships/spaces [GET]
 func spacesRelationship(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -108,13 +155,23 @@ func spacesRelationship(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles Admin
+// @Summary Update an isolation segment
+// @Description
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "IsolationSegment Guid"
+// @Param UpdateIsolationSegment body UpdateIsolationSegment true "Update IsolationSegment"
+// @Success 200 {object} IsolationSegment
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid} [PATCH]
 func updateIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -134,13 +191,22 @@ func updateIsolationSegment(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles Admin
+// @Summary Delete an isolation segment
+// @Description An isolation segment cannot be deleted if it is entitled to any organization.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 202 {object} string	"ok"
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid} [DELETE]
 func deleteIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -151,12 +217,23 @@ func deleteIsolationSegment(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
+//Permitted Roles 'Admin'
+// @Summary Entitle organizations for an isolation segment
+// @Description This endpoint entitles the specified organizations for the isolation segment. In the case where the specified isolation segment is the system-wide shared segment, and if an organization is not already entitled for any other isolation segment, then the shared isolation segment automatically gets assigned as the default for that organization.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param EntitleOrganizationsIsolationSegment body EntitleOrganizationsIsolationSegment true "Entitle Organizations IsolationSegment"
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 200 {object} OrganizationsRelationship
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid}/relationships/organizations [POST]
 func entitleOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -178,13 +255,23 @@ func entitleOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles Admin
+// @Summary Revoke entitlement to isolation segment for an organization
+// @Description This endpoint revokes the entitlement for the specified organization to the isolation segment. If the isolation segment is assigned to a space within an organization, the entitlement cannot be revoked. If the isolation segment is the organization’s default, the entitlement cannot be revoked.
+// @Tags IsolationSegment
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param org_guid path string true "Organization Guid"
+// @Param guid path string true "IsolationSegment Guid"
+// @Success 202 {object} string	"ok"
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /isolation_segments/{guid}/relationships/organizations/{org_guid} [DELETE]
 func revokeOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -196,8 +283,6 @@ func revokeOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request)
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
