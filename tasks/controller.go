@@ -22,6 +22,17 @@ func TaskHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Create a task
+// @Description
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param CreateTask body CreateTask true "Create Task"
+// @Success 200 {object} Tasks
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /tasks [POST]
 func createTask(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateTask
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -40,13 +51,22 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Admin Read-Only Admin Global Auditor Org Manager Space Auditor Space Developer Space Manage
+// @Summary Get a task
+// @Description
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Task Guid"
+// @Success 200 {object} Tasks
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /tasks/{guid} [GET]
 func getTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -57,13 +77,22 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted All Roles
+// @Summary List tasks
+// @Description
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param query query string false "query"
+// @Success 200 {object} AppTask
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /tasks [GET]
 func getTasks(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -72,13 +101,22 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Admin Read-Only Admin Global Auditor Org Manager Space Auditor Space Developer Space Manage
+//Permitted Roles All Roles
+// @Summary List tasks for an app
+// @Description
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Task Guid"
+// @Success 200 {object} AppTask
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /apps/{guid}/tasks [GET]
 func getAppTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -89,13 +127,23 @@ func getAppTask(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Space Developer
+//Permitted Roles Admin Space Developer
+// @Summary Update a task
+// @Description
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Task Guid"
+// @Param UpdateTask body UpdateTask true "Update Task"
+// @Success 200 {object} Tasks
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /tasks/{guid} [PATCH]
 func updateTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -115,13 +163,23 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Cancel a task
+// @Description Cancels a running task.
+// @Tags Tasks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Tasks Guid"
+// @Param Tasks body Tasks true "Cancel Tasks"
+// @Success 200 {object} Tasks
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /tasks/{guid}/actions/cancel [POST]
 func cancelTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -138,9 +196,7 @@ func cancelTask(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 
 }
