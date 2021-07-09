@@ -45,6 +45,6 @@ type GetFeatureFlags struct {
 }
 
 type UpdateFeatureFlags struct {
-	Enabled            bool   `json:"enabled"`
-	CustomErrorMessage string `json:"custom_error_message"`
+	Enabled            bool   `json:"enabled,omitempty"`
+	CustomErrorMessage string `json:"custom_error_message,omitempty"`
 }

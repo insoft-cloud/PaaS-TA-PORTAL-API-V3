@@ -18,6 +18,17 @@ func FeatureFlagHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles All Roles
+// @Summary Get a feature flag
+// @Description
+// @Tags Feature Flags
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param name path string true "FeatureFlag name"
+// @Success 200 {object} FeatureFlags
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /feature_flags/{name} [GET]
 func getFeatureFlag(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
@@ -35,6 +46,17 @@ func getFeatureFlag(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles All Roles
+// @Summary List feature flags
+// @Description Retrieve all feature_flags.
+// @Tags Feature Flags
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param query query string false "query"
+// @Success 200 {object} GetFeatureFlags
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /feature_flags [GET]
 func getFeatureFlags(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -50,6 +72,18 @@ func getFeatureFlags(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles Admin
+// @Summary Update a feature flag
+// @Description
+// @Tags Feature Flags
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param name path string true "FeatureFlag Name"
+// @Param UpdateFeatureFlags body UpdateFeatureFlags true "Update Feature Flags"
+// @Success 200 {object} FeatureFlags
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /feature_flags/{name} [PATCH]
 func updateFeatureFlags(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
