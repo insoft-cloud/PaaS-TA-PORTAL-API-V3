@@ -20,6 +20,17 @@ func UserHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles Admin
+// @Summary Create a user
+// @Description Creating a user requires one value, a GUID. This creates a user in the Cloud Controller database.
+// @Tags Users
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param CreateUser body CreateUser true "Create User"
+// @Success 200 {object} Users
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /users [POST]
 func createUser(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateUser
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -38,13 +49,22 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles All Roles 확인 해야차례
+//Permitted Roles All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Summary Get a user
+// @Description
+// @Tags Users
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "User Guid"
+// @Success 200 {object} Users
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /users/{guid} [GET]
 func getUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -55,13 +75,21 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted All Roles 여기부터 시작
+//Permitted All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Summary List users
+// @Description
+// @Tags Users
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} GetUsers
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /users [GET]
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	rBody, rBodyResult := config.Curl("/v3/"+uris, nil, "GET", w, r)
 	if rBodyResult {
@@ -69,13 +97,23 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles Admin
+// @Summary Update a user
+// @Description Update a user’s metadata.
+// @Tags Users
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "User Guid"
+// @Param Updateuser body Updateuser true "Update User"
+// @Success 200 {object} Users
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /users/{guid} [PATCH]
 func updateUser(w http.ResponseWriter, r *http.Request) {
 	var pBody Updateuser
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -92,13 +130,22 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin
+// @Summary Delete a user
+// @Description All roles associated with a user will be deleted if the user is deleted.
+// @Tags Users
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "User Guid"
+// @Success 202 {object} string	"ok"
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /users/{guid} [DELETE]
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -108,8 +155,6 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
