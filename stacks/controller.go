@@ -20,6 +20,17 @@ func AppHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles Admin
+// @Summary Create a stack
+// @Description
+// @Tags Stacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param CreateStack body CreateStack true "Create Stack"
+// @Success 200 {object} Stack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /stacks [POST]
 func createStack(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateStack
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,6 +56,17 @@ func createStack(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles All Roles
+// @Summary Get a stack
+// @Description
+// @Tags Stacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Stack Guid"
+// @Success 200 {object} Stack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /stacks/{guid} [GET]
 func getStack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -62,6 +84,17 @@ func getStack(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted All Roles
+// @Summary List stacks
+// @Description Retrieve all stacks.
+// @Tags Stacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param query query string false "query"
+// @Success 200 {object} Stacks
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /stacks [GET]
 func getStacks(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -77,6 +110,18 @@ func getStacks(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Update a stack
+// @Description
+// @Tags Stacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Stack Guid"
+// @Param UpdateStack body UpdateStack true "Update Stack"
+// @Success 200 {object} Stack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /stacks/{guid} [PATCH]
 func updateStack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -103,6 +148,17 @@ func updateStack(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted Roles Admin
+// @Summary Delete a stack
+// @Description
+// @Tags Stacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Stack Guid"
+// @Success 202 {object} string	"ok"
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /stacks/{guid} [DELETE]
 func deleteStack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
