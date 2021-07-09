@@ -57,9 +57,7 @@ func createDroplets(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -84,9 +82,7 @@ func getDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -110,9 +106,7 @@ func getDroplets(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 
 }
@@ -140,9 +134,7 @@ func getDropletsPackages(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -169,9 +161,7 @@ func getDropletsApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -207,9 +197,7 @@ func updateDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -234,9 +222,7 @@ func deleteDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -270,9 +256,7 @@ func copyDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -297,9 +281,7 @@ func downloadDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
@@ -325,8 +307,6 @@ func uploadDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
