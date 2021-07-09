@@ -26,6 +26,18 @@ func OrganizationQuotasHandleRequests(myRouter *mux.Router) {
 
 // Permitted Roles "Admin"
 // 404 error : Unknown request
+// @Summary Create an organization quota
+// @Description This endpoint creates a new organization quota, but does not assign it to a specific organization unless an organization GUID is provided in the relationships.organizations parameter.
+// @Description To create an organization quota you must be an admin.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Param name body string true "Name of the quota"
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas [POST]
 func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateOrganizationQuotas
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -59,6 +71,18 @@ func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 // "Space Developer" Response will only include guids of parent organizations
 // "Space Manager" Response will only include guids of parent organizations
 // Required parameters의 name에 해당한 quota-guid를 찾을 수 없음
+// 404 error : Unknown request
+// @Summary Get an organization quota
+// @Description This endpoint gets an individual organization quota resource.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "organizations_quotas guid"
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas/{guid} [GET]
 func getOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -83,6 +107,16 @@ func getOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 // "Space Developer" Response will only include guids of parent organizations
 // "Space Manager" Response will only include guids of parent organizations
 // 404 error : Unknown request
+// @Summary List organization quotas
+// @Description This endpoint lists all organization quota resources.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas [GET]
 func getOrganizationQuotas(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -97,6 +131,19 @@ func getOrganizationQuotas(w http.ResponseWriter, r *http.Request) {
 
 // Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
+// @Summary Apply an organization quota to an organization
+// @Description This endpoint applies an organization quota to one or more organizations.
+// @Description Only admin users can apply an organization quota to an organization.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "organizations_quotas guid"
+// @Param guid body string true "Organization guids"
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas/{guid}/relationships/organizations [POST]
 func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	var pBody ApplyOrganizationQuotas
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -124,6 +171,16 @@ func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 
 // Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
+// @Summary Delete an organization quota
+// @Description Organization quotas cannot be deleted when applied to any organizations.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas/{guid} [DELETE]
 func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -137,6 +194,18 @@ func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//Permitted roles Admin
+// @Summary Update an organization quota
+// @Description This endpoint will only update the parameters specified in the request body. Any unspecified parameters will retain their existing values.
+// @Tags Organization Quotas
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "organizations_quotas guid"
+// @Success 200 {object} OrganizationQuota
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /organization_quotas/{guid} [PATCH]
 func updateOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
