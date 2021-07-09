@@ -120,3 +120,28 @@ type UpdateRoute struct {
 		} `json:"annotations"`
 	} `json:"metadata,omitempty"`
 }
+
+type insertDestinations struct {
+	Destinations []struct {
+		App struct {
+			GUID    string `json:"guid"`
+			Process struct {
+				Type string `json:"type"`
+			} `json:"process"`
+		} `json:"app,omitempty"`
+		Port int `json:"port,omitempty"`
+	} `json:"destinations"`
+}
+
+type ReplaceAllDestinationRoute struct {
+	Destinations []struct {
+		Weight int `json:"weight"`
+		App    struct {
+			GUID    string `json:"guid"`
+			Process struct {
+				Type string `json:"type"`
+			} `json:"process"`
+		} `json:"app,omitempty"`
+		Port int `json:"port,omitempty"`
+	} `json:"destinations" validate:"required"`
+}

@@ -23,7 +23,6 @@ import (
 	"PAAS-TA-PORTAL-V3/processes"
 	"PAAS-TA-PORTAL-V3/resource_matches"
 	"PAAS-TA-PORTAL-V3/roles"
-	"PAAS-TA-PORTAL-V3/root"
 	"PAAS-TA-PORTAL-V3/routes"
 	"PAAS-TA-PORTAL-V3/service_brokers"
 	"PAAS-TA-PORTAL-V3/stacks"
