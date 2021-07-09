@@ -3,7 +3,6 @@ package environment_variable_groups
 import (
 	"PAAS-TA-PORTAL-V3/config"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
@@ -19,10 +18,20 @@ func EnvironmentVariableGroupsHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted All Roles
+// @Summary Get an environment variable group
+// @Description
+// @Tags Environment Variable Groups
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param name path string true "Environment variable name"
+// @Success 200 {object} EnvironmentVariableGroup
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /environment_variable_groups/{name} [GET]
 func getEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
-	fmt.Println("getEnvironmentVariableGroup?" + name)
 	if name == "staging" {
 		return
 	}
@@ -32,17 +41,26 @@ func getEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin'
+// @Summary Update environment variable group
+// @Description
+// @Tags Environment Variable Groups
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param name path string true "Environment variable name"
+// @Param interface{} body interface{} true "Update environment variable group"
+// @Success 200 {object} EnvironmentVariableGroup
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /environment_variable_groups/{name} [PATCH]
 func updateEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
-	fmt.Println("updateEnvironmentVariableGroup?" + name)
 	if name == "staging" {
 		return
 	}
@@ -56,8 +74,6 @@ func updateEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }

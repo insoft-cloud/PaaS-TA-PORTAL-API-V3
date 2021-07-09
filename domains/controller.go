@@ -177,7 +177,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "Domain Guid"
-// @Success 200 {object} Domain
+// @Success 202 {object} string	"ok"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
