@@ -24,6 +24,18 @@ func PackagesHandleRequests(myRouter *mux.Router) {
 }
 
 // Permitted roles "Admin", "Space Developer"
+// @Summary Create a package
+// @Description
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param type body string true "Type of the package; valid values are bits, docker"
+// @Param relationships.app body string true "A relationship to an app"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages [POST]
 func createPackage(w http.ResponseWriter, r *http.Request) {
 	var pBody CreatePackage
 	if r.URL.Query().Get("source_guid") != "" {
@@ -53,6 +65,17 @@ func createPackage(w http.ResponseWriter, r *http.Request) {
 
 // Permitted roles
 //"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Summary Get a package
+// @Description
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid} [GET]
 func getPackage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -66,6 +89,17 @@ func getPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//Permitted roles "All Roles"
+// @Summary List packages
+// @Description Retrieve all packages the user has access to.
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages [GET]
 func getPackages(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -80,6 +114,17 @@ func getPackages(w http.ResponseWriter, r *http.Request) {
 
 //Permitted roles
 //"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Summary List packages for an app
+// @Description Retrieve packages for an app that the user has access to.
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "app guid"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /apps/{guid}/packages [GET]
 func getPackagesForAnApp(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	vars := mux.Vars(r)
@@ -96,6 +141,19 @@ func getPackagesForAnApp(w http.ResponseWriter, r *http.Request) {
 
 // Permitted roles "Admin", "Space Developer"
 // parameter를 못받아서 수정(update)이 안됨 metadata
+// @Summary Update a package
+// @Description
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Param metadata.labels body string false "Labels applied to the package"
+// @Param metadata.annotations body string false "Annotations applied to the package"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid} [PATCH]
 func updatePackage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -117,6 +175,18 @@ func updatePackage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted Roles "Admin", "Space Developer"
+// 결과 202 나와야하는데, 200 나옵니다. -> 삭제는 실행됨.
+// @Summary Delete a package
+// @Description
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid} [DELETE]
 func deletePackage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -131,6 +201,20 @@ func deletePackage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted roles "Admin" "Space Developer"
+// postman으로 테스트 완료(복사 성공), swagger 분기처리 어떻게 해야될지 모르겠음.
+// @Summary Copy a package
+// @Description This endpoint copies the bits of a source package to a target package.
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Param query path string true "GUID of the source package to copy from"
+// @Param relationships.app body string true "A relationship to the destination app"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid} [POST]
 func copyPackage(w http.ResponseWriter, r *http.Request) {
 	var pBody CopyPackage
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
@@ -155,6 +239,20 @@ func copyPackage(w http.ResponseWriter, r *http.Request) {
 
 // PackageDownload pass status 302 안나오고 200으로 나옴
 // Permitted roles "Admin", "Space Developer"
+// @Summary Download package bits
+// @Description This endpoint downloads the bits of an existing package.
+// @Description When using a remote blobstore, such as AWS, the response is a redirect to the actual location of the bits.
+// @Description If the client is automatically following redirects, then the OAuth token that was used to communicate with Cloud Controller will be replayed on the new redirect request.
+// @Description Some blobstores may reject the request in that case. Clients may need to follow the redirect without including the OAuth token.
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid}/download [GET]
 func downloadPackage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -174,6 +272,20 @@ func downloadPackage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Permitted roles "Admin", "Space Developer"
+// @Summary Upload package bits
+// @Description This upload endpoint takes a multi-part form requests for packages of type bits.
+// @Description The request requires either a .zip file uploaded under the bits field or a list of resource match objects under the resources field. These field may be used together.
+// @Description The resources field in the request accepts the v2 resources object format.
+// @Tags Packages
+// @Produce json
+// @Security ApiKeyAuth
+// @Param guid path string true "package guid"
+// @Param bits formData file false "A binary zip file containing the package bits"
+// @Success 200 {object} Package
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /packages/{guid}/upload [POST]
 func uploadPackage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

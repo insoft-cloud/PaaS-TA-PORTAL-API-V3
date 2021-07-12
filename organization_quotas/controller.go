@@ -195,6 +195,7 @@ func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 }
 
 //Permitted roles Admin
+// quotas에 대한 guid를 찾을 수 없음
 // @Summary Update an organization quota
 // @Description This endpoint will only update the parameters specified in the request body. Any unspecified parameters will retain their existing values.
 // @Tags Organization Quotas
