@@ -106,8 +106,8 @@ type ProcessList struct {
 }
 
 type UpdateProcess struct {
-	Command   string        `json:"command"`
-	Resources []HealthCheck `json:"resources"`
+	Command   string        `json:"command,omitempty"`
+	Resources []HealthCheck `json:"resources,omitempty"`
 	Metadata  struct {
 		Labels struct {
 			Key string `json:"key"`
@@ -115,7 +115,7 @@ type UpdateProcess struct {
 		Annotations struct {
 			Note string `json:"note"`
 		} `json:"annotations"`
-	} `json:"metadata"`
+	} `json:"metadata,omitempty"`
 }
 
 type ScaleProcess struct {
