@@ -17,6 +17,18 @@ func AppUsageEventHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Admin Admin Read-Only Global Auditor'
+// @Summary Get an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param include query string false "Optionally include additional related resources in the response; valid values are space and space.organization"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid} [GET]
 func getAppUsageEvent(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
