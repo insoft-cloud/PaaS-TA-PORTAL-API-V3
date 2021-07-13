@@ -31,6 +31,17 @@ func AppHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Admin, SpaceDeveloper'
+// @Summary Create an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param App body CreateApp true "Create App"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /v3/apps [POST]
 func createApp(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateApp
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -49,13 +60,23 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary Get an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param include query string false "Optionally include additional related resources in the response; valid values are space and space.organization"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid} [GET]
 func getApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -66,13 +87,35 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted All Roles
+// @Summary List apps
+// @Description Retrieve all apps the user has access to.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param guids query string false "Comma-delimited list of app guids to filter by"
+// @Param names query string false "Comma-delimited list of app names to filter by"
+// @Param space_guids query string false "Comma-delimited list of space guids to filter by"
+// @Param organization_guids query string false "Comma-delimited list of organization guids to filter by"
+// @Param stacks query string false "Comma-delimited list of stack names to filter by"
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param lifecycle_type query string false "Lifecycle type to filter by; valid values are buildpack, docker"
+// @Param include query string false "Optionally include a list of unique related resources in the response; valid values are space and spaceorganization"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Success 200 {object} AppList
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /v3/apps [GET]
 func getApps(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -81,13 +124,23 @@ func getApps(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Update an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param App body UpdateApp true "Update App"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /v3/apps/{guid} [PATCH]
 func updateApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -107,13 +160,22 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Delete an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} object
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /v3/apps/{guid} [DELETE]
 func deleteApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -123,13 +185,22 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Summary Get current droplet
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppDroplet
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/droplets/current [GET]
 func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -139,13 +210,22 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Summary Get current droplet association for an app
+// @Description This endpoint retrieves the current droplet relationship for an app.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppDropletAssociation
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/relationships/current_droplet [GET]
 func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -155,13 +235,22 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Admin Read-Only Space Developer
+// @Summary Get environment for an app
+// @Description Retrieve the environment variables that will be provided to an app at runtime. It will include environment variables for Environment Variable Groups and Service Bindings.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppEnv
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/env [GET]
 func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -171,13 +260,22 @@ func getAppEnv(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Space Developer
+//Permitted Roles 'Admin Admin Read-Only Space Developer'
+// @Summary Get environment variables for an app
+// @Description Retrieve the environment variables that are associated with the given app. For the entire list of environment variables that will be available to the app at runtime, see the env endpoint.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppEnvVariable
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/environment_variables [GET]
 func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -187,13 +285,22 @@ func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary Get permissions
+// @Description Get the current user’s permissions for the given app. If a user can see an app, then they can see its basic data. Only admin, read-only admins, and space developers can read sensitive data.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppPermission
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/permissions [GET]
 func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -203,13 +310,23 @@ func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Set current droplet
+// @Description Set the current droplet for an app. The current droplet is the droplet that the app will use when running.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param AppSetDroplet body AppSetDroplet true "App Set Droplet"
+// @Success 200 {object} AppDropletAssociation
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /v3/apps/{guid}/relationships/current_droplet [PATCH]
 func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -228,13 +345,22 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager *
+//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Summary Get SSH enabled for an app
+// @Description Returns if an application’s runtime environment will accept ssh connections. If ssh is disabled, the reason field will describe whether it is disabled globally, at the space level, or at the app level.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} AppSSH
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/ssh_enabled [GET]
 func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -244,13 +370,22 @@ func getAppSSH(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles 'Admin Space Developer'
+// @Summary Start an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/actions/start [POST]
 func startApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -260,13 +395,22 @@ func startApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Stop an app
+// @Description
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/actions/stop [POST]
 func stopApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -276,13 +420,22 @@ func stopApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles Admin Space Developer
+// @Summary Stop an app
+// @Description This endpoint will synchronously stop and start an application. Unlike the start and stop actions, this endpoint will error if the app is not successfully stopped in the runtime. For restarting applications without downtime, see the deployments resource.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Success 200 {object} App
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/actions/restart [POST]
 func restartApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -292,13 +445,23 @@ func restartApp(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
-//Permitted Roles Admin Space Developer
+//Permitted Roles 'Admin Space Developer'
+// @Summary Stop an app
+// @Description Update the environment variables associated with the given app. The variables given in the request will be merged with the existing app environment variables. Any requested variables with a value of null will be removed from the app. Environment variable names may not start with VCAP_. PORT is not a valid environment variable.
+// @Tags Apps
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "App Guid"
+// @Param App Env body AppEnvVar true "App Env"
+// @Success 200 {object} AppEnvVariable
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/apps/{guid}/environment_variables [PATCH]
 func setAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -317,8 +480,6 @@ func setAppEnv(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
