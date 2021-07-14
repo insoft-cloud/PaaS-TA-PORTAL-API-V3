@@ -17,6 +17,7 @@ import (
 	"PAAS-TA-PORTAL-V3/info"
 	"PAAS-TA-PORTAL-V3/isolation_segment"
 	"PAAS-TA-PORTAL-V3/jobs"
+	"PAAS-TA-PORTAL-V3/manifests"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
 	"PAAS-TA-PORTAL-V3/organizations"
 	"PAAS-TA-PORTAL-V3/packages"
@@ -78,6 +79,7 @@ func handleRequests() {
 	roles.RoleHandleRequests(myRouter)
 	processes.ProcessHandleRequests(myRouter)
 	routes.RouteHandleRequests(myRouter)
+	manifests.ManifestsHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})

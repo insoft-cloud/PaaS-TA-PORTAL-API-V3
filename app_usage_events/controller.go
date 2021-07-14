@@ -16,7 +16,7 @@ func AppUsageEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", purgeSeedAppUsageEvents).Methods("POST")
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor'
 // @Summary Get an app usage event
 // @Description Retrieve an app usage event.
 // @Tags App Usage Events
@@ -41,7 +41,7 @@ func getAppUsageEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List app usage events
 // @Description Retrieve an app usage event.
 // @Tags App Usage Events
@@ -71,7 +71,7 @@ func getAppUsageEvents(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Purge and seed app usage events
 // @Description Destroys all existing events. Populates new usage events, one for each started app. All populated events will have a created_at value of current time. There is the potential race condition if apps are currently being started, stopped, or scaled. The seeded usage events will have the same guid as the app.
 // @Tags App Usage Events

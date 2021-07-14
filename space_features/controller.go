@@ -16,7 +16,7 @@ func SpaceFeatureHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateSpaceFeature).Methods("PATCH")
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getSpaceFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -33,7 +33,7 @@ func getSpaceFeature(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 func getSpaceFeatures(w http.ResponseWriter, r *http.Request) {
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/features", nil, "GET", w, r)
 	if rBodyResult {
@@ -47,7 +47,7 @@ func getSpaceFeatures(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 func updateSpaceFeature(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

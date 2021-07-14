@@ -24,7 +24,7 @@ func DropletHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted Roles 'Admin, SpaceDeveloper'
+// @Description Permitted Roles 'Admin, SpaceDeveloper'
 // @Summary Create a droplet
 // @Description This endpoint is only for creating a droplet without a package. To create a droplet based on a package, see Create a build.
 // @Tags Droplets
@@ -61,7 +61,7 @@ func createDroplets(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get a droplet
 // @Description
 // @Tags Droplets
@@ -86,7 +86,7 @@ func getDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'All Roles'
+// @Description Permitted Roles 'All Roles'
 // @Summary List droplets
 // @Description
 // @Tags Droplets
@@ -122,7 +122,7 @@ func getDroplets(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List droplets for a package
 // @Description Retrieve a list of droplets belonging to a package.
 // @Tags Droplets
@@ -155,7 +155,7 @@ func getDropletsPackages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List droplets for an app
 // @Description Retrieve a list of droplets belonging to an app.
 // @Tags Droplets
@@ -189,7 +189,7 @@ func getDropletsApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Org Manager Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Org Manager Space Developer Space Manager'
 // @Summary Update a droplet
 // @Description
 // @Tags Droplets
@@ -225,7 +225,7 @@ func updateDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin  Space Developer
+// @Description Permitted Roles Admin  Space Developer
 // @Summary Delete a droplet
 // @Description
 // @Tags Droplets
@@ -250,7 +250,7 @@ func deleteDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin  Space Developer
+// @Description Permitted Roles Admin  Space Developer
 // @Summary Copy a droplet
 // @Description Copy a droplet to a different app. The copied droplet excludes the environment variables listed on the source droplet.
 // @Tags Droplets
@@ -285,7 +285,7 @@ func copyDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 // @Summary Download droplet bits
 // @Description Download a gzip compressed tarball file containing a Cloud Foundry compatible droplet. When using a remote blobstore, such as AWS, the response is a redirect to the actual location of the bits. If the client is automatically following redirects, then the OAuth token that was used to communicate with Cloud Controller will be relayed on the new redirect request. Some blobstores may reject the request in that case. Clients may need to follow the redirect without including the OAuth token.
 // @Tags Droplets
@@ -310,7 +310,7 @@ func downloadDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 // @Summary Upload droplet bits
 // @Description Upload a gzip compressed tarball file containing a Cloud Foundry compatible droplet. The file must be sent as part of a multi-part form.
 // @Tags Droplets

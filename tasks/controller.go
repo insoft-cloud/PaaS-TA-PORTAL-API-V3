@@ -21,7 +21,7 @@ func TaskHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Create a task
 // @Description
 // @Tags Tasks
@@ -55,7 +55,7 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Admin Read-Only Admin Global Auditor Org Manager Space Auditor Space Developer Space Manage
+// @Description Permitted Admin Read-Only Admin Global Auditor Org Manager Space Auditor Space Developer Space Manage
 // @Summary Get a task
 // @Description
 // @Tags Tasks
@@ -81,7 +81,7 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List tasks
 // @Description
 // @Tags Tasks
@@ -105,7 +105,7 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary List tasks for an app
 // @Description
 // @Tags Tasks
@@ -131,7 +131,7 @@ func getAppTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Update a task
 // @Description
 // @Tags Tasks
@@ -167,7 +167,7 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Cancel a task
 // @Description Cancels a running task.
 // @Tags Tasks

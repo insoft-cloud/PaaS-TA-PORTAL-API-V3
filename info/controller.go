@@ -34,7 +34,7 @@ func getPlatformInfo(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor
+// @Description Permitted Roles Admin Admin Read-Only Global Auditor
 // @Summary Get platform usage summary
 // @Description This endpoint retrieves a high-level summary of usage across the entire Cloud Foundry installation.
 // @Tags Info

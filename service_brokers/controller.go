@@ -19,7 +19,7 @@ func ServiceBrokerHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteServiceBroker).Methods("DELETE")
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 func createServiceBroker(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateServiceBroker
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -45,7 +45,7 @@ func createServiceBroker(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
 func getServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -61,7 +61,7 @@ func getServiceBroker(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Developer (only space-scoped brokers)'
 func getServiceBrokers(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -76,7 +76,7 @@ func getServiceBrokers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -105,7 +105,7 @@ func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

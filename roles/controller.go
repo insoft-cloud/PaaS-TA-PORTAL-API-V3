@@ -30,7 +30,7 @@ func RoleHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris, deleteRole).Methods("DELETE")
 }
 
-// Permitted roles
+//  @Description Permitted roles
 // Role	Notes
 // Admin
 // Org Manager	Can create roles in managed organizations and spaces within those organizations;
@@ -80,7 +80,7 @@ func createRole(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+//  @Description Permitted roles
 // Role	Notes
 // Admin
 // Admin Read-Only
@@ -119,7 +119,7 @@ func getRole(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "All Roles"
+//  @Description Permitted roles "All Roles"
 // @Summary List roles
 // @Description This endpoint lists roles that the user has access to.
 // @Tags Roles
@@ -144,7 +144,7 @@ func getRoles(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+//  @Description Permitted roles
 // Role	Notes
 // Admin
 // Org Manager	Can delete roles in managed organizations or spaces in those organizations

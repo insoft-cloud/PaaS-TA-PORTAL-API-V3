@@ -13,7 +13,7 @@ func JobsHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", getJob).Methods("GET")
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get a job
 // @Description
 // @Tags Jobs

@@ -16,7 +16,7 @@ func ServiceUsageEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", purgeAndSeedServiceUsageEvent).Methods("POST")
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor'
 func getServiceUsageEvent(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -32,7 +32,7 @@ func getServiceUsageEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func getServiceUsageEvents(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -47,7 +47,7 @@ func getServiceUsageEvents(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 func purgeAndSeedServiceUsageEvent(w http.ResponseWriter, r *http.Request) {
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/actions/destructively_purge_all_and_reseed", nil, "POST", w, r)
 	if rBodyResult {

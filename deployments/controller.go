@@ -19,7 +19,7 @@ func DeploymentHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", cancelDeployment).Methods("DELETE")
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Create a deployment
 // @Description
 // @Tags Deployments
@@ -52,7 +52,7 @@ func createDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get a deployment
 // @Description
 // @Tags Deployments
@@ -77,7 +77,7 @@ func getDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List  deployment
 // @Description Retrieve all deployments the user has access to.
 // @Tags Deployments
@@ -110,7 +110,7 @@ func getDeployments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Update a deployment
 // @Description
 // @Tags Deployments
@@ -146,7 +146,7 @@ func updateDeployment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Cancel a deployment
 // @Description
 // @Tags Deployments

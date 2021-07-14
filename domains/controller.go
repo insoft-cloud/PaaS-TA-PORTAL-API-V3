@@ -23,7 +23,7 @@ func DomainHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted Roles 'Admin Org Manager'
+// @Description Permitted Roles 'Admin Org Manager'
 // @Summary Create a domain
 // @Description
 // @Tags Domains
@@ -56,7 +56,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager
 // @Summary Get a domain
 // @Description
 // @Tags Domains
@@ -81,7 +81,7 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List domains
 // @Description Retrieve all domains the user has access to.
 // @Tags Domains
@@ -113,7 +113,7 @@ func getDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List domains for an organization
 // @Description Retrieve all domains available in an organization for the current user. This will return unscoped domains (those without an owning organization), domains that are scoped to the given organization (owned by the given organization), and domains that have been shared with the organization.
 // @Tags Domains
@@ -147,7 +147,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted Roles 'Admin, Org Manager'
+// @Description Permitted Roles 'Admin, Org Manager'
 // @Summary Update a domain
 // @Description
 // @Tags Domains
@@ -183,7 +183,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Delete a domain
 // @Description
 // @Tags Domains
@@ -208,7 +208,7 @@ func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Share a domain
 // @Description This endpoint shares an organization-scoped domain to other organizations specified by a list of organization guids. This will allow any of the other organizations to use the organization-scoped domain.
 // @Tags Domains
@@ -244,7 +244,7 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Unshare a domain
 // @Description This endpoint removes an organization from the list of organizations an organization-scoped domain is shared with. This prevents the organization from using the organization-scoped domain.
 // @Tags Domains

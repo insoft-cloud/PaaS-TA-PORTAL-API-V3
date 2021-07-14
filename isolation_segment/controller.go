@@ -24,7 +24,7 @@ func IsolationSegmentsHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Create an isolation segment
 // @Description
 // @Tags IsolationSegment
@@ -57,7 +57,7 @@ func createIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get an isolation segment
 // @Description
 // @Tags IsolationSegment
@@ -83,7 +83,7 @@ func getIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List isolation segments
 // @Description Retrieves all isolation segments to which the user has access. For admin, this is all the isolation segments in the system. For an org manager, this is the isolation segments in the allowed list for any organization to which the user belongs. For any other user, this is the isolation segments assigned to any spaces to which the user has access.
 // @Tags IsolationSegment
@@ -116,7 +116,7 @@ func getIsolationSegments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary List organizations relationship
 // @Description This endpoint lists the organizations entitled for the isolation segment. For an Admin, this will list all entitled organizations in the system. For any other user, this will list only the entitled organizations to which the user belongs.
 // @Tags IsolationSegment
@@ -142,7 +142,7 @@ func getOrganizationsRelationship(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List spaces relationship
 // @Description This endpoint lists the spaces to which the isolation segment is assigned. For an Admin, this will list all associated spaces in the system. For an org manager, this will list only those associated spaces belonging to orgs for which the user is a manager. For any other user, this will list only those associated spaces to which the user has access.
 // @Tags IsolationSegment
@@ -168,7 +168,7 @@ func spacesRelationship(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Update an isolation segment
 // @Description
 // @Tags IsolationSegment
@@ -204,7 +204,7 @@ func updateIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Delete an isolation segment
 // @Description An isolation segment cannot be deleted if it is entitled to any organization.
 // @Tags IsolationSegment
@@ -230,7 +230,7 @@ func deleteIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Entitle organizations for an isolation segment
 // @Description This endpoint entitles the specified organizations for the isolation segment. In the case where the specified isolation segment is the system-wide shared segment, and if an organization is not already entitled for any other isolation segment, then the shared isolation segment automatically gets assigned as the default for that organization.
 // @Tags IsolationSegment
@@ -268,7 +268,7 @@ func entitleOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Revoke entitlement to isolation segment for an organization
 // @Description This endpoint revokes the entitlement for the specified organization to the isolation segment. If the isolation segment is assigned to a space within an organization, the entitlement cannot be revoked. If the isolation segment is the organization’s default, the entitlement cannot be revoked.
 // @Tags IsolationSegment

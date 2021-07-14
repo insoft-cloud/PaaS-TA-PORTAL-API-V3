@@ -15,7 +15,7 @@ func AuditEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris, getAuditEvents).Methods("GET")
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 // @Summary Get an audit event
 // @Description
 // @Tags Audit Events
@@ -40,7 +40,7 @@ func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List audit events
 // @Description Retrieve all audit events the user has access to.
 // @Tags Audit Events

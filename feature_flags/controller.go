@@ -17,7 +17,7 @@ func FeatureFlagHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{name}", updateFeatureFlags).Methods("PATCH")
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary Get a feature flag
 // @Description
 // @Tags Feature Flags
@@ -43,7 +43,7 @@ func getFeatureFlag(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary List feature flags
 // @Description Retrieve all feature_flags.
 // @Tags Feature Flags
@@ -70,7 +70,7 @@ func getFeatureFlags(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Update a feature flag
 // @Description
 // @Tags Feature Flags

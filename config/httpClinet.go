@@ -30,6 +30,7 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	req.Header.Set("Content-type", "application/json")
 	w.Header().Set("content-type", "application/json")
 	res, err := Client.Do(req)
+	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
 		return rErrs, false
@@ -40,11 +41,39 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
-		w.WriteHeader(res.StatusCode)
 		json.Unmarshal(body, &final)
 		return final, false
 	}
 	return body, true
+
+}
+
+func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter, r *http.Request) (interface{}, bool) {
+	req, _ := http.NewRequest(method, GetDomainConfig()+url, bytes.NewBuffer(tbody))
+	req.Header.Set("Authorization", r.Header.Get("cf-Authorization"))
+	req.Header.Set("Content-type", "application/x-yaml")
+	w.Header().Set("content-type", "application/json")
+	res, err := Client.Do(req)
+	w.WriteHeader(res.StatusCode)
+	if err != nil {
+		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		return rErrs, false
+	}
+	body, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		return rErrs, false
+	} else if res.StatusCode > 400 {
+		var final Error
+		json.Unmarshal(body, &final)
+		return final, false
+	}
+	if r.Method == http.MethodGet {
+		return string(body), true
+	} else {
+		return body, true
+	}
 
 }
 
