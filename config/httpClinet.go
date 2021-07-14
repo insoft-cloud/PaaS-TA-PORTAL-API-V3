@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/rs/cors"
+	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -33,15 +34,18 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		logrus.Error(rErrs)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		logrus.Error(rErrs)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
+		logrus.Error(final)
 		return final, false
 	}
 	return body, true
