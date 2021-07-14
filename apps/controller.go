@@ -41,7 +41,7 @@ func AppHandleRequests(myRouter *mux.Router) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /v3/apps [POST]
+// @Router /apps [POST]
 func createApp(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateApp
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -71,12 +71,12 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "App Guid"
-// @Param include query string false "Optionally include additional related resources in the response; valid values are space and space.organization"
+// @Param include query []string false "Optionally include additional related resources in the response; valid values are space and space.organization" collectionFormat(multi)
 // @Success 200 {object} App
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid} [GET]
+// @Router /apps/{guid} [GET]
 func getApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -97,25 +97,24 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 // @Tags Apps
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param guid path string true "App Guid"
-// @Param guids query string false "Comma-delimited list of app guids to filter by"
-// @Param names query string false "Comma-delimited list of app names to filter by"
-// @Param space_guids query string false "Comma-delimited list of space guids to filter by"
-// @Param organization_guids query string false "Comma-delimited list of organization guids to filter by"
-// @Param stacks query string false "Comma-delimited list of stack names to filter by"
+// @Param guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param names query []string false "Comma-delimited list of app names to filter by" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param stacks query []string false "Comma-delimited list of stack names to filter by" collectionFormat(csv)
 // @Param page query integer false "Page to display; valid values are integers >= 1"
 // @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
 // @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
 // @Param label_selector query string false "A query string containing a list of label selector requirements"
 // @Param lifecycle_type query string false "Lifecycle type to filter by; valid values are buildpack, docker"
-// @Param include query string false "Optionally include a list of unique related resources in the response; valid values are space and spaceorganization"
+// @Param include query []string false "Optionally include a list of unique related resources in the response; valid values are space and spaceorganization" collectionFormat(multi)
 // @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} AppList
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /v3/apps [GET]
+// @Router /apps [GET]
 func getApps(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -140,7 +139,7 @@ func getApps(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /v3/apps/{guid} [PATCH]
+// @Router /apps/{guid} [PATCH]
 func updateApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -175,7 +174,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /v3/apps/{guid} [DELETE]
+// @Router /apps/{guid} [DELETE]
 func deleteApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -200,7 +199,7 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/droplets/current [GET]
+// @Router /apps/{guid}/droplets/current [GET]
 func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -225,7 +224,7 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/relationships/current_droplet [GET]
+// @Router /apps/{guid}/relationships/current_droplet [GET]
 func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -250,7 +249,7 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/env [GET]
+// @Router /apps/{guid}/env [GET]
 func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -275,7 +274,7 @@ func getAppEnv(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/environment_variables [GET]
+// @Router /apps/{guid}/environment_variables [GET]
 func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -300,7 +299,7 @@ func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/permissions [GET]
+// @Router /apps/{guid}/permissions [GET]
 func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -326,7 +325,7 @@ func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /v3/apps/{guid}/relationships/current_droplet [PATCH]
+// @Router /apps/{guid}/relationships/current_droplet [PATCH]
 func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -360,7 +359,7 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/ssh_enabled [GET]
+// @Router /apps/{guid}/ssh_enabled [GET]
 func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -385,7 +384,7 @@ func getAppSSH(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/actions/start [POST]
+// @Router /apps/{guid}/actions/start [POST]
 func startApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -410,7 +409,7 @@ func startApp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/actions/stop [POST]
+// @Router /apps/{guid}/actions/stop [POST]
 func stopApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -435,7 +434,7 @@ func stopApp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/actions/restart [POST]
+// @Router /apps/{guid}/actions/restart [POST]
 func restartApp(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -461,7 +460,7 @@ func restartApp(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router  /v3/apps/{guid}/environment_variables [PATCH]
+// @Router /apps/{guid}/environment_variables [PATCH]
 func setAppEnv(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
