@@ -31,11 +31,17 @@ import (
 	_ "fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 	eureka "github.com/xuanbo/eureka-client"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
+	"io/ioutil"
 	"log"
 	_ "log"
 	"net/http"
 	_ "net/http"
+	"os"
+	"time"
 )
 
 // @contact.name API Support
@@ -89,6 +95,7 @@ func main() {
 	config.SetConfig()
 	config.ClientSetting()
 	config.ValidateConfig()
+	logFiles()
 	Eureka()
 	handleRequests()
 }
@@ -110,4 +117,49 @@ func Eureka() {
 		},
 	})
 	client.Start()
+}
+
+type Logger struct {
+	Warn  *log.Logger
+	Info  *log.Logger
+	Error *log.Logger
+}
+
+var logs Logger
+
+func logHandle(infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
+	logs.Warn = log.New(warningHandle, "[WARNING]", log.Ldate|log.Ltime|log.Llongfile)
+	logs.Info = log.New(infoHandle, "[INFO]", log.Ldate|log.Ltime|log.Llongfile)
+	logs.Error = log.New(errorHandle, "[ERROR]", log.Ldate|log.Ltime|log.Llongfile)
+}
+
+func logInit() {
+	logHandle(ioutil.Discard, os.Stderr, os.Stdout)
+	logs.Info.Println("INFO")
+	logs.Warn.Println("WARM")
+	logs.Error.Println("ERROR")
+}
+
+func logFiles() {
+	currentTime := time.Now()
+	date := currentTime.String()
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetOutput(os.Stdout)
+	logFile := &lumberjack.Logger{
+		Filename:   "./paas-ta-portal-api-v3-" + date[:10] + ".log",
+		MaxSize:    500, /*log파일의 최대 사이즈*/
+		MaxAge:     3,   /* 보존 할 최대 이전 로그 파일 수 */
+		MaxBackups: 28,  /*타임 스탬프를 기준으로 오래된 로그 파일을 보관할 수 있는 최대 일수*/
+		LocalTime:  false,
+		Compress:   false, /*압축 여부*/
+	}
+	logrus.SetOutput(logFile)
+	logrus.SetOutput(io.MultiWriter(logFile, os.Stdout)) /*console창*/
+	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetReportCaller(true) /*이벤트 발생 함수, 파일명이 찍힘*/
+	logrus.WithFields(logrus.Fields{
+		"[INFO]": "SUCCESS",
+	}).Info("아이엔소프트 start ...")
+
+	logInit()
 }
