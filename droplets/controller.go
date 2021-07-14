@@ -86,13 +86,24 @@ func getDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+//Permitted Roles 'All Roles'
 // @Summary List droplets
 // @Description
 // @Tags Droplets
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param query query string false "query"
+// @Param guids query []string false "Comma-delimited list of droplet to filter by" collectionFormat(csv)
+// @Param states query []string false "Comma-delimited list of droplet states to filter by" collectionFormat(csv)
+// @Param app_guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param guid path string true "Organization Guid"
 // @Success 200 {object} DropletList
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -117,8 +128,14 @@ func getDroplets(w http.ResponseWriter, r *http.Request) {
 // @Tags Droplets
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param DropletList query string false "DropletList"
 // @Param guid path string true "Packages Guid"
+// @Param guids query []string false "Comma-delimited list of droplet to filter by" collectionFormat(csv)
+// @Param states query []string false "Comma-delimited list of droplet states to filter by" collectionFormat(csv)
+// @Param app_guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
 // @Success 200 {object} DropletList
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -144,7 +161,14 @@ func getDropletsPackages(w http.ResponseWriter, r *http.Request) {
 // @Tags Droplets
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param DropletList query string false "DropletList"
+// @Param guids query []string false "Comma-delimited list of droplet to filter by" collectionFormat(csv)
+// @Param states query []string false "Comma-delimited list of droplet states to filter by" collectionFormat(csv)
+// @Param current query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param space_guids query boolean false "If true, only include the droplet currently assigned to the app"
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
 // @Param guid path string true "Droplet Guid"
 // @Success 200 {object} DropletList
 // @Failure 400,404 {object} config.Error
@@ -165,7 +189,7 @@ func getDropletsApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Org Manager'
+//Permitted Roles 'Admin Org Manager Space Developer Space Manager'
 // @Summary Update a droplet
 // @Description
 // @Tags Droplets
@@ -234,6 +258,7 @@ func deleteDroplet(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "Droplet Guid"
 // @Param CopyDroplet body CopyDroplet true "CopyDroplet"
+// @Param source_guid query string true "Source guid of the droplet to be copied"
 // @Success 200 {object} Droplet
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -267,7 +292,7 @@ func copyDroplet(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "Droplet Guid"
-// @Success 200 {object} Droplet
+// @Success 302 {object} string
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -292,7 +317,7 @@ func downloadDroplet(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "Droplets Guid"
-// @Param bits formData file true "upload file"
+// @Param bits formData file true "A gzip compressed tarball file with .tgz extension containing the droplet bits"
 // @Success 200 {object} Droplet
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error

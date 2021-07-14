@@ -59,7 +59,7 @@ func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /audit_events/{guid} [GET]
+// @Router /audit_events [GET]
 func getAuditEvents(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)

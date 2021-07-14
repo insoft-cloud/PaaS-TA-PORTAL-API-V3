@@ -31,7 +31,7 @@ func IsolationSegmentsHandleRequests(myRouter *mux.Router) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param CreateIsolationSegment body CreateIsolationSegment true "Create Isolation Segment"
-// @Success 200 {object} IsolationSegment
+// @Success 201 {object} IsolationSegment
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -89,7 +89,16 @@ func getIsolationSegment(w http.ResponseWriter, r *http.Request) {
 // @Tags IsolationSegment
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param query query string false "query"
+// @Param guids query []string false "Comma-delimited list of isolation segment guids to filter by" collectionFormat(csv)
+// @Param names query []string false "Comma-delimited list of isolation segment names to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param lifecycle_type query string false "Lifecycle type to filter by; valid values are buildpack, docker"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} IsolationSegments
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -202,7 +211,7 @@ func updateIsolationSegment(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "IsolationSegment Guid"
-// @Success 202 {object} string	"ok"
+// @Success 204  {object} string "No Content"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -267,7 +276,7 @@ func entitleOrganizationsIsolationSegment(w http.ResponseWriter, r *http.Request
 // @Security ApiKeyAuth
 // @Param org_guid path string true "Organization Guid"
 // @Param guid path string true "IsolationSegment Guid"
-// @Success 202 {object} string	"ok"
+// @Success 204  {object} string "No Content"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error

@@ -176,7 +176,7 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "BuildPack Guid"
-// @Param bits formData file false "A binary zip file containing the buildpack bits"
+// @Param bits formData file true "A binary zip file containing the buildpack bits"
 // @Success 200 {object} BuildPack
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
