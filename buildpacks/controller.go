@@ -21,6 +21,17 @@ func BuildPackHandleRequests(myRouter *mux.Router) {
 }
 
 //Permitted Roles 'Admin'
+// @Summary Create a buildpack
+// @Description
+// @Tags Buildpacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param CreateBuildPack body CreateBuildPack true "Create BuildPack"
+// @Success 200 {object} BuildPack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /buildpacks [POST]
 func createBuildPack(w http.ResponseWriter, r *http.Request) {
 	var pBody CreateBuildPack
 	vResultI, vResultB := config.Validation(r, &pBody)
@@ -39,13 +50,22 @@ func createBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted All Roles
+// @Summary Get a buildpack
+// @Description
+// @Tags Buildpacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "Buildpacks Guid"
+// @Success 200 {object} BuildPack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router  /v3/buildpacks/{guid} [GET]
 func getBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -55,13 +75,29 @@ func getBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted All Roles
+// @Summary List buildpacks
+// @Description Retrieve all buildpacks the user has access to.
+// @Tags Buildpacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param names query []string false "Comma-delimited list of buildpack names to filter by" collectionFormat(csv)
+// @Param stacks query []string false "Comma-delimited list of stack names to filter by" collectionFormat(csv)
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Success 200 {object} BuildPackList
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /buildpacks [GET]
 func getBuildPacks(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -70,13 +106,23 @@ func getBuildPacks(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin'
+// @Summary Update a buildpack
+// @Description
+// @Tags Buildpacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "BuildPack Guid"
+// @Param UpdateBuildPack body UpdateBuildPack true "Update BuildPack"
+// @Success 200 {object} BuildPack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /buildpacks/{guid} [PATCH]
 func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -93,13 +139,22 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin'
+// @Summary Delete a buildpack
+// @Description
+// @Tags Buildpacks
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "BuildPack Guid"
+// @Success 200 {object} object
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /buildpacks/{guid} [DELETE]
 func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -109,13 +164,24 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 //Permitted Roles 'Admin'
+// @Summary Update a buildpack
+// @Description
+// @Tags Buildpacks
+// @Accept mpfd
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "BuildPack Guid"
+// @Param bits formData file false "A binary zip file containing the buildpack bits"
+// @Success 200 {object} BuildPack
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /buildpacks/{guid}/upload [POST]
 func uploadBuildPack(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -125,8 +191,6 @@ func uploadBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
