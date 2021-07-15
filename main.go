@@ -28,9 +28,11 @@ import (
 	"PAAS-TA-PORTAL-V3/stacks"
 	"PAAS-TA-PORTAL-V3/tasks"
 	"PAAS-TA-PORTAL-V3/users"
+	"fmt"
 	_ "fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
 	eureka "github.com/xuanbo/eureka-client"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -92,11 +94,12 @@ func handleRequests() {
 }
 
 func main() {
+	scheduler()
 	config.SetConfig()
 	config.ClientSetting()
 	config.ValidateConfig()
 	logFiles()
-	Eureka()
+	// Eureka()
 	handleRequests()
 }
 
@@ -153,13 +156,70 @@ func logFiles() {
 		LocalTime:  false,
 		Compress:   false, /*압축 여부*/
 	}
+
 	logrus.SetOutput(logFile)
 	logrus.SetOutput(io.MultiWriter(logFile, os.Stdout)) /*console창*/
 	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetReportCaller(true) /*이벤트 발생 함수, 파일명이 찍힘*/
 	logrus.WithFields(logrus.Fields{
 		"[INFO]": "SUCCESS",
-	}).Info("아이엔소프트 start ...")
+	}).Info("SUCCESS")
 
 	logInit()
+}
+
+func task() {
+	fmt.Println("I am running task.")
+}
+
+func taskWithParams(a int, b string) {
+	fmt.Println(a, b)
+}
+
+func scheduler() {
+
+	//gocron.Every(1).Second().Do(logFiles)
+	//gocron.Every(2).Seconds().Do(logFiles)
+	gocron.Every(1).Minute().Do(logFiles) //분 단위 로그찍기
+	//gocron.Every(2).Minutes().Do(logFiles)
+	//gocron.Every(1).Hour().Do(logFiles)
+	//gocron.Every(2).Hours().Do(logFiles)
+	//gocron.Every(1).Day().Do(logFiles)
+	//gocron.Every(2).Days().Do(logFiles)
+	//gocron.Every(1).Week().Do(logFiles)
+	//gocron.Every(2).Weeks().Do(logFiles)
+
+	// Do jobs on specific weekday
+	//gocron.Every(1).Monday().Do(logFiles)
+	//gocron.Every(1).Thursday().Do(logFiles)
+
+	// Do a job at a specific time - 'hour:min:sec' - seconds optional
+	gocron.Every(1).Day().At("00:00").Do(logFiles)
+	//gocron.Every(1).Thursday().At("00:00").Do(logFiles)
+
+	// Begin job immediately upon start
+	gocron.Every(1).Hour().From(gocron.NextTick()).Do(logFiles)
+
+	// Begin job at a specific date/time
+	t := time.Date(2021, time.July, 15, 10, 0, 0, 0, time.Local)
+	gocron.Every(1).Hour().From(&t).Do(logFiles)
+
+	// NextRun gets the next running time
+	_, time := gocron.NextRun()
+	fmt.Println(time)
+
+	// Remove a specific job
+	// gocron.Remove(task)
+
+	// Clear all scheduled jobs
+	// gocron.Clear()
+
+	// Start all the pending jobs
+	<-gocron.Start()
+
+	// also, you can create a new scheduler
+	// to run two schedulers concurrently
+	s := gocron.NewScheduler()
+	s.Every(3).Seconds().Do(logFiles)
+	<-s.Start()
 }
