@@ -17,7 +17,7 @@ func ServicePlanVisibilityHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/visibility/{organization_guid]", deleteServiceBroker).Methods("DELETE")
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -33,7 +33,7 @@ func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -61,7 +61,7 @@ func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -89,7 +89,7 @@ func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

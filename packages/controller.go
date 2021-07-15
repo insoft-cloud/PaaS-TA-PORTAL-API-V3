@@ -23,7 +23,7 @@ func PackagesHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/upload", uploadPackage).Methods("POST")
 }
 
-// Permitted roles "Admin", "Space Developer"
+//  @Description Permitted roles "Admin", "Space Developer"
 // @Summary Create a package
 // @Description
 // @Tags Packages
@@ -63,7 +63,7 @@ func createPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+//  @Description Permitted roles
 //"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 // @Summary Get a package
 // @Description
@@ -89,7 +89,7 @@ func getPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "All Roles"
+// @Description Permitted roles "All Roles"
 // @Summary List packages
 // @Description Retrieve all packages the user has access to.
 // @Tags Packages
@@ -112,7 +112,7 @@ func getPackages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles
+// @Description Permitted roles
 //"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 // @Summary List packages for an app
 // @Description Retrieve packages for an app that the user has access to.
@@ -139,7 +139,7 @@ func getPackagesForAnApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin", "Space Developer"
+//  @Description Permitted roles "Admin", "Space Developer"
 // parameter를 못받아서 수정(update)이 안됨 metadata
 // @Summary Update a package
 // @Description
@@ -174,7 +174,7 @@ func updatePackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted Roles "Admin", "Space Developer"
+//  @Description Permitted Roles "Admin", "Space Developer"
 // 결과 202 나와야하는데, 200 나옵니다. -> 삭제는 실행됨.
 // @Summary Delete a package
 // @Description
@@ -200,7 +200,7 @@ func deletePackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin" "Space Developer"
+//  @Description Permitted roles "Admin" "Space Developer"
 // postman으로 테스트 완료(복사 성공), swagger 분기처리 어떻게 해야될지 모르겠음.
 // @Summary Copy a package
 // @Description This endpoint copies the bits of a source package to a target package.
@@ -238,7 +238,7 @@ func copyPackage(w http.ResponseWriter, r *http.Request) {
 }
 
 // PackageDownload pass status 302 안나오고 200으로 나옴
-// Permitted roles "Admin", "Space Developer"
+//  @Description Permitted roles "Admin", "Space Developer"
 // @Summary Download package bits
 // @Description This endpoint downloads the bits of an existing package.
 // @Description When using a remote blobstore, such as AWS, the response is a redirect to the actual location of the bits.
@@ -271,7 +271,7 @@ func downloadPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin", "Space Developer"
+//  @Description Permitted roles "Admin", "Space Developer"
 // @Summary Upload package bits
 // @Description This upload endpoint takes a multi-part form requests for packages of type bits.
 // @Description The request requires either a .zip file uploaded under the bits field or a list of resource match objects under the resources field. These field may be used together.

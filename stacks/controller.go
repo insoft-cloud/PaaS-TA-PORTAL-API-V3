@@ -19,7 +19,7 @@ func AppHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteStack).Methods("DELETE")
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Create a stack
 // @Description
 // @Tags Stacks
@@ -53,7 +53,7 @@ func createStack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary Get a stack
 // @Description
 // @Tags Stacks
@@ -79,7 +79,7 @@ func getStack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List stacks
 // @Description Retrieve all stacks.
 // @Tags Stacks
@@ -103,7 +103,7 @@ func getStacks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Update a stack
 // @Description
 // @Tags Stacks
@@ -139,7 +139,7 @@ func updateStack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Delete a stack
 // @Description
 // @Tags Stacks

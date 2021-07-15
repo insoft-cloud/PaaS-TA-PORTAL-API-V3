@@ -20,7 +20,7 @@ func BuildPackHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/upload", uploadBuildPack).Methods("POST")
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Create a buildpack
 // @Description
 // @Tags Buildpacks
@@ -54,7 +54,7 @@ func createBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary Get a buildpack
 // @Description
 // @Tags Buildpacks
@@ -79,7 +79,7 @@ func getBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List buildpacks
 // @Description Retrieve all buildpacks the user has access to.
 // @Tags Buildpacks
@@ -110,7 +110,7 @@ func getBuildPacks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Update a buildpack
 // @Description
 // @Tags Buildpacks
@@ -132,7 +132,10 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(vResultI)
 		return
 	}
+
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final BuildPack
@@ -143,7 +146,7 @@ func updateBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Delete a buildpack
 // @Description
 // @Tags Buildpacks
@@ -168,7 +171,7 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Update a buildpack
 // @Description
 // @Tags Buildpacks
@@ -176,7 +179,7 @@ func deleteBuildPack(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "BuildPack Guid"
-// @Param bits formData file false "A binary zip file containing the buildpack bits"
+// @Param bits formData file true "A binary zip file containing the buildpack bits"
 // @Success 200 {object} BuildPack
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error

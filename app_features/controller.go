@@ -16,7 +16,7 @@ func AppFeatureHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/features/{name}", updateAppFeature).Methods("PATCH")
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get an app feature
 // @Description
 // @Tags App Features
@@ -44,7 +44,7 @@ func getAppFeature(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List app features
 // @Description This endpoint retrieves the list of features for the specified app.
 // @Tags App Features
@@ -69,7 +69,7 @@ func getAppFeatures(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Space Developer'
+// @Description Permitted Roles 'Admin, Space Developer'
 // @Summary Update an app feature
 // @Description
 // @Tags App Features

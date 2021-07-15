@@ -30,7 +30,7 @@ func AppHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/environment_variables", setAppEnv).Methods("PATCH")
 }
 
-//Permitted Roles 'Admin, SpaceDeveloper'
+// @Description Permitted Roles 'Admin, SpaceDeveloper'
 // @Summary Create an app
 // @Description
 // @Tags Apps
@@ -64,7 +64,7 @@ func createApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin, Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get an app
 // @Description
 // @Tags Apps
@@ -91,7 +91,7 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List apps
 // @Description Retrieve all apps the user has access to.
 // @Tags Apps
@@ -127,7 +127,7 @@ func getApps(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Update an app
 // @Description
 // @Tags Apps
@@ -163,7 +163,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Delete an app
 // @Description
 // @Tags Apps
@@ -188,7 +188,7 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 // @Summary Get current droplet
 // @Description
 // @Tags Apps
@@ -213,7 +213,7 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
 // @Summary Get current droplet association for an app
 // @Description This endpoint retrieves the current droplet relationship for an app.
 // @Tags Apps
@@ -238,7 +238,7 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Admin Read-Only Space Developer
+// @Description Permitted Roles Admin Admin Read-Only Space Developer
 // @Summary Get environment for an app
 // @Description Retrieve the environment variables that will be provided to an app at runtime. It will include environment variables for Environment Variable Groups and Service Bindings.
 // @Tags Apps
@@ -263,7 +263,7 @@ func getAppEnv(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Space Developer'
+// @Description Permitted Roles 'Admin Admin Read-Only Space Developer'
 // @Summary Get environment variables for an app
 // @Description Retrieve the environment variables that are associated with the given app. For the entire list of environment variables that will be available to the app at runtime, see the env endpoint.
 // @Tags Apps
@@ -288,7 +288,7 @@ func getAppEnvVariables(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get permissions
 // @Description Get the current user’s permissions for the given app. If a user can see an app, then they can see its basic data. Only admin, read-only admins, and space developers can read sensitive data.
 // @Tags Apps
@@ -313,7 +313,7 @@ func getAppPermissions(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Set current droplet
 // @Description Set the current droplet for an app. The current droplet is the droplet that the app will use when running.
 // @Tags Apps
@@ -348,7 +348,7 @@ func setAppDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get SSH enabled for an app
 // @Description Returns if an application’s runtime environment will accept ssh connections. If ssh is disabled, the reason field will describe whether it is disabled globally, at the space level, or at the app level.
 // @Tags Apps
@@ -373,7 +373,7 @@ func getAppSSH(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Start an app
 // @Description
 // @Tags Apps
@@ -398,7 +398,7 @@ func startApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Stop an app
 // @Description
 // @Tags Apps
@@ -423,7 +423,7 @@ func stopApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Space Developer
+// @Description Permitted Roles Admin Space Developer
 // @Summary Stop an app
 // @Description This endpoint will synchronously stop and start an application. Unlike the start and stop actions, this endpoint will error if the app is not successfully stopped in the runtime. For restarting applications without downtime, see the deployments resource.
 // @Tags Apps
@@ -448,7 +448,7 @@ func restartApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Stop an app
 // @Description Update the environment variables associated with the given app. The variables given in the request will be merged with the existing app environment variables. Any requested variables with a value of null will be removed from the app. Environment variable names may not start with VCAP_. PORT is not a valid environment variable.
 // @Tags Apps

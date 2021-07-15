@@ -15,7 +15,7 @@ func AuditEventHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris, getAuditEvents).Methods("GET")
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 // @Summary Get an audit event
 // @Description
 // @Tags Audit Events
@@ -40,7 +40,7 @@ func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
+// @Description Permitted Roles 'Admin Read-Only Admin Global Auditor Org Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary List audit events
 // @Description Retrieve all audit events the user has access to.
 // @Tags Audit Events
@@ -59,7 +59,7 @@ func getAuditEvent(w http.ResponseWriter, r *http.Request) {
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /audit_events/{guid} [GET]
+// @Router /audit_events [GET]
 func getAuditEvents(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)

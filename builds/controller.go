@@ -19,7 +19,7 @@ func BuildPackHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateBuild).Methods("PATCH")
 }
 
-//Permitted Roles 'Admin Space Developer'
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Create a build
 // @Description
 // @Tags Builds
@@ -54,7 +54,7 @@ func createBuild(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 // @Summary Get a build
 // @Description
 // @Tags Builds
@@ -79,7 +79,7 @@ func getBuild(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List builds
 // @Description Retrieve all builds the user has access to.
 // @Tags Builds
@@ -111,7 +111,7 @@ func getBuilds(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Space Auditor Space Developer Org Auditor'
 // @Summary List builds
 // @Description Retrieve all builds for the app.
 // @Tags Builds
@@ -144,7 +144,7 @@ func getBuildApps(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer Build State Updater'
+// @Description Permitted Roles 'Admin Space Developer Build State Updater'
 // @Summary Update a build
 // @Description
 // @Tags Builds
@@ -167,6 +167,8 @@ func updateBuild(w http.ResponseWriter, r *http.Request) {
 	}
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(reqBody, pBody)
+	reqBody, _ = json.Marshal(pBody)
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid, reqBody, "PATCH", w, r)
 	if rBodyResult {
 		var final Build

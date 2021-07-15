@@ -27,7 +27,7 @@ func RouteHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted roles, Admin, Space Developer
+// @Description Permitted roles, Admin, Space Developer
 // @Summary Create a route
 // @Description
 // @Tags Routes
@@ -70,7 +70,7 @@ func createRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin" Read-Only, "Admin", "Global Auditor", "Org Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles "Admin" Read-Only, "Admin", "Global Auditor", "Org Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 //"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 // @Summary Get a route
 // @Description
@@ -100,7 +100,7 @@ func getRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "All Roles"
+// @Description Permitted roles "All Roles"
 // @Summary List routes
 // @Description Retrieve all routes the user has access to.
 // @Tags Routes
@@ -125,7 +125,7 @@ func getRoutes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin" "Admin" Read-Only "Global Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
+//  @Description Permitted roles "Admin" "Admin" Read-Only "Global Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
 // @Summary List routes for an app
 // @Description Retrieve all routes that have destinations that point to the given app.
 // @Tags Routes
@@ -154,7 +154,7 @@ func getAppRoutes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles "Admin", "Space Developer"
 // @Summary Update a route
 // @Description
 // @Tags Routes
@@ -192,7 +192,7 @@ func updateRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles "Admin", "Space Developer"
 // @Summary Delete a route
 // @Description
 // @Tags Routes
@@ -219,7 +219,7 @@ func deleteRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles
+// @Description Permitted roles
 //Role	Notes
 //Admin
 //Admin Read-Only
@@ -260,7 +260,7 @@ func checkReservedRoutesForDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin" Read-Only "Admin" "Global Auditor" "Org Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
+// @Description Permitted roles "Admin" Read-Only "Admin" "Global Auditor" "Org Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
 // @Summary List destinations for a route
 // @Description Retrieve all destinations associated with a route.
 // @Tags Routes
@@ -290,7 +290,7 @@ func getDestinationsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin" "Space Developer"
+//  @Description Permitted roles "Admin" "Space Developer"
 // @Summary Insert destinations for a route
 // @Description Add one or more destinations to a route, preserving any existing destinations.
 // @Description Note that weighted destinations cannot be added with this endpoint. To add weighted destinations, replace all destinations for a route at once using the replace destinations endpoint.
@@ -331,7 +331,7 @@ func insertDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin" "Space Developer"
+// @Description Permitted roles "Admin" "Space Developer"
 // @Summary Replace all destinations for a route
 // @Description Replaces all destinations for a route, removing any destinations not included in the provided list.
 // @Description If using weighted destinations, all destinations provided here must have a weight specified,
@@ -371,7 +371,7 @@ func replaceAllDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles "Admin", "Space Developer"
 // @Summary Remove destination for a route
 // @Description Remove a destination from a route.
 // @Tags Routes
@@ -400,7 +400,7 @@ func removeDestinationForRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles "Admin", "Space Developer"
 //Note: unmapped=true is a required query parameter; always include it.
 // @Summary Delete unmapped routes for a space
 // @Description Deletes all routes in a space that are not mapped to any applications and not bound to any service instances.

@@ -24,7 +24,7 @@ func OrganizationQuotasHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", updateOrganizationQuota).Methods("PATCH")
 }
 
-// Permitted Roles "Admin"
+//  @Description Permitted Roles "Admin"
 // 404 error : Unknown request
 // @Summary Create an organization quota
 // @Description This endpoint creates a new organization quota, but does not assign it to a specific organization unless an organization GUID is provided in the relationships.organizations parameter.
@@ -60,7 +60,7 @@ func createOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted Roles
+//  @Description Permitted Roles
 // "Admin"
 // "Admin" Read-Only
 // "Global" Auditor
@@ -96,7 +96,7 @@ func getOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted Roles
+//  @Description Permitted Roles
 // "Admin"
 // "Admin" Read-Only
 // "Global Auditor"
@@ -129,7 +129,7 @@ func getOrganizationQuotas(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted Roles "Admin"
+//  @Description Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
 // @Summary Apply an organization quota to an organization
 // @Description This endpoint applies an organization quota to one or more organizations.
@@ -169,7 +169,7 @@ func applyOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted Roles "Admin"
+//  @Description Permitted Roles "Admin"
 // quotas에 대한 guid를 찾을 수 없음
 // @Summary Delete an organization quota
 // @Description Organization quotas cannot be deleted when applied to any organizations.
@@ -194,7 +194,7 @@ func deleteOrganizationQuota(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin
+// @Description Permitted roles Admin
 // quotas에 대한 guid를 찾을 수 없음
 // @Summary Update an organization quota
 // @Description This endpoint will only update the parameters specified in the request body. Any unspecified parameters will retain their existing values.

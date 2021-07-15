@@ -17,7 +17,7 @@ func EnvironmentVariableGroupsHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary Get an environment variable group
 // @Description
 // @Tags Environment Variable Groups
@@ -45,9 +45,9 @@ func getEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin'
+// @Description Permitted Roles 'Admin'
 // @Summary Update environment variable group
-// @Description
+// @Description Update the environment variable group. The variables given in the request will be merged with the existing environment variable group. Any requested variables with a value of null will be removed from the group. Environment variable names may not start with VCAP_. PORT is not a valid environment variable.
 // @Tags Environment Variable Groups
 // @Produce  json
 // @Security ApiKeyAuth
@@ -61,9 +61,6 @@ func getEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 func updateEnvironmentVariableGroup(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
-	if name == "staging" {
-		return
-	}
 	var pBody interface{}
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)

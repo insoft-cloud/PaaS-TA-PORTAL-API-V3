@@ -18,7 +18,7 @@ func ServiceOfferingHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteServiceBroker).Methods("DELETE")
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func getServiceOffering(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -35,7 +35,7 @@ func getServiceOffering(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 func getServiceOfferings(w http.ResponseWriter, r *http.Request) {
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"?"+query, nil, "GET", w, r)
@@ -50,7 +50,7 @@ func getServiceOfferings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -79,7 +79,7 @@ func updateServiceBroker(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

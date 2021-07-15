@@ -17,7 +17,7 @@ func FeatureFlagHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{name}", updateFeatureFlags).Methods("PATCH")
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary Get a feature flag
 // @Description
 // @Tags Feature Flags
@@ -43,13 +43,16 @@ func getFeatureFlag(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles
+// @Description Permitted Roles All Roles
 // @Summary List feature flags
 // @Description Retrieve all feature_flags.
 // @Tags Feature Flags
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param query query string false "query"
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} GetFeatureFlags
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -67,7 +70,7 @@ func getFeatureFlags(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Update a feature flag
 // @Description
 // @Tags Feature Flags

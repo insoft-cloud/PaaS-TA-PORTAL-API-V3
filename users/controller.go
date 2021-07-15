@@ -19,7 +19,7 @@ func UserHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteUser).Methods("DELETE")
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Create a user
 // @Description Creating a user requires one value, a GUID. This creates a user in the Cloud Controller database.
 // @Tags Users
@@ -53,7 +53,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Description Permitted Roles All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
 // @Summary Get a user
 // @Description
 // @Tags Users
@@ -79,7 +79,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Description Permitted All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
 // @Summary List users
 // @Description
 // @Tags Users
@@ -101,7 +101,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Update a user
 // @Description Update a user’s metadata.
 // @Tags Users
@@ -134,7 +134,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin
+// @Description Permitted Roles Admin
 // @Summary Delete a user
 // @Description All roles associated with a user will be deleted if the user is deleted.
 // @Tags Users

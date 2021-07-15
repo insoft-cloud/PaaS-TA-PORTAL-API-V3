@@ -25,7 +25,7 @@ func ProcessHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/apps/{guid}/"+uris+"/{type}/instances/{index}", terminateAppProcessInstance).Methods("DELETE")
 }
 
-// Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+//  @Description Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 // @Summary Get a process
 // @Description
 // @Tags Processes
@@ -50,7 +50,7 @@ func getProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+//  @Description Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
 // @Summary Get a process
 // @Description
 // @Tags Processes
@@ -77,7 +77,7 @@ func getAppProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+//  @Description Permitted roles
 // Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
 // @Summary Get stats for a process
 // @Description
@@ -103,7 +103,7 @@ func getStatsProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Permitted roles
+//  @Description Permitted roles
 // Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
 // @Summary Get stats for a process
 // @Description
@@ -131,7 +131,7 @@ func getAppStatsProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles
+// @Description Permitted roles
 //All Roles
 // @Summary List processes
 // @Description Retrieve all processes the user has access to.
@@ -157,7 +157,7 @@ func getProcesses(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles
+// @Description Permitted roles
 //Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
 // @Summary List processes for app
 // @Description Retrieves all processes belonging to an app.
@@ -186,7 +186,7 @@ func getAppProcesses(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles
+// @Description Permitted roles
 //Admin, Space Developer
 // TypeError: Failed to fetch
 // @Summary Update a process
@@ -228,7 +228,7 @@ func updateProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin, Space Developer
+// @Description Permitted roles Admin, Space Developer
 // @Summary Scale a process
 // @Description
 // @Tags Processes
@@ -271,7 +271,7 @@ func scaleProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted roles Admin, Space Developer
+// @Description Permitted roles Admin, Space Developer
 // @Summary Scale a process
 // @Description
 // @Tags Processes
@@ -316,7 +316,7 @@ func scaleAppProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles, Admin, Space Developer
+// @Description Permitted Roles, Admin, Space Developer
 // index에 대한 값을 모르겠음.
 // @Summary Terminate a process instance
 // @Description Terminate an instance of a specific process. Health management will eventually restart the instance.
@@ -347,7 +347,7 @@ func terminateProcessInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles, Admin, Space Developer
+// @Description Permitted Roles, Admin, Space Developer
 // index에 대한 값을 모르겠음.
 // @Summary Terminate a process instance
 // @Description Terminate an instance of a specific process. Health management will eventually restart the instance.

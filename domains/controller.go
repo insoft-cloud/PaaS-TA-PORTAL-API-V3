@@ -23,7 +23,7 @@ func DomainHandleRequests(myRouter *mux.Router) {
 
 }
 
-//Permitted Roles 'Org Manager'
+// @Description Permitted Roles 'Admin Org Manager'
 // @Summary Create a domain
 // @Description
 // @Tags Domains
@@ -42,7 +42,6 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(vResultI)
 		return
 	}
-
 	//호출
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(reqBody, pBody)
@@ -57,7 +56,7 @@ func createDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Can only view domains without an organization relationship Org Manager Space Auditor Space Developer Space Manager
 // @Summary Get a domain
 // @Description
 // @Tags Domains
@@ -82,13 +81,21 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List domains
 // @Description Retrieve all domains the user has access to.
 // @Tags Domains
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param query query string false "query"
+// @Param guids query []string false "Comma-delimited list of guids to filter by" collectionFormat(csv)
+// @Param names query []string false "Comma-delimited list of domain  names to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} DomainList
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -106,13 +113,19 @@ func getDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted All Roles
+// @Description Permitted All Roles
 // @Summary List domains for an organization
 // @Description Retrieve all domains available in an organization for the current user. This will return unscoped domains (those without an owning organization), domains that are scoped to the given organization (owned by the given organization), and domains that have been shared with the organization.
 // @Tags Domains
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param OrganizationDomainsList query string false "OrganizationDomainsList"
+// @Param guids query []string false "Comma-delimited list of guids to filter by" collectionFormat(csv)
+// @Param names query []string false "Comma-delimited list of domain  names to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at, name, state"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
 // @Param guid path string true "Organization Guid"
 // @Success 200 {object} OrganizationDomainsList
 // @Failure 400,404 {object} config.Error
@@ -134,7 +147,7 @@ func getDomainsOrganization(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Permitted Roles 'Admin, Space Developer'
+// @Description Permitted Roles 'Admin, Org Manager'
 // @Summary Update a domain
 // @Description
 // @Tags Domains
@@ -170,7 +183,7 @@ func updateDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Delete a domain
 // @Description
 // @Tags Domains
@@ -195,7 +208,7 @@ func deleteDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Share a domain
 // @Description This endpoint shares an organization-scoped domain to other organizations specified by a list of organization guids. This will allow any of the other organizations to use the organization-scoped domain.
 // @Tags Domains
@@ -231,7 +244,7 @@ func shareDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Permitted Roles Admin Org Manager
+// @Description Permitted Roles Admin Org Manager
 // @Summary Unshare a domain
 // @Description This endpoint removes an organization from the list of organizations an organization-scoped domain is shared with. This prevents the organization from using the organization-scoped domain.
 // @Tags Domains
