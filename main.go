@@ -101,7 +101,7 @@ func main() {
 	config.ClientSetting()
 	config.ValidateConfig()
 	logFiles()
-	// Eureka()
+	Eureka()
 	handleRequests()
 }
 
@@ -170,23 +170,15 @@ func logFiles() {
 	logInit()
 }
 
-func task() {
-	fmt.Println("I am running task.")
-}
-
-func taskWithParams(a int, b string) {
-	fmt.Println(a, b)
-}
-
 func scheduler() {
 
 	//gocron.Every(1).Second().Do(logFiles)
 	//gocron.Every(2).Seconds().Do(logFiles)
-	gocron.Every(1).Minute().Do(logFiles) //분 단위 로그찍기
+	gocron.Every(1).Minute().Do(logFiles)
 	//gocron.Every(2).Minutes().Do(logFiles)
 	//gocron.Every(1).Hour().Do(logFiles)
 	//gocron.Every(2).Hours().Do(logFiles)
-	//gocron.Every(1).Day().Do(logFiles)
+	gocron.Every(1).Day().Do(logFiles)
 	//gocron.Every(2).Days().Do(logFiles)
 	//gocron.Every(1).Week().Do(logFiles)
 	//gocron.Every(2).Weeks().Do(logFiles)
