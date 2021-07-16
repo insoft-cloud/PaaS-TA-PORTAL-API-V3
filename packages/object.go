@@ -51,7 +51,7 @@ type CreatePackage struct {
 	Relationships *struct {
 		App struct {
 			Data struct {
-				GUID string `json:"guid"`
+				GUID []string `json:"guid"`
 			} `json:"data"`
 		} `json:"app" validate:"required"`
 	} `json:"relationships"`
@@ -103,8 +103,19 @@ type CopyPackage struct {
 	Relationships struct {
 		App struct {
 			Data struct {
-				GUID string `json:"guid"`
+				GUID []string `json:"guid"`
 			} `json:"data"`
 		} `json:"app"`
 	} `json:"relationships" validate:"required"`
+}
+
+type Resources struct {
+	Resources []struct {
+		Checksum struct {
+			Value string `json:"value"`
+		} `json:"checksum"`
+		SizeInBytes int    `json:"size_in_bytes"`
+		Path        string `json:"path"`
+		Mode        string `json:"mode"`
+	} `json:"resources"`
 }

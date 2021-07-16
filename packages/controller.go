@@ -23,14 +23,13 @@ func PackagesHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/upload", uploadPackage).Methods("POST")
 }
 
-//  @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Create a package
 // @Description
 // @Tags Packages
 // @Produce json
 // @Security ApiKeyAuth
-// @Param type body string true "Type of the package; valid values are bits, docker"
-// @Param relationships.app body string true "A relationship to an app"
+// @Param CreatePackages body CreatePackage true "Create Packages"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -63,8 +62,7 @@ func createPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles
-//"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get a package
 // @Description
 // @Tags Packages
@@ -89,12 +87,24 @@ func getPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "All Roles"
+// @Description Permitted roles 'All Roles'
 // @Summary List packages
 // @Description Retrieve all packages the user has access to.
 // @Tags Packages
 // @Produce json
 // @Security ApiKeyAuth
+// @Param guids query []string false "Comma-delimited list of package guids to filter by" collectionFormat(csv)
+// @Param states query []string false "Comma-delimited list of package states to filter by" collectionFormat(csv)
+// @Param types query []string false "Comma-delimited list of package types to filter by" collectionFormat(csv)
+// @Param app_guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by; defaults to ascending. Prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -112,14 +122,21 @@ func getPackages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles
-//"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary List packages for an app
 // @Description Retrieve packages for an app that the user has access to.
 // @Tags Packages
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
+// @Param guids query []string false "Comma-delimited list of package guids to filter by" collectionFormat(csv)
+// @Param states query []string false "Comma-delimited list of package states to filter by" collectionFormat(csv)
+// @Param types query []string false "Comma-delimited list of package types to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by; defaults to ascending. Prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -139,7 +156,7 @@ func getPackagesForAnApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // parameter를 못받아서 수정(update)이 안됨 metadata
 // @Summary Update a package
 // @Description
@@ -147,8 +164,7 @@ func getPackagesForAnApp(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "package guid"
-// @Param metadata.labels body string false "Labels applied to the package"
-// @Param metadata.annotations body string false "Annotations applied to the package"
+// @Param UpdatePackage body UpdatePackage false "Update Packages"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -174,7 +190,7 @@ func updatePackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted Roles "Admin", "Space Developer"
+// @Description Permitted Roles 'Admin, Space Developer'
 // 결과 202 나와야하는데, 200 나옵니다. -> 삭제는 실행됨.
 // @Summary Delete a package
 // @Description
@@ -200,21 +216,20 @@ func deletePackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin" "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // postman으로 테스트 완료(복사 성공), swagger 분기처리 어떻게 해야될지 모르겠음.
 // @Summary Copy a package
 // @Description This endpoint copies the bits of a source package to a target package.
 // @Tags Packages
 // @Produce json
 // @Security ApiKeyAuth
-// @Param guid path string true "package guid"
-// @Param query path string true "GUID of the source package to copy from"
-// @Param relationships.app body string true "A relationship to the destination app"
+// @Param source_guid query []string true "GUID of the source package to copy from" collectionFormat(csv)
+// @Param CopyPackages body CopyPackage true "Copy Packages"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /packages/{guid} [POST]
+// @Router /packages [POST]
 func copyPackage(w http.ResponseWriter, r *http.Request) {
 	var pBody CopyPackage
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
@@ -238,7 +253,7 @@ func copyPackage(w http.ResponseWriter, r *http.Request) {
 }
 
 // PackageDownload pass status 302 안나오고 200으로 나옴
-//  @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Download package bits
 // @Description This endpoint downloads the bits of an existing package.
 // @Description When using a remote blobstore, such as AWS, the response is a redirect to the actual location of the bits.
@@ -271,7 +286,7 @@ func downloadPackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Upload package bits
 // @Description This upload endpoint takes a multi-part form requests for packages of type bits.
 // @Description The request requires either a .zip file uploaded under the bits field or a list of resource match objects under the resources field. These field may be used together.
@@ -281,6 +296,7 @@ func downloadPackage(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "package guid"
 // @Param bits formData file false "A binary zip file containing the package bits"
+// @Param resources formData Resources false "Fingerprints of the application bits that have previously been pushed to Cloud Foundry, formatted as resource match objects"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
