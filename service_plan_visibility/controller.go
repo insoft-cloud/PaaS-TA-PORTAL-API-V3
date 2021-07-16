@@ -18,6 +18,17 @@ func ServicePlanVisibilityHandleRequests(myRouter *mux.Router) {
 }
 
 // @Description Permitted Roles 'All'
+// @Summary Get a service plan visibility
+// @Description This endpoint retrieves the service plan visibility for a given plan.
+// @Tags Service Plan Visibility
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "ServicePlan Guid"
+// @Success 200 {object} ServicePlanVisibility
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /service_plans/{guid}/visibility [GET]
 func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -27,13 +38,23 @@ func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 // @Description Permitted Roles 'All'
+// @Summary Update a service plan visibility
+// @Description This endpoint updates a service plan visibility. It behaves similar to the POST service plan visibility endpoint but this endpoint will replace the existing list of organizations when the service plan is organization visible.
+// @Tags Service Plan Visibility
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "ServicePlan Guid"
+// @Param UpdateServicePlanVisibility body UpdateServicePlanVisibility true "Update ServicePlanVisibility"
+// @Success 200 {object} ServicePlanVisibility
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /service_plans/{guid}/visibility [PATCH]
 func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -55,13 +76,23 @@ func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 // @Description Permitted Roles 'All'
+// @Summary Apply a service plan visibility
+// @Description This endpoint applies a service plan visibility. It behaves similar to the PATCH service plan visibility endpoint but this endpoint will append to the existing list of organizations when the service plan is organization visible.
+// @Tags Service Plan Visibility
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "ServicePlan Guid"
+// @Param UpdateServicePlanVisibility body UpdateServicePlanVisibility true "Update ServicePlanVisibility"
+// @Success 200 {object} ServicePlanVisibility
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /service_plans/{guid}/visibility [POST]
 func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -83,13 +114,23 @@ func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
 
 // @Description Permitted Roles 'Admin Space Developer (only space-scoped brokers)'
+// @Summary Remove organization from a service plan visibility
+// @Description This endpoint removes an organization from a service plan visibility list of organizations. It is only defined for service plans which are org-restricted. It will fail with a HTTP status code of 422 for any other visibility type (e.g. Public).
+// @Tags Service Plan Visibility
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param guid path string true "ServicePlan Guid"
+// @Param guid path string true "Organization Guid"
+// @Success 204 {object} string "ok"
+// @Failure 400,404 {object} config.Error
+// @Failure 500 {object} config.Error
+// @Failure default {object} config.Error
+// @Router /service_plans/{guid}/visibility/{organization_guid} [DELETE]
 func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -100,8 +141,6 @@ func deleteServiceBroker(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
-		var final interface{}
-		json.Unmarshal(rBody.([]byte), &final)
-		json.NewEncoder(w).Encode(final)
+		json.NewEncoder(w).Encode(rBody)
 	}
 }
