@@ -27,7 +27,7 @@ func ServiceRouteBindingHandleRequests(myRouter *mux.Router) {
 // @Tags Spaces
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param Space path Space true "Create Space"
+// @Param Space body Space true "Create Space"
 // @Success 201 {object} Space
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -127,7 +127,7 @@ func getSpaces(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "Space Guid"
-// @Param UpdateSpace path UpdateSpace true "Update Space"
+// @Param UpdateSpace body UpdateSpace true "Update Space"
 // @Success 200 {object} Space
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -164,7 +164,7 @@ func updateSpace(w http.ResponseWriter, r *http.Request) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param guid path string true "Space Guid"
-// @Success 202 {object} String "ok"
+// @Success 202 {object} string "ok"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
