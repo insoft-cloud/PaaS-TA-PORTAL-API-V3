@@ -14,14 +14,14 @@ func ResourceMatchesHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris, createResourceMatch).Methods("POST")
 }
 
-//  @Description Permitted roles "All Roles"
+//  @Description Permitted roles 'All Roles'
 // 201 결과 안난오고 200에 결과 값
 // @Summary Create a resource match
 // @Description This endpoint returns a list of cached resources from the input list.
 // @Tags Resource Matches
 // @Produce json
 // @Security ApiKeyAuth
-// @Param resources body string true "List of resources to check for in the resource cache"
+// @Param resources body ResourceMatch true "List of resources to check for in the resource cache"
 // @Success 200 {object} ResourceMatch
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
