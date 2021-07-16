@@ -25,7 +25,7 @@ func ProcessHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/apps/{guid}/"+uris+"/{type}/instances/{index}", terminateAppProcessInstance).Methods("DELETE")
 }
 
-//  @Description Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get a process
 // @Description
 // @Tags Processes
@@ -50,7 +50,7 @@ func getProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get a process
 // @Description
 // @Tags Processes
@@ -77,8 +77,7 @@ func getAppProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles
-// Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get stats for a process
 // @Description
 // @Tags Processes
@@ -103,8 +102,7 @@ func getStatsProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles
-// Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get stats for a process
 // @Description
 // @Tags Processes
@@ -131,13 +129,23 @@ func getAppStatsProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles
-//All Roles
+// @Description Permitted roles 'All Roles'
 // @Summary List processes
 // @Description Retrieve all processes the user has access to.
 // @Tags Processes
 // @Produce json
 // @Security ApiKeyAuth
+// @Param guids query []string false "Comma-delimited list of process guids to filter by" collectionFormat(csv)
+// @Param types query []string false "Comma-delimited list of process types to filter by" collectionFormat(csv)
+// @Param app_guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -157,14 +165,21 @@ func getProcesses(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles
-//Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary List processes for app
 // @Description Retrieves all processes belonging to an app.
 // @Tags Processes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
+// @Param guids query []string false "Comma-delimited list of process guids to filter by" collectionFormat(csv)
+// @Param types query []string false "Comma-delimited list of process types to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by. Defaults to ascending; prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -186,8 +201,7 @@ func getAppProcesses(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles
-//Admin, Space Developer
+// @Description Permitted roles 'Admin, Space Developer'
 // TypeError: Failed to fetch
 // @Summary Update a process
 // @Description
@@ -195,10 +209,7 @@ func getAppProcesses(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
-// @Param command body string false "The command used to start the process; use null to revert to the buildpack-detected or procfile-provided start command"
-// @Param health_check body string false "The health check to perform on the process"
-// @Param metadata.labels body string false "Labels applied to the process"
-// @Param metadata.annotations body string false "Annotations applied to the process"
+// @Param UpdateProcess body UpdateProcess false "Update Process"
 // @Success 200 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -228,16 +239,14 @@ func updateProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles Admin, Space Developer
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Scale a process
 // @Description
 // @Tags Processes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
-// @Param instances body integer false "The number of instances to run"
-// @Param memory_in_mb body integer false "The memory in mb allocated per instance"
-// @Param disk_in_mb body integer false "The disk in mb allocated per instance"
+// @Param ScaleProcess body ScaleProcess false "Scale Process"
 // @Success 200 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -271,7 +280,7 @@ func scaleProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles Admin, Space Developer
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Scale a process
 // @Description
 // @Tags Processes
@@ -279,9 +288,7 @@ func scaleProcess(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
 // @Param type path string true "app type"
-// @Param instances body integer false "The number of instances to run"
-// @Param memory_in_mb body integer false "The memory in mb allocated per instance"
-// @Param disk_in_mb body integer false "The disk in mb allocated per instance"
+// @Param ScaleProcess body ScaleProcess false "Scale Process"
 // @Success 200 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -316,7 +323,7 @@ func scaleAppProcess(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles, Admin, Space Developer
+// @Description Permitted Roles 'Admin, Space Developer'
 // index에 대한 값을 모르겠음.
 // @Summary Terminate a process instance
 // @Description Terminate an instance of a specific process. Health management will eventually restart the instance.
@@ -347,7 +354,7 @@ func terminateProcessInstance(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles, Admin, Space Developer
+// @Description Permitted Roles 'Admin, Space Developer'
 // index에 대한 값을 모르겠음.
 // @Summary Terminate a process instance
 // @Description Terminate an instance of a specific process. Health management will eventually restart the instance.
