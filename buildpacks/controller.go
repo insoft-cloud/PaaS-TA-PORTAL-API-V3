@@ -54,7 +54,7 @@ func createBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary Get a buildpack
 // @Description
 // @Tags Buildpacks
@@ -79,7 +79,7 @@ func getBuildPack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List buildpacks
 // @Description Retrieve all buildpacks the user has access to.
 // @Tags Buildpacks

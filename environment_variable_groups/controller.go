@@ -17,7 +17,7 @@ func EnvironmentVariableGroupsHandleRequests(myRouter *mux.Router) {
 
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary Get an environment variable group
 // @Description
 // @Tags Environment Variable Groups

@@ -81,7 +81,7 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List tasks
 // @Description
 // @Tags Tasks

@@ -79,7 +79,7 @@ func getBuild(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List builds
 // @Description Retrieve all builds the user has access to.
 // @Tags Builds

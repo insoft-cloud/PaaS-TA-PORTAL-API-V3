@@ -41,7 +41,7 @@ func getAppUsageEvent(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List app usage events
 // @Description Retrieve an app usage event.
 // @Tags App Usage Events

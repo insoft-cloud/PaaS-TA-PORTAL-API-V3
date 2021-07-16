@@ -81,7 +81,7 @@ func getDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List domains
 // @Description Retrieve all domains the user has access to.
 // @Tags Domains
@@ -113,7 +113,7 @@ func getDomains(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List domains for an organization
 // @Description Retrieve all domains available in an organization for the current user. This will return unscoped domains (those without an owning organization), domains that are scoped to the given organization (owned by the given organization), and domains that have been shared with the organization.
 // @Tags Domains

@@ -17,7 +17,7 @@ func ServicePlanVisibilityHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}/visibility/{organization_guid]", deleteServiceBroker).Methods("DELETE")
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -33,7 +33,7 @@ func getServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]
@@ -61,7 +61,7 @@ func updateServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 func applyServicePlanVisibility(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	guid := vars["guid"]

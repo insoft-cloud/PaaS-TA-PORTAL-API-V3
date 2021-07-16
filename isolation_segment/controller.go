@@ -83,7 +83,7 @@ func getIsolationSegment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List isolation segments
 // @Description Retrieves all isolation segments to which the user has access. For admin, this is all the isolation segments in the system. For an org manager, this is the isolation segments in the allowed list for any organization to which the user belongs. For any other user, this is the isolation segments assigned to any spaces to which the user has access.
 // @Tags IsolationSegment

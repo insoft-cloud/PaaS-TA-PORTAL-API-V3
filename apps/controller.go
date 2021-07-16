@@ -91,7 +91,7 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List apps
 // @Description Retrieve all apps the user has access to.
 // @Tags Apps
@@ -127,7 +127,7 @@ func getApps(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles Admin Space Developer
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Update an app
 // @Description
 // @Tags Apps
@@ -163,7 +163,7 @@ func updateApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles Admin Space Developer
+// @Description Permitted Roles 'Admin Space Developer'
 // @Summary Delete an app
 // @Description
 // @Tags Apps
@@ -188,7 +188,7 @@ func deleteApp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get current droplet
 // @Description
 // @Tags Apps
@@ -213,7 +213,7 @@ func getAppDroplet(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager
+// @Description Permitted Roles 'Admin Admin Read-Only Global Auditor Org Manager Space Auditor Space Developer Space Manager'
 // @Summary Get current droplet association for an app
 // @Description This endpoint retrieves the current droplet relationship for an app.
 // @Tags Apps
@@ -238,7 +238,7 @@ func getAppDropletAssociation(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles Admin Admin Read-Only Space Developer
+// @Description Permitted Roles 'Admin Admin Read-Only Space Developer'
 // @Summary Get environment for an app
 // @Description Retrieve the environment variables that will be provided to an app at runtime. It will include environment variables for Environment Variable Groups and Service Bindings.
 // @Tags Apps

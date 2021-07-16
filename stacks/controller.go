@@ -79,7 +79,7 @@ func getStack(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles
+// @Description Permitted Roles 'All'
 // @Summary List stacks
 // @Description Retrieve all stacks.
 // @Tags Stacks
