@@ -27,7 +27,7 @@ func RouteHandleRequests(myRouter *mux.Router) {
 
 }
 
-// @Description Permitted roles, Admin, Space Developer
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Create a route
 // @Description
 // @Tags Routes

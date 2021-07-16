@@ -19,14 +19,15 @@ func UserHandleRequests(myRouter *mux.Router) {
 	myRouter.HandleFunc("/v3/"+uris+"/{guid}", deleteUser).Methods("DELETE")
 }
 
-// @Description Permitted Roles Admin
+// @Description Permitted Roles 'Admin'
 // @Summary Create a user
 // @Description Creating a user requires one value, a GUID. This creates a user in the Cloud Controller database.
+// @Description Generally, the GUID should match the GUID of an already-created user in the UAA database, though this is not required.
 // @Tags Users
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param CreateUser body CreateUser true "Create User"
-// @Success 200 {object} Users
+// @Success 201 {object} Users
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -53,7 +54,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted Roles All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Description Permitted Roles 'All Roles'
 // @Summary Get a user
 // @Description
 // @Tags Users
@@ -79,7 +80,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted All Roles Admin Read-Only Admin Global Auditor Org Auditor Org Billing Manager Org Manager Space Auditor Space Developer Space Manager (Can only view users affiliated with their org)
+// @Description Permitted 'All Roles'
 // @Summary List users
 // @Description
 // @Tags Users
