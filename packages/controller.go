@@ -296,7 +296,7 @@ func downloadPackage(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "package guid"
 // @Param bits formData file false "A binary zip file containing the package bits"
-// @Param resources formData Resources false "Fingerprints of the application bits that have previously been pushed to Cloud Foundry, formatted as resource match objects"
+// @Param resources formData object false "Fingerprints of the application bits that have previously been pushed to Cloud Foundry, formatted as resource match objects"
 // @Success 200 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
