@@ -95,6 +95,7 @@ func main() {
 	config.ClientSetting()
 	config.ValidateConfig()
 	handleRequests()
+
 }
 
 func Eureka() {
