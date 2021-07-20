@@ -42,7 +42,6 @@ import (
 	"log"
 	_ "log"
 	"net/http"
-	_ "net/http"
 	"os"
 	"time"
 )
@@ -93,16 +92,17 @@ func handleRequests() {
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})
 
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
+
 }
 
 func main() {
-	scheduler()
 	config.SetConfig()
 	config.ClientSetting()
 	config.ValidateConfig()
-	logFiles()
-	Eureka()
 	handleRequests()
+	Eureka()
+	logFiles()
+
 }
 
 func Eureka() {
@@ -133,6 +133,7 @@ type Logger struct {
 var logs Logger
 
 func logHandle(infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
+
 	logs.Warn = log.New(warningHandle, "[WARNING]", log.Ldate|log.Ltime|log.Llongfile)
 	logs.Info = log.New(infoHandle, "[INFO]", log.Ldate|log.Ltime|log.Llongfile)
 	logs.Error = log.New(errorHandle, "[ERROR]", log.Ldate|log.Ltime|log.Llongfile)
@@ -140,16 +141,17 @@ func logHandle(infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Wri
 
 func logInit() {
 	logHandle(ioutil.Discard, os.Stderr, os.Stdout)
-	logs.Info.Println("INFO")
-	logs.Warn.Println("WARM")
-	logs.Error.Println("ERROR")
+	// logs.Info.Println("INFO")
+	// logs.Warn.Println("WARM")
+	// logs.Error.Println("ERROR")
+	scheduler()
 }
 
 func logFiles() {
 	currentTime := time.Now()
 	date := currentTime.String()
 	logrus.SetFormatter(&logrus.JSONFormatter{})
-	logrus.SetOutput(os.Stdout)
+	//logrus.SetOutput(os.Stdout)
 	logFile := &lumberjack.Logger{
 		Filename:   "./paas-ta-portal-api-v3-" + date[:10] + ".log",
 		MaxSize:    500, /*log파일의 최대 사이즈*/
@@ -158,41 +160,26 @@ func logFiles() {
 		LocalTime:  false,
 		Compress:   false, /*압축 여부*/
 	}
-
+	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetOutput(logFile)
 	logrus.SetOutput(io.MultiWriter(logFile, os.Stdout)) /*console창*/
-	logrus.SetLevel(logrus.DebugLevel)
-	logrus.SetReportCaller(true) /*이벤트 발생 함수, 파일명이 찍힘*/
 	logrus.WithFields(logrus.Fields{
 		"[INFO]": "SUCCESS",
 	}).Info("SUCCESS")
-
 	logInit()
 }
 
 func scheduler() {
 
-	//gocron.Every(1).Second().Do(logFiles)
-	//gocron.Every(2).Seconds().Do(logFiles)
 	gocron.Every(1).Minute().Do(logFiles)
-	//gocron.Every(2).Minutes().Do(logFiles)
-	//gocron.Every(1).Hour().Do(logFiles)
-	//gocron.Every(2).Hours().Do(logFiles)
+	gocron.Every(1).Hour().Do(logFiles)
 	gocron.Every(1).Day().Do(logFiles)
-	//gocron.Every(2).Days().Do(logFiles)
-	//gocron.Every(1).Week().Do(logFiles)
-	//gocron.Every(2).Weeks().Do(logFiles)
-
-	// Do jobs on specific weekday
-	//gocron.Every(1).Monday().Do(logFiles)
-	//gocron.Every(1).Thursday().Do(logFiles)
-
 	// Do a job at a specific time - 'hour:min:sec' - seconds optional
-	gocron.Every(1).Day().At("00:00").Do(logFiles)
+	gocron.Every(1).Day().At("15:38").Do(logFiles)
 	//gocron.Every(1).Thursday().At("00:00").Do(logFiles)
 
 	// Begin job immediately upon start
-	gocron.Every(1).Hour().From(gocron.NextTick()).Do(logFiles)
+	// gocron.Every(1).Hour().From(gocron.NextTick()).Do(logFiles)
 
 	// Begin job at a specific date/time
 	t := time.Date(2021, time.July, 15, 10, 0, 0, 0, time.Local)
