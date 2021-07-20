@@ -36,21 +36,21 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		logrus.Error(rErrs) // 테스트
-		logrus.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error(rErrs) // 테스트
+		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		logrus.Error(rErrs) // 테스트
-		logrus.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error(rErrs) // 테스트
+		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
-		logrus.Error("Failed:", final) // 테스트
-		logrus.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error("Failed:", final) // 테스트
+		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
 		return final, false
 	}
 	now := time.Now()
@@ -58,8 +58,8 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	replace := strings.ReplaceAll(jsonString, "\n", "")
 	fmt.Println(now, strings.ReplaceAll(replace, "    ", ""))
 	replaceBody := strings.ReplaceAll(replace, "\"", "")
-	logrus.Info("method=", method, ",", "endpoint=", GetDomainConfig()+url, ",", "body=", replaceBody, "result=", true)
-	logrus.Info("test")
+	Infolog.Info("method=", method, ",", "endpoint=", GetDomainConfig()+url, ",", "body=", replaceBody, "result=", true)
+	Infolog.Info("test")
 	return body, true
 }
 
