@@ -90,6 +90,7 @@ func handleRequests() {
 func main() {
 	Eureka()
 	go config.LogFiles()
+	go config.ErrorFiles()
 	config.SetConfig()
 	config.ClientSetting()
 	config.ValidateConfig()
