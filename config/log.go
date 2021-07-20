@@ -19,6 +19,8 @@ type logConfig struct {
 }
 
 var logs *logConfig
+var Infolog = logrus.New()
+var Errorlog = logrus.New()
 
 func logHandle(infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 	//logs.Warn = log.New(warningHandle, "[WARNING]", log.Ldate|log.Ltime|log.Llongfile)
@@ -31,7 +33,8 @@ func logInit() {
 	scheduler()
 }
 
-func logFiles() {
+func LogFiles() {
+
 	currentTime := time.Now()
 	date := currentTime.String()
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -57,13 +60,13 @@ func logFiles() {
 
 func scheduler() {
 
-	gocron.Every(1).Hour().Do(logFiles)
-	gocron.Every(1).Day().Do(logFiles)
-	gocron.Every(1).Day().At("00:00").Do(logFiles)
+	gocron.Every(1).Hour().Do(LogFiles)
+	gocron.Every(1).Day().Do(LogFiles)
+	gocron.Every(1).Day().At("00:00").Do(LogFiles)
 
 	// Begin job at a specific date/time
 	t := time.Date(2021, time.July, 15, 10, 0, 0, 0, time.Local)
-	gocron.Every(1).Hour().From(&t).Do(logFiles)
+	gocron.Every(1).Hour().From(&t).Do(LogFiles)
 
 	// NextRun gets the next running time
 
@@ -79,6 +82,6 @@ func scheduler() {
 	// also, you can create a new scheduler
 	// to run two schedulers concurrently
 	s := gocron.NewScheduler()
-	s.Every(3).Seconds().Do(logFiles)
+	s.Every(3).Seconds().Do(LogFiles)
 	<-s.Start()
 }
