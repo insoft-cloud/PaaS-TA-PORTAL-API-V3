@@ -1,2 +1,3 @@
 port: 2222
+host: localhost
 cloudfoundry_domain: https://api.paas.smes-tipa.go.kr
