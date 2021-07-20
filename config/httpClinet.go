@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 )
 
 var Client http.Client
@@ -34,22 +36,31 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		logrus.Error(rErrs)
+		logrus.Error(rErrs) // 테스트
+		logrus.Error("method=", method, ",", GetDomainConfig()+url)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		logrus.Error(rErrs)
+		logrus.Error(rErrs) // 테스트
+		logrus.Error("method=", method, ",", GetDomainConfig()+url)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
-		logrus.Error(final)
+		logrus.Error("Failed:", final) // 테스트
+		logrus.Error("method=", method, ",", GetDomainConfig()+url)
 		return final, false
 	}
+	now := time.Now()
+	jsonString := string(body)
+	replace := strings.ReplaceAll(jsonString, "\n", "")
+	fmt.Println(now, strings.ReplaceAll(replace, "    ", ""))
+	replaceBody := strings.ReplaceAll(replace, "\"", "")
+	logrus.Info("method=", method, ",", "endpoint=", GetDomainConfig()+url, ",", "body=", replaceBody, "result=", true)
+	logrus.Info("test")
 	return body, true
-
 }
 
 func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter, r *http.Request) (interface{}, bool) {
@@ -84,9 +95,8 @@ func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter
 func FileCurl(key string, url string, method string, w http.ResponseWriter, r *http.Request) (interface{}, bool) {
 	uploaded, handler, err := r.FormFile(key)
 	if err != nil {
-		fmt.Println(1)
-		fmt.Println(err)
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		logrus.Error(final)
 		return final, false
 	}
 	defer uploaded.Close()
