@@ -85,7 +85,7 @@ func createRole(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "role guid"
-// @Param include query []string false "Optionally include a list of unique related resources in the response; valid values are user, space, and organization"
+// @Param include query []string false "Optionally include a list of unique related resources in the response; valid values are user, space, and organization" collectionFormat(multi)
 // @Success 200 {object} Role
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
