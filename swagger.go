@@ -15,7 +15,7 @@ func main() {
 	docs.SwaggerInfo.Host = config.Config["host"] + ":2222"
 	docs.SwaggerInfo.Title = "PaaS-TA Portal CF V3 API"
 	docs.SwaggerInfo.Description = "This is a PaaS-TA Portal Server."
-	docs.SwaggerInfo.Version = "3.0"
+	docs.SwaggerInfo.Version = "2.0"
 	docs.SwaggerInfo.BasePath = "/v3"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 

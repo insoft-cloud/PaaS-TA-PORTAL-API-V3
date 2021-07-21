@@ -15,7 +15,7 @@ import (
 	"PAAS-TA-PORTAL-V3/environment_variable_groups"
 	"PAAS-TA-PORTAL-V3/feature_flags"
 	"PAAS-TA-PORTAL-V3/info"
-	"PAAS-TA-PORTAL-V3/isolation_segment"
+	isolation_segments "PAAS-TA-PORTAL-V3/isolation_segment"
 	"PAAS-TA-PORTAL-V3/jobs"
 	"PAAS-TA-PORTAL-V3/manifests"
 	"PAAS-TA-PORTAL-V3/organization_quotas"
@@ -26,6 +26,15 @@ import (
 	"PAAS-TA-PORTAL-V3/roles"
 	"PAAS-TA-PORTAL-V3/routes"
 	"PAAS-TA-PORTAL-V3/service_brokers"
+	"PAAS-TA-PORTAL-V3/service_credential_bindings"
+	"PAAS-TA-PORTAL-V3/service_instances"
+	"PAAS-TA-PORTAL-V3/service_offerings"
+	"PAAS-TA-PORTAL-V3/service_plan_visibility"
+	"PAAS-TA-PORTAL-V3/service_plans"
+	"PAAS-TA-PORTAL-V3/service_route_binding"
+	"PAAS-TA-PORTAL-V3/service_usage_events"
+	"PAAS-TA-PORTAL-V3/space_features"
+	"PAAS-TA-PORTAL-V3/spaces"
 	"PAAS-TA-PORTAL-V3/stacks"
 	"PAAS-TA-PORTAL-V3/tasks"
 	"PAAS-TA-PORTAL-V3/users"
@@ -53,45 +62,53 @@ import (
 func handleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	admin.AdminHandleRequests(myRouter)
-	apps.AppHandleRequests(myRouter)
 	app_features.AppFeatureHandleRequests(myRouter)
 	app_usage_events.AppUsageEventHandleRequests(myRouter)
+	apps.AppHandleRequests(myRouter)
 	audit_events.AuditEventHandleRequests(myRouter)
-	builds.BuildPackHandleRequests(myRouter)
 	buildpacks.BuildPackHandleRequests(myRouter)
+	builds.BuildPackHandleRequests(myRouter)
 	deployments.DeploymentHandleRequests(myRouter)
-	service_brokers.ServiceBrokerHandleRequests(myRouter)
-	organizations.OrganizationsRequests(myRouter)
 	domains.DomainHandleRequests(myRouter)
 	droplets.DropletHandleRequests(myRouter)
-	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
-	packages.PackagesHandleRequests(myRouter)
 	environment_variable_groups.EnvironmentVariableGroupsHandleRequests(myRouter)
 	feature_flags.FeatureFlagHandleRequests(myRouter)
 	info.InforHandleRequests(myRouter)
 	isolation_segments.IsolationSegmentsHandleRequests(myRouter)
 	jobs.JobsHandleRequests(myRouter)
+	manifests.ManifestsHandleRequests(myRouter)
+	organization_quotas.OrganizationQuotasHandleRequests(myRouter)
+	organizations.OrganizationsRequests(myRouter)
+	packages.PackagesHandleRequests(myRouter)
+	processes.ProcessHandleRequests(myRouter)
+	resource_matches.ResourceMatchesHandleRequests(myRouter)
+	roles.RoleHandleRequests(myRouter)
+	routes.RouteHandleRequests(myRouter)
+	service_brokers.ServiceBrokerHandleRequests(myRouter)
+	service_credential_bindings.ServiceCredentialBindingHandleRequests(myRouter)
+	service_instances.ServiceInstanceHandleRequests(myRouter)
+	service_offerings.ServiceOfferingHandleRequests(myRouter)
+	service_plan_visibility.ServicePlanVisibilityHandleRequests(myRouter)
+	service_plans.ServicePlanHandleRequests(myRouter)
+	service_route_binding.ServiceRouteBindingHandleRequests(myRouter)
+	service_usage_events.ServiceUsageEventHandleRequests(myRouter)
+	space_features.SpaceFeatureHandleRequests(myRouter)
+	spaces.ServiceRouteBindingHandleRequests(myRouter)
 	stacks.AppHandleRequests(myRouter)
 	tasks.TaskHandleRequests(myRouter)
 	users.UserHandleRequests(myRouter)
-	resource_matches.ResourceMatchesHandleRequests(myRouter)
-	roles.RoleHandleRequests(myRouter)
-	processes.ProcessHandleRequests(myRouter)
-	routes.RouteHandleRequests(myRouter)
-	manifests.ManifestsHandleRequests(myRouter)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Authorization", "Content-Type", "cf-Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch, http.MethodTrace, http.MethodOptions})
-
 	log.Fatal(http.ListenAndServe(":"+config.Config["port"], handlers.CORS(originsOk, headersOk, methodsOk)(myRouter)))
 
 }
 
 func main() {
+	config.SetConfig()
 	Eureka()
 	go config.LogFiles()
 	go config.ErrorFiles()
-	config.SetConfig()
 	config.ClientSetting()
 	config.ValidateConfig()
 	handleRequests()
@@ -100,7 +117,7 @@ func main() {
 
 func Eureka() {
 	client := eureka.NewClient(&eureka.Config{
-		DefaultZone:           "http://127.0.0.1:2221/eureka/",
+		DefaultZone:           "http://" + config.Config["eureka_url"] + "/eureka/",
 		App:                   "PORTAL-API-V3",
 		Port:                  2222,
 		RenewalIntervalInSecs: 10,
