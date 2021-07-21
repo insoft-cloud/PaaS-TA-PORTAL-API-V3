@@ -50,7 +50,7 @@ type CreateRole struct {
 		} `json:"organization"`
 		Space struct {
 			Data struct {
-				GUID string `json:"guid"`
+				GUID []string `json:"guid"`
 			} `json:"data"`
 		} `json:"space"`
 	} `json:"relationships"  validation:"required"`
