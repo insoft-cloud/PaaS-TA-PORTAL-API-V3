@@ -39,7 +39,7 @@ func LogFiles() {
 	Infolog.SetFormatter(&logrus.JSONFormatter{})
 	Infolog.SetOutput(os.Stdout)
 	logFile := &lumberjack.Logger{
-		Filename:   "./paas-ta-portal-api-v3" + date[:10] + ".log",
+		Filename:   "./paas-ta-portal-api-v3-" + date[:10] + ".log",
 		MaxSize:    500, /*log파일의 최대 사이즈*/
 		MaxAge:     3,   /* 보존 할 최대 이전 로그 파일 수 */
 		MaxBackups: 28,  /*타임 스탬프를 기준으로 오래된 로그 파일을 보관할 수 있는 최대 일수*/
@@ -67,7 +67,6 @@ func ErrorFiles() {
 		LocalTime:  false,
 		Compress:   false, /*압축 여부*/
 	}
-
 	Errorlog.SetOutput(logFile)                            // 로그파일을 만든다.
 	Errorlog.SetOutput(io.MultiWriter(logFile, os.Stdout)) /*console창에 로그내용을 출력한다*/
 	Errorlog.WithFields(logrus.Fields{
@@ -77,13 +76,17 @@ func ErrorFiles() {
 }
 
 func scheduler() {
+	//gocron.Every(1).Minute().Do(LogFiles)
+	//gocron.Every(1).Minute().Do(ErrorFiles)
 	gocron.Every(1).Hour().Do(LogFiles)
 	gocron.Every(1).Hour().Do(ErrorFiles)
 	gocron.Every(1).Day().At("00:00").Do(LogFiles)
 	gocron.Every(1).Day().At("00:00").Do(ErrorFiles)
 	// Begin job at a specific date/time
-	t := time.Date(2021, time.July, 15, 10, 0, 0, 0, time.Local)
-	gocron.Every(1).Hour().From(&t).Do(LogFiles)
+	infoT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
+	errorT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
+	gocron.Every(1).Hour().From(&infoT).Do(LogFiles)
+	gocron.Every(1).Hour().From(&errorT).Do(LogFiles)
 	// NextRun gets the next running time
 	// Remove a specific job
 	// gocron.Remove(task)
