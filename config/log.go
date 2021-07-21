@@ -34,12 +34,14 @@ func logInit() {
 }
 
 func LogFiles() {
+	path, _ := os.Getwd()
+	println("path:", path)
 	currentTime := time.Now()
 	date := currentTime.String()
 	Infolog.SetFormatter(&logrus.JSONFormatter{})
 	Infolog.SetOutput(os.Stdout)
 	logFile := &lumberjack.Logger{
-		Filename:   "./paas-ta-portal-api-v3-" + date[:10] + ".log",
+		Filename:   path + "/paas-ta-portal-api-v3-" + date[:10] + ".log",
 		MaxSize:    500, /*log파일의 최대 사이즈*/
 		MaxAge:     3,   /* 보존 할 최대 이전 로그 파일 수 */
 		MaxBackups: 28,  /*타임 스탬프를 기준으로 오래된 로그 파일을 보관할 수 있는 최대 일수*/
@@ -55,12 +57,14 @@ func LogFiles() {
 }
 
 func ErrorFiles() {
+	path, _ := os.Getwd()
+	println("path:", path)
 	currentTime := time.Now()
 	date := currentTime.String()
 	Errorlog.SetFormatter(&logrus.JSONFormatter{})
 	Errorlog.SetOutput(os.Stdout)
 	logFile := &lumberjack.Logger{
-		Filename:   "./paas-ta-portal-api-v3-" + date[:10] + "-error.log",
+		Filename:   path + "/paas-ta-portal-api-v3-" + date[:10] + "-error.log",
 		MaxSize:    500, /*log파일의 최대 사이즈*/
 		MaxAge:     3,   /* 보존 할 최대 이전 로그 파일 수 */
 		MaxBackups: 28,  /*타임 스탬프를 기준으로 오래된 로그 파일을 보관할 수 있는 최대 일수*/
