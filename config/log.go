@@ -2,8 +2,8 @@ package config
 
 import (
 	"github.com/jasonlvhit/gocron"
-	_ "github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
+	_ "github.com/t-tomalak/logrus-easy-formatter"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"io/ioutil"
@@ -19,12 +19,13 @@ type logConfig struct {
 }
 
 var logs *logConfig
+
 var Infolog *logrus.Logger = logrus.New()
 var Errorlog *logrus.Logger = logrus.New()
 
 func logHandle(infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 	//logs.Warn = log.New(warningHandle, "[WARNING]", log.Ldate|log.Ltime|log.Llongfile)
-	//logs.Info = log.New(infoHandle, "[INFO]", log.Ldate|log.Ltime|log.Llongfile)
+	// Infolog.Info(infoHandle, "[INFO]", log.Ldate|log.Ltime|log.Llongfile)
 	//logs.Error = log.New(errorHandle, "[ERROR]", log.Ldate|log.Ltime|log.Llongfile)
 }
 
@@ -33,11 +34,23 @@ func logInit() {
 	scheduler()
 }
 
+// formatter := &TextFormatter{
+//     FieldMap: FieldMap{
+//         FieldKeyTime:  "@timestamp",
+//         FieldKeyLevel: "@level",
+//         FieldKeyMsg:   "@message"}}
 func LogFiles() {
+
 	currentTime := time.Now()
 	date := currentTime.String()
-	Infolog.SetFormatter(&logrus.JSONFormatter{})
-	Infolog.SetOutput(os.Stdout)
+	Infolog.SetFormatter(&logrus.TextFormatter{
+		FieldMap: logrus.FieldMap{
+			logrus.FieldKeyTime:  "[TIME]",
+			logrus.FieldKeyLevel: "[LEVEL]",
+			logrus.FieldKeyMsg:   "/",
+		},
+	})
+
 	logFile := &lumberjack.Logger{
 		Filename:   Config["log_path"] + "/paas-ta-portal-api-v3-" + date[:10] + ".log",
 		MaxSize:    500, /*log파일의 최대 사이즈*/
@@ -46,18 +59,26 @@ func LogFiles() {
 		LocalTime:  false,
 		Compress:   false, /*압축 여부*/
 	}
+
 	Infolog.SetOutput(logFile)                            // 로그파일을 만든다.
 	Infolog.SetOutput(io.MultiWriter(logFile, os.Stdout)) /*console창에 로그내용을 출력한다*/
 	Infolog.WithFields(logrus.Fields{
 		"[INFO]": "SUCCESS",
-	}).Info("[IN_SOFT] START SUCCEED FILE")
+	}).Info("[IN_SOFT] START SUCCESS FILE")
 	logInit()
 }
 
 func ErrorFiles() {
 	currentTime := time.Now()
 	date := currentTime.String()
-	Errorlog.SetFormatter(&logrus.JSONFormatter{})
+	Errorlog.SetFormatter(&logrus.TextFormatter{
+		FieldMap: logrus.FieldMap{
+			logrus.FieldKeyTime:  "[TIME]",
+			logrus.FieldKeyLevel: "[LEVEL]",
+			logrus.FieldKeyMsg:   "[MESSAGE]",
+		},
+	})
+
 	Errorlog.SetOutput(os.Stdout)
 	logFile := &lumberjack.Logger{
 		Filename:   Config["log_path"] + "/paas-ta-portal-api-v3-" + date[:10] + "-error.log",
@@ -83,10 +104,10 @@ func scheduler() {
 	gocron.Every(1).Day().At("00:00").Do(LogFiles)
 	gocron.Every(1).Day().At("00:00").Do(ErrorFiles)
 	// Begin job at a specific date/time
-	infoT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
-	errorT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
-	gocron.Every(1).Hour().From(&infoT).Do(LogFiles)
-	gocron.Every(1).Hour().From(&errorT).Do(LogFiles)
+	////infoT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
+	////errorT := time.Date(2021, time.July, 21, 9, 40, 0, 0, time.Local)
+	////gocron.Every(1).Hour().From(&infoT).Do(LogFiles)
+	////gocron.Every(1).Hour().From(&errorT).Do(LogFiles)
 	// NextRun gets the next running time
 	// Remove a specific job
 	// gocron.Remove(task)
@@ -97,6 +118,6 @@ func scheduler() {
 	// also, you can create a new scheduler
 	// to run two schedulers concurrently
 	s := gocron.NewScheduler()
-	s.Every(3).Seconds().Do(LogFiles)
+	//s.Every(3).Seconds().Do(LogFiles)
 	<-s.Start()
 }
