@@ -247,7 +247,7 @@ func updateProcess(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
 // @Param ScaleProcess body ScaleProcess false "Scale Process"
-// @Success 200 {object} Process
+// @Success 202 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -289,7 +289,7 @@ func scaleProcess(w http.ResponseWriter, r *http.Request) {
 // @Param guid path string true "app guid"
 // @Param type path string true "app type"
 // @Param ScaleProcess body ScaleProcess false "Scale Process"
-// @Success 200 {object} Process
+// @Success 202 {object} Process
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -333,7 +333,7 @@ func scaleAppProcess(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
 // @Param type path string true "app type"
-// @Success 200 {object} Process
+// @Success 204 {object} string "No Content"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -364,7 +364,7 @@ func terminateProcessInstance(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
 // @Param type path string true "app type"
-// @Success 200 {object} Process
+// @Success 204 {object} string "No Content"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
