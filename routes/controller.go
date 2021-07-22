@@ -33,14 +33,8 @@ func RouteHandleRequests(myRouter *mux.Router) {
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
-// @Param relationships.space body string true "A relationship to the space containing the route; routes can only be mapped to destinations in that space"
-// @Param relationships.domain body string true "A relationship to the domain of the route"
-// @Param host body string false "The host component for the route; not compatible with routes specifying the tcp protocol"
-// @Param path body string false "The path component for the route; should begin with a / and not compatible with routes specifying the tcp protocol"
-// @Param port body integer false "The port the route will listen on; only compatible with routes leveraging a domain that supports the tcp protocol. For tcp domains, a port will be randomly assigned if not specified"
-// @Param metadata.annotations body string false "Annotations applied to the route"
-// @Param metadata.labels body string false "Labels applied to the route"
-// @Success 200 {object} Route
+// @Param CreateRoutes body CreateRoute true "Create Routes"
+// @Success 202 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -70,15 +64,14 @@ func createRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin" Read-Only, "Admin", "Global Auditor", "Org Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
-//"Admin", "Admin" Read-Only, "Global Auditor", "Org Manager", "Space Auditor", "Space Developer", "Space Manager"
+// @Description Permitted roles 'Admin Read-Only, Admin, Global Auditor, Org Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Get a route
 // @Description
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "app guid"
-// @Param include path string false "Optionally include additional related resources in the response Valid values are domain, space.organization, space"
+// @Param include query string false "Optionally include additional related resources in the response Valid values are domain, space.organization, space"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -100,12 +93,26 @@ func getRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "All Roles"
+// @Description Permitted roles 'All Roles'
 // @Summary List routes
 // @Description Retrieve all routes the user has access to.
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
+// @Param app_guids query []string false "Comma-delimited list of app guids to filter by" collectionFormat(csv)
+// @Param domain_guids query []string false "Comma-delimited list of domain guids to filter by" collectionFormat(csv)
+// @Param hosts query []string false "Comma-delimited list of hostnames to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param paths query []string false "Comma-delimited list of paths to filter by (e.g. /path1,/path2)" collectionFormat(csv)
+// @Param ports query []integer false "Comma-delimited list of ports to filter by (e.g. 3306,5432)" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by; defaults to ascending. Prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
+// @Param include query string false "Optionally include a list of unique related resources in the response Valid values are domain, space.organization, space"
+// @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
+// @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -125,13 +132,23 @@ func getRoutes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin" "Admin" Read-Only "Global Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary List routes for an app
 // @Description Retrieve all routes that have destinations that point to the given app.
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
-// @Param guid path string true "route guid"
+// @Param guid path string true "apps guid"
+// @Param domain_guids query []string false "Comma-delimited list of domain guids to filter by" collectionFormat(csv)
+// @Param hosts query []string false "Comma-delimited list of hostnames to filter by" collectionFormat(csv)
+// @Param organization_guids query []string false "Comma-delimited list of organization guids to filter by" collectionFormat(csv)
+// @Param paths query []string false "Comma-delimited list of paths to filter by (e.g. /path1,/path2)" collectionFormat(csv)
+// @Param ports query []integer false "Comma-delimited list of ports to filter by (e.g. 3306,5432)" collectionFormat(csv)
+// @Param space_guids query []string false "Comma-delimited list of space guids to filter by" collectionFormat(csv)
+// @Param page query integer false "Page to display; valid values are integers >= 1"
+// @Param per_page query integer false "Number of results per page; valid values are 1 through 5000"
+// @Param order_by query string false "Value to sort by; defaults to ascending. Prepend with - to sort descending. Valid values are created_at, updated_at"
+// @Param label_selector query string false "A query string containing a list of label selector requirements"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -154,15 +171,14 @@ func getAppRoutes(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Update a route
 // @Description
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "route guid"
-// @Param metadata.labels body string false "Labels applied to the route"
-// @Param metadata.annotations body string false "Annotations applied to the route"
+// @Param UpdateRoute body UpdateRoute false "Update Routes"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -192,14 +208,14 @@ func updateRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Delete a route
 // @Description
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "route guid"
-// @Success 200 {object} Route
+// @Success 202 {object} string "Accepted"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -219,26 +235,17 @@ func deleteRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles
-//Role	Notes
-//Admin
-//Admin Read-Only
-//Global Auditor
-//Org Auditor
-//Org Billing Manager	Can only check if routes exist for a domain without an organization relationship
-//Org Manager
-//Space Auditor
-//Space Developer
-//Space Manager
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Auditor, Org Billing Manager Can only check if routes exist for a domain without an organization relationship,
+// @Description Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary Check reserved routes for a domain
 // @Description Check if a specific route for a domain exists, regardless of the user’s visibility for the route in case the route belongs to a space the user does not belong to.
 // @Tags Routes
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "domain guid"
-// @Param host body string false "Hostname to filter by; defaults to empty string if not provided and only applicable to http routes"
-// @Param path body string false "Path to filter by; defaults to empty string if not provided and only applicable to http routes"
-// @Param port body string false "Port to filter by; only applicable to tcp routes and required for tcp routes"
+// @Param host query string false "Hostname to filter by; defaults to empty string if not provided and only applicable to http routes"
+// @Param path query string false "Path to filter by; defaults to empty string if not provided and only applicable to http routes"
+// @Param port query integer false "Port to filter by; only applicable to tcp routes and required for tcp routes"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -250,7 +257,7 @@ func checkReservedRoutesForDomain(w http.ResponseWriter, r *http.Request) {
 	guid := vars["guid"]
 	rBody, rBodyResult := config.Curl("/v3/domains/"+guid+"/route_reservations"+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final RouteList
+		var final CheckReservedRoutesForDomain
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -260,7 +267,7 @@ func checkReservedRoutesForDomain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin" Read-Only "Admin" "Global Auditor" "Org Auditor" "Org Manager" "Space Auditor" "Space Developer" "Space Manager"
+// @Description Permitted roles 'Admin, Admin Read-Only, Global Auditor, Org Auditor, Org Manager, Space Auditor, Space Developer, Space Manager'
 // @Summary List destinations for a route
 // @Description Retrieve all destinations associated with a route.
 // @Tags Routes
@@ -280,7 +287,7 @@ func getDestinationsRoute(w http.ResponseWriter, r *http.Request) {
 	guid := vars["guid"]
 	rBody, rBodyResult := config.Curl("/v3/"+uris+"/"+guid+"/destinations"+"?"+query, nil, "GET", w, r)
 	if rBodyResult {
-		var final RouteList
+		var final DestinationsRouteList
 		json.Unmarshal(rBody.([]byte), &final)
 		json.NewEncoder(w).Encode(final)
 	} else {
@@ -290,7 +297,7 @@ func getDestinationsRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//  @Description Permitted roles "Admin" "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Insert destinations for a route
 // @Description Add one or more destinations to a route, preserving any existing destinations.
 // @Description Note that weighted destinations cannot be added with this endpoint. To add weighted destinations, replace all destinations for a route at once using the replace destinations endpoint.
@@ -305,7 +312,7 @@ func getDestinationsRoute(w http.ResponseWriter, r *http.Request) {
 // @Failure default {object} config.Error
 // @Router /routes/{guid}/destinations [POST]
 func insertDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
-	var pBody insertDestinations
+	var pBody InsertDestinations
 	vResultI, vResultB := config.Validation(r, &pBody)
 	if !vResultB {
 		json.NewEncoder(w).Encode(vResultI)
@@ -331,7 +338,7 @@ func insertDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin" "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Replace all destinations for a route
 // @Description Replaces all destinations for a route, removing any destinations not included in the provided list.
 // @Description If using weighted destinations, all destinations provided here must have a weight specified,
@@ -341,7 +348,7 @@ func insertDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "route guid"
-// @Param destinations body string true "List of destinations use for route. Destinations without process.type specified will get process type "web" by default"
+// @Param replaceAllDestinationsForRoute body ReplaceAllDestinationRoute true "List of destinations use for route. Destinations without process.type specified will get process type "web" by default"
 // @Success 200 {object} Route
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
@@ -371,7 +378,7 @@ func replaceAllDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles "Admin", "Space Developer"
+// @Description Permitted roles 'Admin, Space Developer'
 // @Summary Remove destination for a route
 // @Description Remove a destination from a route.
 // @Tags Routes
@@ -379,7 +386,7 @@ func replaceAllDestinationsForRoute(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param guid path string true "route guid"
 // @Param destination_guid path string true "destination guid"
-// @Success 200 {object} Route
+// @Success 204 {object} string "No Content"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -411,7 +418,7 @@ func removeDestinationForRoute(w http.ResponseWriter, r *http.Request) {
 // @Param guid path string true "route guid"
 // @Param destination_guid path string true "destination guid"
 // @Param query path string true "unmapped=true"
-// @Success 200 {object} Route
+// @Success 202 {object} string "Accepted"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error

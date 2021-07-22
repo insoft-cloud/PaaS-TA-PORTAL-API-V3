@@ -121,7 +121,33 @@ type UpdateRoute struct {
 	} `json:"metadata,omitempty"`
 }
 
-type insertDestinations struct {
+type CheckReservedRoutesForDomain struct {
+	MatchingRoute bool `json:"matching_route"`
+}
+
+type DestinationsRouteList struct {
+	Destinations []struct {
+		GUID string `json:"guid"`
+		App  struct {
+			GUID    string `json:"guid"`
+			Process struct {
+				Type string `json:"type"`
+			} `json:"process"`
+		} `json:"app"`
+		Weight interface{} `json:"weight"`
+		Port   int         `json:"port"`
+	} `json:"destinations"`
+	Links struct {
+		Self struct {
+			Href string `json:"href"`
+		} `json:"self"`
+		Route struct {
+			Href string `json:"href"`
+		} `json:"route"`
+	} `json:"links"`
+}
+
+type InsertDestinations struct {
 	Destinations []struct {
 		App struct {
 			GUID    string `json:"guid"`
@@ -130,7 +156,7 @@ type insertDestinations struct {
 			} `json:"process"`
 		} `json:"app,omitempty"`
 		Port int `json:"port,omitempty"`
-	} `json:"destinations"`
+	} `json:"destinations" validation:"required"`
 }
 
 type ReplaceAllDestinationRoute struct {
