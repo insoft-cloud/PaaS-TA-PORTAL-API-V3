@@ -145,7 +145,7 @@ func getRoles(w http.ResponseWriter, r *http.Request) {
 // @Description Permitted roles 'Admin, Org Manager Can delete roles in managed organizations or spaces in those organizations,
 // @Description Space Manager Can delete roles in managed spaces'
 // @Summary Delete a role
-// @Description This endpoint lists roles that the user has access to.
+// @Description This endpoint deletes an individual role.
 // @Tags Roles
 // @Produce json
 // @Security ApiKeyAuth
