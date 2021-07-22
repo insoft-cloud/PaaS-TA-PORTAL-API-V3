@@ -30,7 +30,7 @@ func PackagesHandleRequests(myRouter *mux.Router) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param CreatePackages body CreatePackage true "Create Packages"
-// @Success 200 {object} Package
+// @Success 201 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -198,7 +198,7 @@ func updatePackage(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "package guid"
-// @Success 200 {object} Package
+// @Success 202 {object} string	"Accepted"
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -216,20 +216,21 @@ func deletePackage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// @Description Permitted roles 'Admin, Space Developer'
+/*// @Description Permitted roles 'Admin, Space Developer'*/
 // postman으로 테스트 완료(복사 성공), swagger 분기처리 어떻게 해야될지 모르겠음.
-// @Summary Copy a package
+// Create a package랑 @Router가 겹쳐서 주석처리함.
+/*// @Summary Create a package
 // @Description This endpoint copies the bits of a source package to a target package.
 // @Tags Packages
 // @Produce json
 // @Security ApiKeyAuth
 // @Param source_guid query []string true "GUID of the source package to copy from" collectionFormat(csv)
 // @Param CopyPackages body CopyPackage true "Copy Packages"
-// @Success 200 {object} Package
+// @Success 201 {object} Package
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
-// @Router /packages [POST]
+// @Router /packages [POST]*/
 func copyPackage(w http.ResponseWriter, r *http.Request) {
 	var pBody CopyPackage
 	query, _ := url.QueryUnescape(r.URL.Query().Encode())
@@ -263,7 +264,7 @@ func copyPackage(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "package guid"
-// @Success 200 {object} Package
+// @Success 302 {object} string "Found You are being redirected."
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
