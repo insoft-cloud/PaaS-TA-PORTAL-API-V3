@@ -22,7 +22,7 @@ func ResourceMatchesHandleRequests(myRouter *mux.Router) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param resources body ResourceMatch true "List of resources to check for in the resource cache"
-// @Success 200 {object} ResourceMatch
+// @Success 201 {object} ResourceMatch
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
