@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/rs/cors"
-	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -34,32 +33,29 @@ func Curl(url string, tbody []byte, method string, w http.ResponseWriter, r *htt
 	w.Header().Set("content-type", "application/json")
 	res, err := Client.Do(req)
 	w.WriteHeader(res.StatusCode)
+	//token := r.Header.Values("cf-Authorization") //cf token
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		Errorlog.Error(rErrs) // 테스트
-		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error(method, "',", rErrs, ",", url)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		Errorlog.Error(rErrs) // 테스트
-		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error(method, "',", rErrs, ",", url)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
-		Errorlog.Error("Failed:", final) // 테스트
-		Errorlog.Error("method=", method, ",", GetDomainConfig()+url)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	now := time.Now()
 	jsonString := string(body)
 	replace := strings.ReplaceAll(jsonString, "\n", "")
 	fmt.Println(now, strings.ReplaceAll(replace, "    ", ""))
-	replaceBody := strings.ReplaceAll(replace, "\"", "")
-	Infolog.Info("method=", method, ",", "endpoint=", GetDomainConfig()+url, ",", "body=", replaceBody, "result=", true)
-	Infolog.Info("test")
+	// replaceBody := strings.ReplaceAll(replace, "\"", "")
+	Infolog.Info(r.Proto, "", "[", r.URL, "]")
 	return body, true
 }
 
@@ -72,16 +68,19 @@ func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter
 	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		Errorlog.Error(method, "',", rErrs, ",", url)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
+		Errorlog.Error(method, "',", rErrs, ",", url)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	if r.Method == http.MethodGet {
@@ -96,7 +95,7 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 	uploaded, handler, err := r.FormFile(key)
 	if err != nil {
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
-		logrus.Error(final)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	defer uploaded.Close()
@@ -104,6 +103,7 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 	_, err = io.Copy(file, uploaded)
 	if err != nil {
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		Errorlog.Error(method, "',", final, ",", url)
 		file.Close()
 		os.Remove(handler.Filename)
 		return final, false
@@ -118,13 +118,15 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 		writer.Close()
 		os.Remove(handler.Filename)
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	Refile.Close()
 	writer.Close()
-	req, err := http.NewRequest(method, GetDomainConfig()+url, body)
+	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
+		Errorlog.Error(method, "',", final, ",", url)
 		os.Remove(handler.Filename)
 		return final, false
 	}
@@ -134,20 +136,24 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 	if err != nil {
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
 		os.Remove(handler.Filename)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	tbody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
 		os.Remove(handler.Filename)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	} else if res.StatusCode > 400 {
 		w.WriteHeader(res.StatusCode)
 		final := ErrorMessage("File Upload Error :: "+err.Error(), 500, w)
 		os.Remove(handler.Filename)
+		Errorlog.Error(method, "',", final, ",", url)
 		return final, false
 	}
 	os.Remove(handler.Filename)
+	Infolog.Info("")
 	return tbody, true
 }
 
