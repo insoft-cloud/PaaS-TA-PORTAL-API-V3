@@ -45,7 +45,7 @@ func RoleHandleRequests(myRouter *mux.Router) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param CreateRoles body CreateRole true "Create Roles"
-// @Success 200 {object} Role
+// @Success 201 {object} Role
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -106,6 +106,7 @@ func getRole(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// TypeError: Failed to fetch
 // @Description Permitted roles 'All Roles'
 // @Summary List roles
 // @Description This endpoint lists roles that the user has access to.
@@ -122,7 +123,7 @@ func getRole(w http.ResponseWriter, r *http.Request) {
 // @Param include query []string false "Optionally include a list of unique related resources in the response; valid values are user, space, and organization"
 // @Param created_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
 // @Param updated_ats query string false "Timestamp to filter by. When filtering on equality, several comma-delimited timestamps may be passed. Also supports filtering with relational operators"
-// @Success 200 {object} Role
+// @Success 200 {object} RoleList
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
@@ -143,13 +144,13 @@ func getRoles(w http.ResponseWriter, r *http.Request) {
 
 // @Description Permitted roles 'Admin, Org Manager Can delete roles in managed organizations or spaces in those organizations,
 // @Description Space Manager Can delete roles in managed spaces'
-// @Summary List roles
-// @Description This endpoint lists roles that the user has access to.
+// @Summary Delete a role
+// @Description This endpoint deletes an individual role.
 // @Tags Roles
 // @Produce json
 // @Security ApiKeyAuth
 // @Param guid path string true "role guid"
-// @Success 200 {object} Role
+// @Success 202 {object} string
 // @Failure 400,404 {object} config.Error
 // @Failure 500 {object} config.Error
 // @Failure default {object} config.Error
