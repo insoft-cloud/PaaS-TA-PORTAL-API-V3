@@ -68,19 +68,20 @@ func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter
 	w.WriteHeader(res.StatusCode)
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		Errorlog.Error(method, "',", rErrs, ",", url)
+		Errorlog.Println(method, "',", rErrs, ",", url)
 		return rErrs, false
 	}
 	body, err := ioutil.ReadAll(res.Body)
+	Infolog.Info(r.Proto, "", "[", r.URL, "]")
 
 	if err != nil {
 		rErrs := &Errors{Code: 500, Detail: err.Error(), Title: "Portal API Error"}
-		Errorlog.Error(method, "',", rErrs, ",", url)
+		Errorlog.Println(method, "',", rErrs, ",", url)
 		return rErrs, false
 	} else if res.StatusCode > 400 {
 		var final Error
 		json.Unmarshal(body, &final)
-		Errorlog.Error(method, "',", final, ",", url)
+		Errorlog.Println(method, "',", final, ",", url)
 		return final, false
 	}
 	if r.Method == http.MethodGet {
@@ -88,7 +89,6 @@ func ManifestCurl(url string, tbody []byte, method string, w http.ResponseWriter
 	} else {
 		return body, true
 	}
-
 }
 
 func FileCurl(key string, url string, method string, w http.ResponseWriter, r *http.Request) (interface{}, bool) {
@@ -153,7 +153,7 @@ func FileCurl(key string, url string, method string, w http.ResponseWriter, r *h
 		return final, false
 	}
 	os.Remove(handler.Filename)
-	Infolog.Info("")
+	Infolog.Info(r.Proto, "", "[", r.URL, "]")
 	return tbody, true
 }
 

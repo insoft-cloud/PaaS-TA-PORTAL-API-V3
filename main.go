@@ -8,7 +8,7 @@ import (
 	"PAAS-TA-PORTAL-V3/audit_events"
 	"PAAS-TA-PORTAL-V3/buildpacks"
 	"PAAS-TA-PORTAL-V3/builds"
-	"PAAS-TA-PORTAL-V3/config"
+	config "PAAS-TA-PORTAL-V3/config"
 	"PAAS-TA-PORTAL-V3/deployments"
 	"PAAS-TA-PORTAL-V3/domains"
 	"PAAS-TA-PORTAL-V3/droplets"
@@ -106,13 +106,13 @@ func handleRequests() {
 
 func main() {
 	config.SetConfig()
+	config.ClientSetting()
+	config.ValidateConfig()
 	Eureka()
 	go config.LogFiles()
 	go config.ErrorFiles()
-	config.ClientSetting()
-	config.ValidateConfig()
+	go config.Schedular()
 	handleRequests()
-
 }
 
 func Eureka() {
